@@ -1,0 +1,69 @@
+@import "tailwindcss";
+
+@theme {
+  /* Brand palette — calm clinical teal + warm accent */
+  --color-brand-50: #eefcf9;
+  --color-brand-100: #d4f6ee;
+  --color-brand-200: #abe9dd;
+  --color-brand-300: #75d6c7;
+  --color-brand-400: #41bbab;
+  --color-brand-500: #1f9e90;
+  --color-brand-600: #157f76;
+  --color-brand-700: #14655f;
+  --color-brand-800: #15514d;
+  --color-brand-900: #154340;
+  --color-accent-500: #f97316;
+  --color-accent-600: #ea580c;
+
+  --color-ink: #0f172a;
+  --color-muted: #64748b;
+
+  --font-sans: var(--font-geist-sans), system-ui, sans-serif;
+}
+
+:root {
+  --background: #ffffff;
+  --foreground: #0f172a;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Reusable utility-ish classes used across the skeleton */
+@layer components {
+  .container-page {
+    @apply mx-auto w-full max-w-6xl px-4 sm:px-6 lg:px-8;
+  }
+  .btn {
+    @apply inline-flex items-center justify-center gap-2 rounded-lg px-4 py-2.5 text-sm font-semibold transition-colors disabled:opacity-60;
+  }
+  .btn-primary {
+    @apply inline-flex items-center justify-center gap-2 rounded-lg px-4 py-2.5 text-sm font-semibold transition-colors disabled:opacity-60 bg-brand-600 text-white hover:bg-brand-700;
+  }
+  .btn-accent {
+    @apply inline-flex items-center justify-center gap-2 rounded-lg px-4 py-2.5 text-sm font-semibold transition-colors disabled:opacity-60 bg-accent-500 text-white hover:bg-accent-600;
+  }
+  .btn-outline {
+    @apply inline-flex items-center justify-center gap-2 rounded-lg px-4 py-2.5 text-sm font-semibold transition-colors disabled:opacity-60 border border-brand-600 text-brand-700 hover:bg-brand-50;
+  }
+  .card {
+    @apply rounded-xl border border-slate-200 bg-white shadow-sm;
+  }
+  .input {
+    @apply w-full rounded-lg border border-slate-300 px-3 py-2 text-sm outline-none focus:border-brand-500 focus:ring-2 focus:ring-brand-200;
+  }
+  .label {
+    @apply mb-1 block text-sm font-medium text-slate-700;
+  }
+  .section-title {
+    @apply text-2xl font-bold tracking-tight text-slate-900 sm:text-3xl;
+  }
+}
