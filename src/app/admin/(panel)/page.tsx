@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { createServerSupabase } from "@/lib/supabase/server";
+import { AnalyticsDashboard } from "@/components/admin/analytics-dashboard";
 
 export const dynamic = "force-dynamic";
 
@@ -43,6 +44,7 @@ export default async function AdminDashboard() {
     enquiries,
     whatsappClicks,
     callClicks,
+    statsResult,
   ] = await Promise.all([
     countOf(supabase, "services"),
     countOf(supabase, "doctors"),
@@ -53,7 +55,12 @@ export default async function AdminDashboard() {
     countOf(supabase, "enquiries"),
     eventCount(supabase, "whatsapp_click"),
     eventCount(supabase, "call_click"),
+    supabase.rpc("get_visitor_stats"),
   ]);
+
+  const monthlyStats = statsResult.data || [];
+  const uniqueVisitors = monthlyStats.reduce((acc: number, row: any) => acc + Number(row.unique_visitors), 0);
+  const totalPageviews = monthlyStats.reduce((acc: number, row: any) => acc + Number(row.total_pageviews), 0);
 
   const cards = [
     { label: "Services", value: services, href: "/admin/services" },
@@ -89,6 +96,12 @@ export default async function AdminDashboard() {
           );
         })}
       </div>
+
+      <AnalyticsDashboard 
+        uniqueVisitors={uniqueVisitors}
+        totalPageviews={totalPageviews}
+        monthlyData={monthlyStats}
+      />
     </div>
   );
 }
