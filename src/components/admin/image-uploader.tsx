@@ -30,12 +30,31 @@ export function ImageUploader({
     setBusy(true);
     setError("");
     try {
-      const compressed = await imageCompression(file, {
-        maxWidthOrHeight: 1600,
-        maxSizeMB: 0.8,
-        fileType: "image/webp",
-        useWebWorker: true,
-      });
+      // HEIC/HEIF (default iPhone format) can't be decoded to a canvas by the
+      // browser, which makes compression hang. Reject it with a clear message.
+      const isHeic =
+        /heic|heif/i.test(file.type) || /\.(heic|heif)$/i.test(file.name);
+      if (isHeic) {
+        throw new Error(
+          "HEIC/HEIF images aren't supported by browsers. On iPhone, set Camera → Formats to “Most Compatible”, or convert the photo to JPG/PNG first."
+        );
+      }
+
+      // Guard against a stuck compression (corrupt/undecodable file): time out.
+      const compressed = await Promise.race([
+        imageCompression(file, {
+          maxWidthOrHeight: 1600,
+          maxSizeMB: 0.8,
+          fileType: "image/webp",
+          useWebWorker: true,
+        }),
+        new Promise<never>((_, reject) =>
+          setTimeout(
+            () => reject(new Error("Image processing timed out. Try a JPG/PNG under ~15 MB.")),
+            45000
+          )
+        ),
+      ]);
 
       const supabase = createBrowserSupabase();
       const path = `${folder}/${crypto.randomUUID()}.webp`;
