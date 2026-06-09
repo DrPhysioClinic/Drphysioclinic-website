@@ -9,6 +9,9 @@ const nextConfig: NextConfig = {
   // picking up an unrelated lockfile in a parent directory.
   outputFileTracingRoot: __dirname,
   images: {
+    dangerouslyAllowSVG: true,
+    contentDispositionType: 'attachment',
+    contentSecurityPolicy: "default-src 'self'; script-src 'none'; sandbox;",
     remotePatterns: [
       // Supabase Storage public bucket URLs
       { protocol: "https", hostname: supabaseHost, pathname: "/storage/v1/object/public/**" },

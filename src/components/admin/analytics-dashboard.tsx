@@ -23,10 +23,12 @@ export function AnalyticsDashboard({
   uniqueVisitors,
   totalPageviews,
   monthlyData,
+  currentYear,
 }: {
   uniqueVisitors: number;
   totalPageviews: number;
   monthlyData: StatRow[];
+  currentYear: number | null;
 }) {
   const router = useRouter();
   const [isRefreshing, setIsRefreshing] = useState(false);
@@ -70,7 +72,7 @@ export function AnalyticsDashboard({
     }).format(number);
   };
 
-  // Format "YYYY-MM" to "Jun 26" for a cleaner X-axis
+  // Format "YYYY-MM" to "Jun" for a cleaner X-axis
   const formatMonth = (monthStr: any) => {
     if (typeof monthStr !== "string") return monthStr;
     const parts = monthStr.split("-");
@@ -78,12 +80,39 @@ export function AnalyticsDashboard({
     const [year, month] = parts;
     const date = new Date(parseInt(year), parseInt(month) - 1);
     if (isNaN(date.getTime())) return monthStr;
-    return date.toLocaleDateString("en-US", { month: "short", year: "2-digit" });
+    return date.toLocaleDateString("en-US", { month: "short" });
   };
+
+  const currentYearOptions = [
+    new Date().getFullYear(),
+    new Date().getFullYear() - 1,
+    new Date().getFullYear() - 2,
+  ];
 
   return (
     <div className="mt-10">
-      <h2 className="text-xl font-bold text-slate-900">Website Traffic (Last 12 Months)</h2>
+      <div className="flex items-center justify-between">
+        <h2 className="text-xl font-bold text-slate-900">
+          Website Traffic {currentYear ? `(${currentYear})` : "(Last 12 Months)"}
+        </h2>
+        <select 
+          className="rounded-md border border-slate-300 bg-white py-1.5 pl-3 pr-8 text-sm shadow-sm outline-none focus:border-brand-500 focus:ring-1 focus:ring-brand-500"
+          value={currentYear || ""}
+          onChange={(e) => {
+            const val = e.target.value;
+            if (val) {
+              router.push(`?year=${val}`);
+            } else {
+              router.push(`?`);
+            }
+          }}
+        >
+          <option value="">Last 12 Months</option>
+          {currentYearOptions.map(y => (
+            <option key={y} value={y}>{y}</option>
+          ))}
+        </select>
+      </div>
       
       <div className="mt-4 grid gap-4 sm:grid-cols-2">
         {/* Unique Visitors Chart Card */}

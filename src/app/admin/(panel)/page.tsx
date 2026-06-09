@@ -31,7 +31,15 @@ async function eventCount(
   return count ?? 0;
 }
 
-export default async function AdminDashboard() {
+export default async function AdminDashboard({
+  searchParams,
+}: {
+  searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
+}) {
+  const params = await searchParams;
+  const yearParam = params.year ? parseInt(params.year as string) : null;
+  const currentYear = yearParam && !isNaN(yearParam) ? yearParam : null;
+
   const supabase = await createServerSupabase();
 
   const [
@@ -55,10 +63,10 @@ export default async function AdminDashboard() {
     countOf(supabase, "enquiries"),
     eventCount(supabase, "whatsapp_click"),
     eventCount(supabase, "call_click"),
-    supabase.rpc("get_visitor_stats"),
+    (supabase as any).rpc("get_visitor_stats", { p_year: currentYear }),
   ]);
 
-  const monthlyStats = statsResult?.data || [];
+  const monthlyStats: any[] = statsResult?.data || [];
   const uniqueVisitors = monthlyStats.reduce((acc: number, row: any) => acc + (Number(row.unique_visitors) || 0), 0);
   const totalPageviews = monthlyStats.reduce((acc: number, row: any) => acc + (Number(row.total_pageviews) || 0), 0);
 
@@ -101,6 +109,7 @@ export default async function AdminDashboard() {
         uniqueVisitors={uniqueVisitors}
         totalPageviews={totalPageviews}
         monthlyData={monthlyStats}
+        currentYear={currentYear}
       />
     </div>
   );
