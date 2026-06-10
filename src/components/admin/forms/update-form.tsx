@@ -5,6 +5,7 @@ import { saveUpdate } from "@/app/admin/(panel)/actions";
 import { emptySave } from "@/app/admin/(panel)/form-state";
 import { Text, TextArea, Checkbox, SaveBar } from "@/components/admin/fields";
 import { ImageUploader } from "@/components/admin/image-uploader";
+import { VisibilityControl } from "@/components/admin/visibility-control";
 import type { Update } from "@/types/database";
 
 export function UpdateForm({ update }: { update?: Update }) {
@@ -26,9 +27,14 @@ export function UpdateForm({ update }: { update?: Update }) {
         <Text name="seo_title" label="SEO Title" defaultValue={update?.seo_title} />
         <Text name="seo_description" label="SEO Description" defaultValue={update?.seo_description} />
       </div>
-      <div className="flex gap-6">
-        <Checkbox name="is_published" label="Published" defaultChecked={update?.is_published ?? true} />
-        <Checkbox name="is_featured" label="Featured" defaultChecked={update?.is_featured ?? false} />
+      <div className="flex flex-col gap-6 sm:flex-row sm:items-start sm:justify-between">
+        <VisibilityControl 
+          initialIsPublished={update?.is_published ?? true} 
+          initialScheduledAt={update?.scheduled_at} 
+        />
+        <div className="mt-2">
+          <Checkbox name="is_featured" label="Featured" defaultChecked={update?.is_featured ?? false} />
+        </div>
       </div>
       <SaveBar state={state} label={update ? "Update Post" : "Create Post"} />
     </form>

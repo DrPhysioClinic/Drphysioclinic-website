@@ -8,7 +8,7 @@ export default async function AdminUpdatesPage() {
   const supabase = await createServerSupabase();
   const { data } = await supabase
     .from("updates")
-    .select("id, title, published_at, is_published, is_featured")
+    .select("id, title, published_at, is_published, is_featured, scheduled_at")
     .order("published_at", { ascending: false, nullsFirst: false });
 
   return (
@@ -29,7 +29,14 @@ export default async function AdminUpdatesPage() {
           <tbody className="divide-y divide-slate-100">
             {(data ?? []).map((u) => (
               <tr key={u.id}>
-                <td className="px-4 py-3 font-medium text-slate-800">{u.title}</td>
+                <td className="px-4 py-3 font-medium text-slate-800">
+                  {u.title}
+                  {u.scheduled_at && new Date(u.scheduled_at) > new Date() && (
+                    <span className="ml-2 inline-flex items-center rounded-full bg-blue-50 px-2 py-0.5 text-xs font-medium text-blue-700 ring-1 ring-inset ring-blue-700/10">
+                      Scheduled: {new Date(u.scheduled_at).toLocaleDateString("en-IN", { month: 'short', day: 'numeric', hour: 'numeric', minute: '2-digit'})}
+                    </span>
+                  )}
+                </td>
                 <td className="px-4 py-3 text-slate-500">
                   {u.published_at ? new Date(u.published_at).toLocaleDateString("en-IN") : "—"}
                 </td>

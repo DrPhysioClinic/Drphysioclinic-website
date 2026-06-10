@@ -103,6 +103,7 @@ export async function getServices(): Promise<Service[]> {
       .from("services")
       .select("*")
       .eq("is_published", true)
+      .or(`scheduled_at.is.null,scheduled_at.lte.${new Date().toISOString()}`)
       .order("sort_order", { ascending: true });
     return data ?? [];
   } catch {
@@ -117,6 +118,7 @@ export async function getFeaturedServices(limit = 6): Promise<Service[]> {
       .from("services")
       .select("*")
       .eq("is_published", true)
+      .or(`scheduled_at.is.null,scheduled_at.lte.${new Date().toISOString()}`)
       .eq("is_featured", true)
       .order("sort_order", { ascending: true })
       .limit(limit);
@@ -134,6 +136,7 @@ export async function getServiceBySlug(slug: string): Promise<Service | null> {
       .select("*")
       .eq("slug", slug)
       .eq("is_published", true)
+      .or(`scheduled_at.is.null,scheduled_at.lte.${new Date().toISOString()}`)
       .maybeSingle();
     return data ?? null;
   } catch {
@@ -188,6 +191,7 @@ export async function getUpdates(): Promise<Update[]> {
       .from("updates")
       .select("*")
       .eq("is_published", true)
+      .or(`scheduled_at.is.null,scheduled_at.lte.${new Date().toISOString()}`)
       .order("published_at", { ascending: false, nullsFirst: false });
     return data ?? [];
   } catch {
@@ -203,6 +207,7 @@ export async function getUpdateBySlug(slug: string): Promise<Update | null> {
       .select("*")
       .eq("slug", slug)
       .eq("is_published", true)
+      .or(`scheduled_at.is.null,scheduled_at.lte.${new Date().toISOString()}`)
       .maybeSingle();
     return data ?? null;
   } catch {

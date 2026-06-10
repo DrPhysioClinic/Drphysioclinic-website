@@ -1,5 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
+import { YouTubeEmbed } from "@/components/public/youtube-embed";
 import type { Doctor, Service, Testimonial, Update, Video } from "@/types/database";
 
 const PLACEHOLDER = "https://placehold.co/600x400/eefcf9/157f76?text=Dr+Physio";
@@ -123,32 +124,20 @@ export function UpdateCard({ update }: { update: Update }) {
 
 export function VideoCard({ video }: { video: Video }) {
   return (
-    <a
-      href={video.video_url}
-      target="_blank"
-      rel="noopener noreferrer"
-      className="card group overflow-hidden transition-shadow hover:shadow-md"
-    >
-      <div className="relative aspect-video w-full overflow-hidden bg-slate-900">
-        <Image
-          src={video.thumbnail_url || "https://placehold.co/600x340/0f172a/ffffff?text=Video"}
-          alt={video.title || "Video"}
-          fill
-          sizes="(max-width: 768px) 100vw, 33vw"
-          className="object-cover opacity-90 transition-transform group-hover:scale-105"
+    <div className="card group overflow-hidden transition-shadow hover:shadow-md flex flex-col h-full">
+      <div className="relative aspect-video w-full overflow-hidden bg-slate-900 shrink-0">
+        <YouTubeEmbed
+          videoId={video.video_url || ""}
+          title={video.title || undefined}
+          thumbnailUrl={video.thumbnail_url}
         />
-        <span className="absolute inset-0 flex items-center justify-center">
-          <span className="flex h-14 w-14 items-center justify-center rounded-full bg-white/90 text-brand-700">
-            ▶
-          </span>
-        </span>
       </div>
-      <div className="p-4">
+      <div className="p-4 flex-1">
         <h3 className="font-semibold text-slate-900">{video.title}</h3>
         {video.description && (
           <p className="mt-1 line-clamp-2 text-sm text-slate-600">{video.description}</p>
         )}
       </div>
-    </a>
+    </div>
   );
 }

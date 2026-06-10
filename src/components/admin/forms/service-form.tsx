@@ -4,6 +4,8 @@ import { useActionState } from "react";
 import { saveService } from "@/app/admin/(panel)/actions";
 import { emptySave } from "@/app/admin/(panel)/form-state";
 import { Text, TextArea, Select, Checkbox, SaveBar } from "@/components/admin/fields";
+import { ArrayInput } from "@/components/admin/forms/array-input";
+import { VisibilityControl } from "@/components/admin/visibility-control";
 import { ImageUploader } from "@/components/admin/image-uploader";
 import type { Service, Doctor } from "@/types/database";
 
@@ -60,9 +62,14 @@ export function ServiceForm({
         <Text name="sort_order" label="Sort Order" type="number" defaultValue={service?.sort_order ?? 0} />
       </div>
 
-      <div className="flex gap-6">
-        <Checkbox name="is_published" label="Published" defaultChecked={service?.is_published ?? true} />
-        <Checkbox name="is_featured" label="Featured" defaultChecked={service?.is_featured ?? false} />
+      <div className="flex flex-col gap-6 sm:flex-row sm:items-start sm:justify-between">
+        <VisibilityControl 
+          initialIsPublished={service?.is_published ?? true} 
+          initialScheduledAt={service?.scheduled_at} 
+        />
+        <div className="mt-2">
+          <Checkbox name="is_featured" label="Featured" defaultChecked={service?.is_featured ?? false} />
+        </div>
       </div>
 
       <SaveBar state={state} label={service ? "Update Service" : "Create Service"} />

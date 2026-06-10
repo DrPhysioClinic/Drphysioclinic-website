@@ -16,16 +16,35 @@ export const CLINIC_FALLBACK = {
   longitude: 72.4886988075104,
 } as const;
 
-export const NAV_LINKS = [
+export type NavLink = {
+  href: string;
+  label: string;
+  sublinks?: { href: string; label: string }[];
+};
+
+export const NAV_LINKS: NavLink[] = [
   { href: "/", label: "Home" },
-  { href: "/about", label: "About" },
-  { href: "/doctors", label: "Doctors" },
+  {
+    href: "/about",
+    label: "About",
+    sublinks: [
+      { href: "/about", label: "Our Story" },
+      { href: "/doctors", label: "Our Doctors" },
+      { href: "/testimonials", label: "Testimonials" },
+    ],
+  },
   { href: "/treatments", label: "Treatments" },
   { href: "/updates", label: "Updates" },
   { href: "/gallery", label: "Gallery" },
-  { href: "/testimonials", label: "Testimonials" },
+  {
+    href: "/info",
+    label: "More Info",
+    sublinks: [
+      { href: "/videos", label: "Our YouTube" },
+    ],
+  },
   { href: "/contact", label: "Contact" },
-] as const;
+];
 
 export const ADMIN_NAV_LINKS = [
   { href: "/admin", label: "Dashboard" },

@@ -119,6 +119,7 @@ export async function saveService(_prev: SaveState, fd: FormData): Promise<SaveS
     sort_order: int(fd, "sort_order"),
     is_featured: bool(fd, "is_featured"),
     is_published: bool(fd, "is_published"),
+    scheduled_at: str(fd, "scheduled_at"),
   };
 
   const supabase = await createServerSupabase();
@@ -239,6 +240,7 @@ export async function saveUpdate(_prev: SaveState, fd: FormData): Promise<SaveSt
     published_at: str(fd, "published_at"),
     is_featured: bool(fd, "is_featured"),
     is_published: bool(fd, "is_published"),
+    scheduled_at: str(fd, "scheduled_at"),
   };
 
   const supabase = await createServerSupabase();
@@ -255,16 +257,29 @@ export async function saveUpdate(_prev: SaveState, fd: FormData): Promise<SaveSt
 export async function saveVideo(_prev: SaveState, fd: FormData): Promise<SaveState> {
   const id = str(fd, "id");
   const title = str(fd, "title");
-  const video_url = str(fd, "video_url");
+  let video_url = str(fd, "video_url");
   if (!title) return { error: "Title is required." };
   if (!video_url) return { error: "Video URL is required." };
+
+  const ytRegex = /(?:youtube\.com\/(?:[^\/]+\/.+\/|(?:v|e(?:mbed)?)\/|.*[?&]v=)|youtu\.be\/)([^"&?\/\s]{11})/i;
+  const match = video_url.match(ytRegex);
+  if (match && match[1]) {
+    video_url = match[1];
+  } else {
+    return { error: "Please enter a valid YouTube URL." };
+  }
+
+  let thumbnail_url = str(fd, "thumbnail_url");
+  if (!thumbnail_url) {
+    thumbnail_url = `https://img.youtube.com/vi/${video_url}/maxresdefault.jpg`;
+  }
 
   const payload = {
     title,
     slug: str(fd, "slug") || slugify(title),
     description: str(fd, "description"),
     video_url,
-    thumbnail_url: str(fd, "thumbnail_url"),
+    thumbnail_url,
     category: str(fd, "category"),
     sort_order: int(fd, "sort_order"),
     is_featured: bool(fd, "is_featured"),

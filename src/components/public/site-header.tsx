@@ -29,7 +29,36 @@ export function SiteHeader({
 
         <nav className="hidden items-center gap-1 lg:flex">
           {NAV_LINKS.map((link) => {
-            const active = pathname === link.href;
+            const active = pathname === link.href || link.sublinks?.some((s) => s.href === pathname);
+            if (link.sublinks) {
+              return (
+                <div key={link.href} className="group relative py-2">
+                  <Link
+                    href={link.href}
+                    className={`rounded-md px-3 py-2 text-sm font-medium transition-colors ${
+                      active ? "text-brand-700" : "text-slate-600 group-hover:text-brand-700"
+                    }`}
+                  >
+                    {link.label}
+                  </Link>
+                  <div className="absolute left-0 top-full hidden w-48 pt-2 group-hover:block">
+                    <div className="flex flex-col overflow-hidden rounded-md border border-slate-200 bg-white shadow-lg">
+                      {link.sublinks.map((sub) => (
+                        <Link
+                          key={sub.href}
+                          href={sub.href}
+                          className={`px-4 py-2 text-sm transition-colors hover:bg-brand-50 hover:text-brand-700 ${
+                            pathname === sub.href ? "bg-brand-50 text-brand-700 font-medium" : "text-slate-600"
+                          }`}
+                        >
+                          {sub.label}
+                        </Link>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+              );
+            }
             return (
               <Link
                 key={link.href}
@@ -78,14 +107,31 @@ export function SiteHeader({
         <nav className="border-t border-slate-200 bg-white lg:hidden">
           <div className="container-page flex flex-col py-2">
             {NAV_LINKS.map((link) => (
-              <Link
-                key={link.href}
-                href={link.href}
-                onClick={() => setOpen(false)}
-                className="rounded-md px-3 py-2.5 text-sm font-medium text-slate-700 hover:bg-brand-50"
-              >
-                {link.label}
-              </Link>
+              <div key={link.href} className="flex flex-col">
+                <Link
+                  href={link.href}
+                  onClick={() => setOpen(false)}
+                  className="rounded-md px-3 py-2.5 text-sm font-medium text-slate-700 hover:bg-brand-50"
+                >
+                  {link.label}
+                </Link>
+                {link.sublinks && (
+                  <div className="ml-4 flex flex-col border-l-2 border-slate-100 pl-2 mb-2">
+                    {link.sublinks.map((sub) => (
+                      <Link
+                        key={sub.href}
+                        href={sub.href}
+                        onClick={() => setOpen(false)}
+                        className={`rounded-md px-3 py-2 text-sm transition-colors ${
+                          pathname === sub.href ? "text-brand-700 font-medium bg-brand-50" : "text-slate-600 hover:bg-brand-50 hover:text-brand-700"
+                        }`}
+                      >
+                        {sub.label}
+                      </Link>
+                    ))}
+                  </div>
+                )}
+              </div>
             ))}
           </div>
         </nav>

@@ -77,6 +77,7 @@ export interface Database {
           sort_order: number;
           is_featured: boolean;
           is_published: boolean;
+          scheduled_at: string | null;
         } & Timestamps;
         Insert: Partial<Database["public"]["Tables"]["services"]["Row"]>;
         Update: Partial<Database["public"]["Tables"]["services"]["Row"]>;
@@ -135,6 +136,7 @@ export interface Database {
           is_featured: boolean;
           is_published: boolean;
           published_at: string | null;
+          scheduled_at: string | null;
         } & Timestamps;
         Insert: Partial<Database["public"]["Tables"]["updates"]["Row"]>;
         Update: Partial<Database["public"]["Tables"]["updates"]["Row"]>;

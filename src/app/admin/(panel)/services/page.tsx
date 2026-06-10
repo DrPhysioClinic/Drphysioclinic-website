@@ -8,7 +8,7 @@ export default async function AdminServicesPage() {
   const supabase = await createServerSupabase();
   const { data: services } = await supabase
     .from("services")
-    .select("id, title, category, price, is_published, is_featured, sort_order")
+    .select("id, title, category, price, is_published, is_featured, sort_order, scheduled_at")
     .order("sort_order", { ascending: true });
 
   return (
@@ -32,7 +32,14 @@ export default async function AdminServicesPage() {
           <tbody className="divide-y divide-slate-100">
             {(services ?? []).map((s) => (
               <tr key={s.id}>
-                <td className="px-4 py-3 font-medium text-slate-800">{s.title}</td>
+                <td className="px-4 py-3 font-medium text-slate-800">
+                  {s.title}
+                  {s.scheduled_at && new Date(s.scheduled_at) > new Date() && (
+                    <span className="ml-2 inline-flex items-center rounded-full bg-blue-50 px-2 py-0.5 text-xs font-medium text-blue-700 ring-1 ring-inset ring-blue-700/10">
+                      Scheduled: {new Date(s.scheduled_at).toLocaleDateString("en-IN", { month: 'short', day: 'numeric', hour: 'numeric', minute: '2-digit'})}
+                    </span>
+                  )}
+                </td>
                 <td className="px-4 py-3 text-slate-500">{s.category}</td>
                 <td className="px-4 py-3 text-slate-500">{s.price != null ? `₹${s.price}` : "—"}</td>
                 <td className="px-4 py-3">

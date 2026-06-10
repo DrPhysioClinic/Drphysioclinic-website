@@ -34,6 +34,17 @@ export function SiteFooter({
                 <Link href={l.href} className="hover:text-brand-300">
                   {l.label}
                 </Link>
+                {l.sublinks && (
+                  <ul className="mt-2 ml-4 space-y-2">
+                    {l.sublinks.filter(s => s.href !== l.href).map((sub) => (
+                      <li key={sub.href}>
+                        <Link href={sub.href} className="hover:text-brand-300">
+                          {sub.label}
+                        </Link>
+                      </li>
+                    ))}
+                  </ul>
+                )}
               </li>
             ))}
           </ul>
