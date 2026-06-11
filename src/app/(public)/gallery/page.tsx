@@ -12,7 +12,7 @@ export const metadata: Metadata = {
 export default async function GalleryPage() {
   const items = await getGallery();
   return (
-    <div className="container-page py-12">
+    <div className="container-page pt-28 pb-12">
       <h1 className="section-title">Gallery</h1>
       <p className="mb-6 mt-2 text-slate-600">A look inside our clinic and facilities.</p>
       {items.length === 0 ? (

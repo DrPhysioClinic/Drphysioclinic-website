@@ -14,7 +14,7 @@ export const metadata: Metadata = {
 export default async function AboutPage() {
   const [settings, doctors] = await Promise.all([getResolvedSettings(), getDoctors()]);
   return (
-    <div className="container-page py-12">
+    <div className="container-page pt-28 pb-12">
       <h1 className="section-title">About {settings.clinic_name}</h1>
       <p className="mt-4 max-w-3xl text-slate-700">{settings.tagline}</p>
       <p className="mt-4 max-w-3xl text-slate-600">

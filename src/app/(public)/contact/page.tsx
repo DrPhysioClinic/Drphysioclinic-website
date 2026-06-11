@@ -19,7 +19,7 @@ export default async function ContactPage() {
     `https://www.google.com/maps/dir/?api=1&destination=${settings.latitude},${settings.longitude}`;
 
   return (
-    <div className="container-page py-12">
+    <div className="container-page pt-28 pb-12">
       <h1 className="section-title">Contact Us</h1>
       <p className="mt-2 max-w-2xl text-slate-600">
         Book an appointment, send an enquiry, or visit us in Bopal, Ahmedabad.

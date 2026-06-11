@@ -12,7 +12,7 @@ export const metadata: Metadata = {
 export default async function TestimonialsPage() {
   const testimonials = await getTestimonials();
   return (
-    <div className="container-page py-12">
+    <div className="container-page pt-28 pb-12">
       <h1 className="section-title">Patient Testimonials</h1>
       <div className="mt-8 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
         {testimonials.map((t) => (

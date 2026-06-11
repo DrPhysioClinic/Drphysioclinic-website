@@ -37,7 +37,7 @@ export default async function DoctorDetailPage({
   if (!doctor) notFound();
 
   return (
-    <div className="container-page py-12">
+    <div className="container-page pt-28 pb-12">
       <JsonLd data={physicianJsonLd(doctor, settings.clinic_name)} />
       <Link href="/doctors" className="text-sm text-brand-600 hover:text-brand-700">
         ← All doctors

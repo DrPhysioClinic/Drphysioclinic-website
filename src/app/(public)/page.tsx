@@ -24,7 +24,7 @@ export default async function HomePage() {
       getResolvedSettings(),
       getFeaturedServices(6),
       getServices(),
-      getDoctors(),
+      getDoctors(true),
       getTestimonials(true),
       getUpdates(),
       getGallery(),
@@ -38,8 +38,8 @@ export default async function HomePage() {
       <JsonLd data={clinicJsonLd(settings, settings.logo_url)} />
 
       {/* Hero */}
-      <section className="bg-gradient-to-br from-brand-700 to-brand-900 text-white">
-        <div className="container-page grid gap-8 py-16 lg:grid-cols-2 lg:py-24">
+      <section className="relative flex min-h-[100dvh] items-center bg-gradient-to-br from-brand-700 to-brand-900 pt-16 text-white pb-12">
+        <div className="container-page grid w-full gap-8 lg:grid-cols-2">
           <div className="flex flex-col justify-center">
             <h1 className="text-3xl font-bold leading-tight sm:text-4xl lg:text-5xl">
               {settings.clinic_name}
@@ -68,7 +68,7 @@ export default async function HomePage() {
               </TrackLink>
             </div>
           </div>
-          <div className="relative hidden min-h-[280px] overflow-hidden rounded-2xl lg:block">
+          <div className="relative hidden min-h-[400px] overflow-hidden rounded-2xl lg:block">
             <Image
               src="https://placehold.co/800x600/157f76/ffffff?text=Dr+Physio+Clinic"
               alt="Physiotherapy clinic"

@@ -13,7 +13,7 @@ export const metadata: Metadata = {
 export default async function TreatmentsPage() {
   const [services, categories] = await Promise.all([getServices(), getServiceCategories()]);
   return (
-    <div className="container-page py-12">
+    <div className="container-page pt-28 pb-12">
       <h1 className="section-title">Treatments &amp; Services</h1>
       <p className="mb-8 mt-2 max-w-2xl text-slate-600">
         Evidence-based physiotherapy and rehabilitation tailored to your needs.

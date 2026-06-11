@@ -57,7 +57,12 @@ export function ImageUploader({
       ]);
 
       const supabase = createBrowserSupabase();
-      const path = `${folder}/${crypto.randomUUID()}.webp`;
+      // Fallback for non-HTTPS local network testing where crypto.randomUUID is undefined
+      const uuid = typeof crypto !== 'undefined' && crypto.randomUUID 
+        ? crypto.randomUUID() 
+        : Date.now().toString(36) + Math.random().toString(36).substring(2);
+      
+      const path = `${folder}/${uuid}.webp`;
       const { error: upErr } = await supabase.storage
         .from(STORAGE_BUCKET)
         .upload(path, compressed, { contentType: "image/webp", upsert: false });

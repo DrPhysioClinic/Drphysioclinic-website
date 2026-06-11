@@ -1,7 +1,8 @@
 "use client";
 
 import Link from "next/link";
-import { useState } from "react";
+import Image from "next/image";
+import { useState, useEffect } from "react";
 import { usePathname } from "next/navigation";
 import { NAV_LINKS, telHref } from "@/lib/constants";
 import { TrackLink } from "@/components/public/track-link";
@@ -14,30 +15,103 @@ export function SiteHeader({
   phone?: string | null;
 }) {
   const [open, setOpen] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
   const pathname = usePathname();
 
+  useEffect(() => {
+    const handleScroll = () => {
+      setScrolled(window.scrollY > 80);
+    };
+    
+    handleScroll();
+
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
+  useEffect(() => {
+    return () => {
+      document.body.style.overflow = "";
+    };
+  }, []);
+
+  // Only use the transparent header on the home page where there is a dark hero section.
+  const isHome = pathname === "/";
+  const isSolid = scrolled || !isHome || open;
+
   return (
-    <header className="sticky top-0 z-30 border-b border-slate-200 bg-white/95 backdrop-blur">
-      <div className="container-page flex h-16 items-center justify-between gap-4">
-        <Link href="/" className="flex items-center gap-2 font-bold text-brand-700">
-          <span className="flex h-9 w-9 items-center justify-center rounded-lg bg-brand-600 text-white">
-            +
-          </span>
-          <span className="hidden text-base leading-tight sm:block">{clinicName}</span>
-          <span className="text-base leading-tight sm:hidden">Dr Physio</span>
+    <header 
+      className={`fixed top-0 left-0 right-0 w-full z-50 transition-all duration-300 ${
+        isSolid 
+          ? "bg-white/95 backdrop-blur border-b border-slate-200" 
+          : "bg-transparent border-b-transparent py-2"
+      }`}
+    >
+      <div className="w-full px-4 md:px-8 relative flex h-16 items-center">
+        <Link href="/" className="flex items-center z-10">
+          <div className="relative flex items-center h-10 w-10 sm:h-12 sm:w-12">
+            {/* White Icon (logo-13) */}
+            <Image 
+              src="/icon-white-v2.svg" 
+              alt="Icon" 
+              fill
+              className={`object-contain transition-opacity duration-300 drop-shadow-md ${
+                isSolid ? "opacity-0" : "opacity-100"
+              }`} 
+              priority 
+            />
+            {/* Purple Icon (logo-11) */}
+            <Image 
+              src="/icon-primary-v2.svg" 
+              alt="Icon" 
+              fill
+              className={`object-contain transition-opacity duration-300 ${
+                isSolid ? "opacity-100" : "opacity-0"
+              }`} 
+              priority 
+            />
+          </div>
+          <div className="relative flex items-center h-16 w-32 sm:h-20 sm:w-40 ml-1">
+            {/* White Text Logo (logo-10) */}
+            <Image 
+              src="/logo-white-v2.svg" 
+              alt={clinicName} 
+              fill
+              className={`object-contain object-left transition-all duration-300 scale-[2] sm:scale-[2.5] origin-[left_center] drop-shadow-md ${
+                isSolid ? "opacity-0" : "opacity-100"
+              }`} 
+              priority 
+            />
+            {/* Deep Purple Text Logo (logo-08) */}
+            <Image 
+              src="/logo-primary-v2.svg" 
+              alt={clinicName} 
+              fill
+              className={`object-contain object-left transition-all duration-300 scale-[2] sm:scale-[2.5] origin-[left_center] ${
+                isSolid ? "opacity-100" : "opacity-0"
+              }`} 
+              priority 
+            />
+          </div>
         </Link>
 
-        <nav className="hidden items-center gap-1 lg:flex">
+        <nav className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 hidden items-center gap-1 lg:flex">
           {NAV_LINKS.map((link) => {
             const active = pathname === link.href || link.sublinks?.some((s) => s.href === pathname);
+            
+            let textColorClass = "";
+            if (isSolid) {
+              textColorClass = active ? "text-brand-700" : "text-slate-600 hover:text-brand-700";
+            } else {
+              textColorClass = active ? "text-white font-bold" : "text-white/80 hover:text-white";
+            }
+
             if (link.sublinks) {
               return (
                 <div key={link.href} className="group relative py-2">
                   <Link
                     href={link.href}
-                    className={`rounded-md px-3 py-2 text-sm font-medium transition-colors ${
-                      active ? "text-brand-700" : "text-slate-600 group-hover:text-brand-700"
-                    }`}
+                    className={`rounded-md px-3 py-2 text-sm font-medium transition-colors ${textColorClass}`}
                   >
                     {link.label}
                   </Link>
@@ -63,9 +137,7 @@ export function SiteHeader({
               <Link
                 key={link.href}
                 href={link.href}
-                className={`rounded-md px-3 py-2 text-sm font-medium transition-colors ${
-                  active ? "text-brand-700" : "text-slate-600 hover:text-brand-700"
-                }`}
+                className={`rounded-md px-3 py-2 text-sm font-medium transition-colors ${textColorClass}`}
               >
                 {link.label}
               </Link>
@@ -73,23 +145,44 @@ export function SiteHeader({
           })}
         </nav>
 
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-2 ml-auto z-10">
           <TrackLink
             href={telHref(phone)}
             eventType="call_click"
             sourcePage="header"
-            className="hidden btn-outline sm:inline-flex"
+            className={`group hidden sm:inline-flex items-center justify-center gap-0 transition-all duration-300 ${
+              isSolid ? "btn-outline px-3" : "btn border border-white/40 text-white hover:bg-white/10 px-3"
+            }`}
           >
-            📞 Call Now
+            <svg className="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
+            </svg>
+            <span className="max-w-0 overflow-hidden whitespace-nowrap opacity-0 transition-all duration-300 ease-in-out group-hover:max-w-xs group-hover:ml-2 group-hover:opacity-100">
+              Call Now
+            </span>
           </TrackLink>
-          <Link href="/contact#appointment" className="hidden btn-accent sm:inline-flex">
+          <Link 
+            href="/contact#appointment" 
+            className={`hidden sm:inline-flex ${
+              isSolid ? "btn-accent" : "btn bg-white text-brand-800 hover:bg-brand-50"
+            }`}
+          >
             Book Appointment
           </Link>
           <button
             type="button"
             aria-label="Toggle menu"
-            className="rounded-md p-2 text-slate-700 lg:hidden"
-            onClick={() => setOpen((v) => !v)}
+            className={`rounded-md p-2 lg:hidden transition-colors ${
+              isSolid ? "text-slate-700 hover:bg-slate-100" : "text-white hover:bg-white/10"
+            }`}
+            onClick={() => {
+              setOpen((v) => {
+                const next = !v;
+                if (next) document.body.style.overflow = "hidden";
+                else document.body.style.overflow = "";
+                return next;
+              });
+            }}
           >
             <svg className="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path
@@ -104,25 +197,25 @@ export function SiteHeader({
       </div>
 
       {open && (
-        <nav className="border-t border-slate-200 bg-white lg:hidden">
-          <div className="container-page flex flex-col py-2">
+        <nav className="absolute top-full left-0 w-full h-[calc(100vh-64px)] overflow-y-auto bg-white lg:hidden border-t border-slate-200">
+          <div className="container-page flex flex-col py-6 gap-2">
             {NAV_LINKS.map((link) => (
               <div key={link.href} className="flex flex-col">
                 <Link
                   href={link.href}
-                  onClick={() => setOpen(false)}
-                  className="rounded-md px-3 py-2.5 text-sm font-medium text-slate-700 hover:bg-brand-50"
+                  onClick={() => { setOpen(false); document.body.style.overflow = ""; }}
+                  className="rounded-md px-3 py-3 text-lg font-medium text-slate-800 hover:bg-brand-50"
                 >
                   {link.label}
                 </Link>
                 {link.sublinks && (
-                  <div className="ml-4 flex flex-col border-l-2 border-slate-100 pl-2 mb-2">
+                  <div className="ml-4 flex flex-col border-l-2 border-slate-100 pl-4 mb-4 mt-2 gap-2">
                     {link.sublinks.map((sub) => (
                       <Link
                         key={sub.href}
                         href={sub.href}
-                        onClick={() => setOpen(false)}
-                        className={`rounded-md px-3 py-2 text-sm transition-colors ${
+                        onClick={() => { setOpen(false); document.body.style.overflow = ""; }}
+                        className={`rounded-md px-3 py-2 text-base transition-colors ${
                           pathname === sub.href ? "text-brand-700 font-medium bg-brand-50" : "text-slate-600 hover:bg-brand-50 hover:text-brand-700"
                         }`}
                       >

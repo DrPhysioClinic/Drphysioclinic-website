@@ -71,7 +71,7 @@ export default async function TreatmentDetailPage({
     : [];
 
   return (
-    <div className="container-page py-12">
+    <div className="container-page pt-28 pb-12">
       <JsonLd data={treatmentJsonLd(service, settings.clinic_name)} />
       <Link href="/treatments" className="text-sm text-brand-600 hover:text-brand-700">
         ← All treatments

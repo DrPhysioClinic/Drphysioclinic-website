@@ -37,7 +37,7 @@ export default async function UpdateDetailPage({
   if (!update) notFound();
 
   return (
-    <article className="container-page max-w-3xl py-12">
+    <article className="container-page max-w-3xl pt-28 pb-12">
       <JsonLd data={updateJsonLd(update, settings.clinic_name)} />
       <Link href="/updates" className="text-sm text-brand-600 hover:text-brand-700">
         ← All updates

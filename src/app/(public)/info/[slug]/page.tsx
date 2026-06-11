@@ -29,7 +29,7 @@ export default async function InfoPage({ params }: { params: Promise<{ slug: str
   if (!page) notFound();
 
   return (
-    <article className="container-page max-w-3xl py-12">
+    <article className="container-page max-w-3xl pt-28 pb-12">
       <h1 className="text-3xl font-bold text-slate-900">{page.title}</h1>
       {page.content && (
         <div className="prose prose-slate mt-6 max-w-none whitespace-pre-line text-slate-700">

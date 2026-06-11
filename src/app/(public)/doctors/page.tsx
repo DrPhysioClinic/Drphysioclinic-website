@@ -12,7 +12,7 @@ export const metadata: Metadata = {
 export default async function DoctorsPage() {
   const doctors = await getDoctors();
   return (
-    <div className="container-page py-12">
+    <div className="container-page pt-28 pb-12">
       <h1 className="section-title">Our Doctors</h1>
       <p className="mt-2 max-w-2xl text-slate-600">
         Experienced, compassionate physiotherapists dedicated to your recovery.
