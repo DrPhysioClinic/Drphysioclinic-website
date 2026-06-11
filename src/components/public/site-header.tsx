@@ -111,7 +111,7 @@ export function SiteHeader({
                 <div key={link.href} className="group relative py-2">
                   <Link
                     href={link.href}
-                    className={`rounded-md px-3 py-2 text-sm font-medium transition-colors ${textColorClass}`}
+                    className={`rounded-md px-3 py-2 text-base font-medium transition-colors ${textColorClass}`}
                   >
                     {link.label}
                   </Link>
@@ -121,7 +121,7 @@ export function SiteHeader({
                         <Link
                           key={sub.href}
                           href={sub.href}
-                          className={`px-4 py-2 text-sm transition-colors hover:bg-brand-50 hover:text-brand-700 ${
+                          className={`px-4 py-2 text-base transition-colors hover:bg-brand-50 hover:text-brand-700 ${
                             pathname === sub.href ? "bg-brand-50 text-brand-700 font-medium" : "text-slate-600"
                           }`}
                         >
@@ -137,7 +137,7 @@ export function SiteHeader({
               <Link
                 key={link.href}
                 href={link.href}
-                className={`rounded-md px-3 py-2 text-sm font-medium transition-colors ${textColorClass}`}
+                className={`rounded-md px-3 py-2 text-base font-medium transition-colors ${textColorClass}`}
               >
                 {link.label}
               </Link>

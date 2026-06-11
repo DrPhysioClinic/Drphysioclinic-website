@@ -1,11 +1,16 @@
 import type { Metadata } from "next";
-import { Outfit } from "next/font/google";
+import { Outfit, Playfair_Display } from "next/font/google";
 import "./globals.css";
 import { getResolvedSettings } from "@/lib/queries";
 import { SITE_URL } from "@/lib/constants";
 
 const outfit = Outfit({
   variable: "--font-sans",
+  subsets: ["latin"],
+});
+
+const playfair = Playfair_Display({
+  variable: "--font-playfair",
   subsets: ["latin"],
 });
 
@@ -20,6 +25,9 @@ export async function generateMetadata(): Promise<Metadata> {
       template: `%s | ${s.clinic_name}`,
     },
     description,
+    icons: {
+      icon: "/favicon.svg",
+    },
     openGraph: {
       title,
       description,
@@ -34,7 +42,7 @@ export async function generateMetadata(): Promise<Metadata> {
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   return (
     <html lang="en">
-      <body className={`${outfit.variable} antialiased`}>{children}</body>
+      <body className={`${outfit.variable} ${playfair.variable} antialiased`}>{children}</body>
     </html>
   );
 }

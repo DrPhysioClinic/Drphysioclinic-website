@@ -81,8 +81,7 @@ export default async function ContactPage() {
         <div id="appointment" className="card p-6">
           <h2 className="text-lg font-bold text-slate-900">Book an Appointment</h2>
           <p className="mb-4 text-sm text-slate-600">
-            Fill in your details and we&apos;ll call to confirm. Payment is collected at the clinic
-            (Cash / UPI / Card) — no online payment.
+            Fill in your details and we&apos;ll call to confirm.
           </p>
           <AppointmentForm
             services={services.map((s) => ({ id: s.id, title: s.title }))}

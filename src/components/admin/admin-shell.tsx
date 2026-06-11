@@ -67,7 +67,7 @@ export function AdminShell({
           </div>
           <div>
             <form action={signOut}>
-              <button type="submit" className="flex w-full items-center justify-start gap-2 group/sidebar py-2 hover:bg-brand-800/50 rounded-md px-2">
+              <button type="submit" className={`flex w-full items-center gap-2 group/sidebar py-2 hover:bg-brand-800/50 rounded-md px-2 ${open ? "justify-start" : "justify-center"}`}>
                 <IconLogout className="h-5 w-5 shrink-0 text-red-400" />
                 <motion.span
                   animate={{
