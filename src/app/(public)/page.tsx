@@ -12,11 +12,13 @@ import { ServiceCard, DoctorCard, TestimonialCard, UpdateCard } from "@/componen
 import { NewsletterForm } from "@/components/public/forms";
 import { TrackLink } from "@/components/public/track-link";
 import { JsonLd } from "@/components/json-ld";
+import { DoctorSlider } from "@/components/public/doctor-slider";
 import { clinicJsonLd } from "@/lib/seo";
 import { telHref, whatsappHref } from "@/lib/constants";
 import Image from "next/image";
 import { AnimatedCounter } from "@/components/ui/animated-counter";
 import { TestimonialsSection } from "@/components/public/testimonials-demo";
+import { AnimatedTitle } from "@/components/ui/animated-title";
 
 export const revalidate = 3600;
 
@@ -43,9 +45,11 @@ export default async function HomePage() {
       <section className="relative flex min-h-[100dvh] items-center bg-[#17153f] pt-16 text-white pb-12">
         <div className="container-page grid w-full gap-8 lg:grid-cols-2">
           <div className="flex flex-col justify-center">
-            <h1 className="text-3xl font-bold leading-tight sm:text-4xl lg:text-5xl">
-              {settings.clinic_name}
-            </h1>
+            <AnimatedTitle 
+              text={settings.clinic_name} 
+              as="h1" 
+              className="text-3xl font-bold leading-tight sm:text-4xl lg:text-5xl" 
+            />
             <p className="mt-4 max-w-xl text-brand-100">{settings.tagline}</p>
             <div className="mt-8 flex flex-wrap gap-3">
               <Link href="/contact#appointment" className="btn-accent">
@@ -112,14 +116,7 @@ export default async function HomePage() {
       </Section>
 
       {/* Doctors preview */}
-      <Section title="Meet Our Doctors" href="/doctors" linkLabel="All doctors" muted>
-        <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
-          {doctors.map((d) => (
-            <DoctorCard key={d.id} doctor={d} />
-          ))}
-          {doctors.length === 0 && <EmptyNote label="doctors" />}
-        </div>
-      </Section>
+      <DoctorSlider doctors={doctors} />
 
       {/* Testimonials preview */}
       {testimonials.length > 0 && (
@@ -172,7 +169,7 @@ export default async function HomePage() {
       <section className="bg-slate-50">
         <div className="container-page grid gap-8 py-14 lg:grid-cols-2">
           <div>
-            <h2 className="section-title">Visit Us</h2>
+            <AnimatedTitle text="Visit Us" className="section-title" />
             <p className="mt-3 text-slate-600">{settings.address}</p>
             <div className="mt-4 space-y-1 text-sm">
               <p>
@@ -229,7 +226,7 @@ function Section({
     <section className={muted ? "bg-slate-50" : "bg-white"}>
       <div className="container-page py-14">
         <div className="mb-6 flex items-end justify-between">
-          <h2 className="section-title">{title}</h2>
+          <AnimatedTitle text={title} className="section-title" />
           <Link href={href} className="text-sm font-semibold text-brand-600 hover:text-brand-700">
             {linkLabel} →
           </Link>

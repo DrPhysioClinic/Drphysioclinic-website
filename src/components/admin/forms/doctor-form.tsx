@@ -22,10 +22,15 @@ export function DoctorForm({ doctor }: { doctor?: Doctor }) {
         <Text name="registration_no" label="Registration No." defaultValue={doctor?.registration_no} />
         <Text name="phone" label="Phone" defaultValue={doctor?.phone} />
         <Text name="email" label="Email" defaultValue={doctor?.email} />
+        <Text name="homepage_label" label="Homepage Label (e.g. Meet Founder)" defaultValue={doctor?.homepage_label} placeholder="Meet Our Doctor" />
       </div>
       <TextArea name="specialization" label="Specialization" rows={2} defaultValue={doctor?.specialization} />
       <TextArea name="bio" label="Bio" rows={5} defaultValue={doctor?.bio} />
-      <ImageUploader name="image_url" label="Photo" folder="doctors" defaultValue={doctor?.image_url} />
+      <TextArea name="hero_bio" label="Hero Bio (Homepage Description)" rows={3} defaultValue={doctor?.hero_bio} />
+      <div className="grid gap-4 sm:grid-cols-2">
+        <ImageUploader name="image_url" label="Standard Photo" folder="doctors" defaultValue={doctor?.image_url} />
+        <ImageUploader name="cutout_url" label="Homepage Cutout Photo (Transparent PNG)" folder="doctors/cutouts" defaultValue={doctor?.cutout_url} />
+      </div>
       <div className="grid gap-4 sm:grid-cols-2">
         <Text name="seo_title" label="SEO Title" defaultValue={doctor?.seo_title} />
         <Text name="seo_description" label="SEO Description" defaultValue={doctor?.seo_description} />

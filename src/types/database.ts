@@ -46,7 +46,10 @@ export interface Database {
           phone: string | null;
           email: string | null;
           bio: string | null;
+          hero_bio: string | null;
+          homepage_label: string | null;
           image_url: string | null;
+          cutout_url: string | null;
           sort_order: number;
           is_featured: boolean;
           is_published: boolean;

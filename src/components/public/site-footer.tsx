@@ -176,7 +176,7 @@ export function SiteFooter({
               © {new Date().getFullYear()} {settings.clinic_name}. All rights reserved.
             </p>
             <p>
-              Made by <a href="https://raahildesai.vercel.app/#" target="_blank" rel="noopener noreferrer" className="text-slate-400 hover:text-brand-300 transition-colors font-medium">Raahil Desai</a>
+              Designed by <a href="https://raahildesai.vercel.app/#" target="_blank" rel="noopener noreferrer" className="text-slate-400 hover:text-brand-300 transition-colors font-medium">Raahil Desai</a>
             </p>
           </div>
         </div>

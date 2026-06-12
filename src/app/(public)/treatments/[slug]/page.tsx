@@ -6,6 +6,7 @@ import { getServiceBySlug, getServices, getResolvedSettings } from "@/lib/querie
 import { createPublicClient } from "@/lib/supabase/public";
 import { ServiceCard } from "@/components/public/cards";
 import { TrackLink } from "@/components/public/track-link";
+import { ExpandableImage } from "@/components/ui/expandable-image";
 import { JsonLd } from "@/components/json-ld";
 import { treatmentJsonLd } from "@/lib/seo";
 import { whatsappHref } from "@/lib/constants";
@@ -87,13 +88,11 @@ export default async function TreatmentDetailPage({
           <h1 className="mt-1 text-2xl font-bold text-slate-900 sm:text-3xl">{service.title}</h1>
 
           <div className="relative mt-5 aspect-[16/9] w-full overflow-hidden rounded-xl bg-brand-50">
-            <Image
+            <ExpandableImage
               src={service.hero_image_url || "https://placehold.co/800x450/eefcf9/157f76?text=Treatment"}
               alt={service.title || "Treatment"}
-              fill
-              sizes="(max-width: 1024px) 100vw, 60vw"
-              className="object-cover"
               priority
+              className="absolute inset-0 h-full w-full"
             />
           </div>
 
@@ -107,7 +106,7 @@ export default async function TreatmentDetailPage({
             <div className="mt-6 grid grid-cols-2 gap-3 sm:grid-cols-3">
               {service.gallery_urls.map((url, i) => (
                 <div key={i} className="relative aspect-square overflow-hidden rounded-lg bg-brand-50">
-                  <Image src={url} alt={`${service.title} ${i + 1}`} fill sizes="33vw" className="object-cover" />
+                  <ExpandableImage src={url} alt={`${service.title} ${i + 1}`} className="absolute inset-0 h-full w-full" />
                 </div>
               ))}
             </div>
