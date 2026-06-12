@@ -80,9 +80,9 @@ export default async function TreatmentDetailPage({
       <div className="mt-4 grid gap-8 lg:grid-cols-[1fr_320px]">
         <div>
           {service.category && (
-            <span className="text-xs font-semibold uppercase tracking-wide text-brand-600">
-              {service.category}
-            </span>
+            <div className="mb-4 inline-flex items-center rounded-full bg-brand-50 px-3 py-1 text-xs font-semibold uppercase tracking-wider text-brand-700">
+              {service.category.replace(/#/g, "").trim()}
+            </div>
           )}
           <h1 className="mt-1 text-2xl font-bold text-slate-900 sm:text-3xl">{service.title}</h1>
 
@@ -117,7 +117,7 @@ export default async function TreatmentDetailPage({
             <div className="mt-6 flex flex-wrap gap-2">
               {service.tags.map((t) => (
                 <span key={t} className="rounded-full bg-brand-50 px-3 py-1 text-xs text-brand-700">
-                  #{t}
+                  {t.replace(/#/g, "").trim()}
                 </span>
               ))}
             </div>

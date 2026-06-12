@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { notFound } from "next/navigation";
 import { createServerSupabase } from "@/lib/supabase/server";
 import { DoctorForm } from "@/components/admin/forms/doctor-form";
@@ -11,6 +12,7 @@ export default async function EditDoctorPage({ params }: { params: Promise<{ id:
   if (!doctor) notFound();
   return (
     <div className="max-w-3xl">
+      <Link href="/admin/doctors" className="mb-4 inline-flex items-center text-sm font-medium text-slate-500 hover:text-brand-600">← Back to Doctors</Link>
       <h1 className="mb-4 text-xl font-bold text-slate-900">Edit Doctor</h1>
       <DoctorForm doctor={doctor} />
     </div>

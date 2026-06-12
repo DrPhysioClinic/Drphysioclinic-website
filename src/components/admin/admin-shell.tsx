@@ -51,7 +51,7 @@ export function AdminShell({
       <Sidebar open={open} setOpen={setOpen}>
         <SidebarBody className="justify-between gap-10 border-r border-brand-800 bg-brand-900">
           <div className="flex flex-1 flex-col overflow-x-hidden overflow-y-auto">
-            {open ? <Logo /> : <LogoIcon />}
+            <Logo open={open} />
             <div className="mt-8 flex flex-col gap-1">
               {links.map((link) => {
                 const active = link.href === "/admin" ? pathname === "/admin" : pathname.startsWith(link.href);
@@ -67,11 +67,10 @@ export function AdminShell({
           </div>
           <div>
             <form action={signOut}>
-              <button type="submit" className={`flex w-full items-center gap-2 group/sidebar py-2 hover:bg-brand-800/50 rounded-md px-2 ${open ? "justify-start" : "justify-center"}`}>
+              <button type="submit" className={`flex w-full items-center gap-2 group/sidebar py-2 hover:bg-brand-800/50 rounded-md px-2 justify-start`}>
                 <IconLogout className="h-5 w-5 shrink-0 text-red-400" />
                 <motion.span
                   animate={{
-                    display: open ? "inline-block" : "none",
                     opacity: open ? 1 : 0,
                   }}
                   className="whitespace-pre inline-block !p-0 !m-0 text-sm font-medium text-red-400 group-hover/sidebar:translate-x-1 transition duration-150"
@@ -104,29 +103,19 @@ export function AdminShell({
   );
 }
 
-const Logo = () => {
+const Logo = ({ open }: { open: boolean }) => {
   return (
-    <Link href="/admin" className="relative z-20 flex items-center space-x-2 py-1 px-2 text-sm font-normal">
-      <div className="relative h-12 w-12 shrink-0">
-        <Image src="/icon-white-v2.svg" alt="Dr Physio" fill className="object-contain scale-[1.1] origin-center" />
-      </div>
-      <motion.span
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        className="font-bold whitespace-pre text-white text-lg ml-2"
-      >
-        Dr Physio
-      </motion.span>
-    </Link>
-  );
-};
-
-const LogoIcon = () => {
-  return (
-    <Link href="/admin" className="relative z-20 flex items-center py-1 text-sm font-normal">
+    <Link href="/admin" className="relative z-20 flex items-center py-1 px-2 text-sm font-normal overflow-hidden whitespace-nowrap">
       <div className="relative h-12 w-12 shrink-0 -ml-[0.4rem]">
         <Image src="/icon-white-v2.svg" alt="Dr Physio" fill className="object-contain scale-[1.1] origin-left" />
       </div>
+      <motion.span
+        initial={{ opacity: 0 }}
+        animate={{ opacity: open ? 1 : 0 }}
+        className="font-bold text-white text-lg ml-2"
+      >
+        Dr Physio
+      </motion.span>
     </Link>
   );
 };

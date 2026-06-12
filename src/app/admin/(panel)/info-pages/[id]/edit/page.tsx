@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { notFound } from "next/navigation";
 import { createServerSupabase } from "@/lib/supabase/server";
 import { InfoPageForm } from "@/components/admin/forms/info-page-form";
@@ -11,6 +12,7 @@ export default async function EditInfoPage({ params }: { params: Promise<{ id: s
   if (!data) notFound();
   return (
     <div className="max-w-3xl">
+      <Link href="/admin/info-pages" className="mb-4 inline-flex items-center text-sm font-medium text-slate-500 hover:text-brand-600">← Back to Info Pages</Link>
       <h1 className="mb-4 text-xl font-bold text-slate-900">Edit Info Page</h1>
       <InfoPageForm page={data} />
     </div>

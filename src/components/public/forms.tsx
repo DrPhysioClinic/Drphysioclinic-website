@@ -81,7 +81,7 @@ export function AppointmentForm({
           <InputGlow>
             <div className="flex items-center gap-3 bg-white px-3 py-2.5 rounded-[10px]">
               <IconUser className="size-5 text-slate-400 shrink-0" stroke={1.5} />
-              <input id="patient_name" name="patient_name" required className="w-full bg-transparent outline-none text-slate-900 placeholder:text-slate-400" placeholder="" />
+              <input id="patient_name" name="patient_name" required className="w-full bg-transparent outline-none text-slate-900 placeholder:text-slate-400" placeholder="Your name" />
             </div>
           </InputGlow>
         </div>
@@ -92,7 +92,7 @@ export function AppointmentForm({
           <InputGlow>
             <div className="flex items-center gap-3 bg-white px-3 py-2.5 rounded-[10px]">
               <IconPhone className="size-5 text-slate-400 shrink-0" stroke={1.5} />
-              <input id="phone" name="phone" type="tel" required className="w-full bg-transparent outline-none text-slate-900 placeholder:text-slate-400" placeholder="+91 00000 00000" />
+              <input id="phone" name="phone" type="tel" required className="w-full bg-transparent outline-none text-slate-900 placeholder:text-slate-400" placeholder="+91" />
             </div>
           </InputGlow>
         </div>
@@ -101,7 +101,7 @@ export function AppointmentForm({
           <InputGlow>
             <div className="flex items-center gap-3 bg-white px-3 py-2.5 rounded-[10px]">
               <IconMail className="size-5 text-slate-400 shrink-0" stroke={1.5} />
-              <input id="email" name="email" type="email" className="w-full bg-transparent outline-none text-slate-900 placeholder:text-slate-400" placeholder="john@example.com" />
+              <input id="email" name="email" type="email" className="w-full bg-transparent outline-none text-slate-900 placeholder:text-slate-400" placeholder="name@example.com" />
             </div>
           </InputGlow>
         </div>

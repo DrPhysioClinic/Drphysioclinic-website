@@ -16,6 +16,7 @@ import { clinicJsonLd } from "@/lib/seo";
 import { telHref, whatsappHref } from "@/lib/constants";
 import Image from "next/image";
 import { AnimatedCounter } from "@/components/ui/animated-counter";
+import { TestimonialsSection } from "@/components/public/testimonials-demo";
 
 export const revalidate = 3600;
 
@@ -39,7 +40,7 @@ export default async function HomePage() {
       <JsonLd data={clinicJsonLd(settings, settings.logo_url)} />
 
       {/* Hero */}
-      <section className="relative flex min-h-[100dvh] items-center bg-slate-900 pt-16 text-white pb-12">
+      <section className="relative flex min-h-[100dvh] items-center bg-[#17153f] pt-16 text-white pb-12">
         <div className="container-page grid w-full gap-8 lg:grid-cols-2">
           <div className="flex flex-col justify-center">
             <h1 className="text-3xl font-bold leading-tight sm:text-4xl lg:text-5xl">
@@ -87,7 +88,7 @@ export default async function HomePage() {
           {[
             { value: leadDoctor?.experience_years ?? 13, suffix: "+", label: "Years Experience" },
             { value: allServices.length || 8, suffix: "+", label: "Treatments" },
-            { value: 5000, suffix: "+", label: "Happy Patients" },
+            { value: 50000, suffix: "+", label: "Happy Patients" },
             { value: 4.9, suffix: "★", decimals: 1, label: "Patient Rating" },
           ].map((stat) => (
             <div key={stat.label}>
@@ -163,6 +164,9 @@ export default async function HomePage() {
           </div>
         </Section>
       )}
+
+      {/* Testimonials Component */}
+      <TestimonialsSection />
 
       {/* Contact / location + newsletter */}
       <section className="bg-slate-50">

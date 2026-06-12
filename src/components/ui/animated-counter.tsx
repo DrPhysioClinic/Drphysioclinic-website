@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useRef } from "react";
-import { useInView, useMotionValue, useSpring } from "motion/react";
+import { animate, useInView, useMotionValue } from "motion/react";
 
 interface AnimatedCounterProps {
   value: number;
@@ -13,20 +13,15 @@ export function AnimatedCounter({ value, suffix = "", decimals = 0 }: AnimatedCo
   const ref = useRef<HTMLSpanElement>(null);
   const inView = useInView(ref, { once: true, margin: "-50px" });
   const motionValue = useMotionValue(0);
-  const springValue = useSpring(motionValue, {
-    damping: 30,
-    stiffness: 100,
-    mass: 1,
-  });
 
   useEffect(() => {
     if (inView) {
-      motionValue.set(value);
+      animate(motionValue, value, { duration: 2, ease: "easeOut" });
     }
   }, [inView, value, motionValue]);
 
   useEffect(() => {
-    const unsubscribe = springValue.on("change", (latest) => {
+    const unsubscribe = motionValue.on("change", (latest) => {
       if (ref.current) {
         ref.current.textContent =
           Intl.NumberFormat("en-US", {
@@ -36,7 +31,7 @@ export function AnimatedCounter({ value, suffix = "", decimals = 0 }: AnimatedCo
       }
     });
     return () => unsubscribe();
-  }, [springValue, decimals, suffix]);
+  }, [motionValue, decimals, suffix]);
 
   return <span ref={ref}>0{suffix}</span>;
 }

@@ -11,19 +11,18 @@ export function ServiceCard({ service }: { service: Service }) {
       href={`/treatments/${service.slug}`}
       className="card group overflow-hidden transition-shadow hover:shadow-md"
     >
-      <div className="relative aspect-[3/2] w-full overflow-hidden bg-brand-50">
-        <Image
+      <div className="relative w-full overflow-hidden bg-brand-50">
+        <img
           src={service.hero_image_url || PLACEHOLDER}
           alt={service.title || "Treatment"}
-          fill
-          sizes="(max-width: 768px) 100vw, 33vw"
-          className="object-cover transition-transform group-hover:scale-105"
+          className="h-auto w-full object-cover transition-transform group-hover:scale-105"
+          loading="lazy"
         />
       </div>
       <div className="p-4">
         {service.category && (
           <span className="text-xs font-semibold uppercase tracking-wide text-brand-600">
-            {service.category}
+            {service.category.replace(/#/g, "").trim()}
           </span>
         )}
         <h3 className="mt-1 font-semibold text-slate-900">{service.title}</h3>
@@ -80,7 +79,7 @@ export function TestimonialCard({ testimonial }: { testimonial: Testimonial }) {
         {testimonial.patient_name}
         {testimonial.treatment_category && (
           <span className="block text-xs font-normal text-slate-500">
-            {testimonial.treatment_category}
+            {testimonial.treatment_category.replace(/#/g, "").trim()}
           </span>
         )}
       </figcaption>

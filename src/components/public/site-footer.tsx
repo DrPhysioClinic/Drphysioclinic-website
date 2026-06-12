@@ -40,7 +40,7 @@ export function SiteFooter({
   socialLinks: SocialLink[];
 }) {
   return (
-    <footer className="mt-16 border-t border-slate-200 bg-slate-900 text-slate-300 relative w-full min-h-[40vh] flex flex-col">
+    <footer className="mt-16 border-t border-slate-200 bg-[#17153f] text-slate-300 relative w-full min-h-[40vh] flex flex-col">
       {/* Watermark Background */}
       <div className="absolute inset-0 z-0 flex items-center justify-center pointer-events-none select-none overflow-hidden">
         <span 
@@ -155,7 +155,7 @@ export function SiteFooter({
                     rel="noopener noreferrer"
                     className="group relative flex w-max items-center hover:text-brand-300 text-slate-400 transition-colors"
                   >
-                    <div className="shrink-0 relative z-10 bg-slate-900 rounded-md">
+                    <div className="shrink-0 relative z-10 bg-[#17153f] rounded-md">
                       {getSocialIcon(s.platform)}
                     </div>
                     <div className="absolute left-full top-1/2 -translate-y-1/2 ml-2 pointer-events-none flex items-center">
