@@ -12,7 +12,7 @@ export default async function NewServicePage() {
     .order("sort_order", { ascending: true });
 
   return (
-    <div className="max-w-3xl">
+    <div className="max-w-6xl">
       <Link href="/admin/services" className="mb-4 inline-flex items-center text-sm font-medium text-slate-500 hover:text-brand-600">← Back to Services</Link>
       <h1 className="mb-4 text-xl font-bold text-slate-900">New Service</h1>
       <ServiceForm doctors={doctors ?? []} />

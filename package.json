@@ -10,9 +10,12 @@
     "gen:types": "supabase gen types typescript --project-id sfznvsrwaquadutvlviq > src/types/database.ts"
   },
   "dependencies": {
+    "@react-three/drei": "^10.7.7",
+    "@react-three/fiber": "^9.6.1",
     "@supabase/ssr": "^0.12.0",
     "@supabase/supabase-js": "^2.108.0",
     "@tabler/icons-react": "^3.44.0",
+    "@types/three": "^0.184.1",
     "browser-image-compression": "^2.0.2",
     "clsx": "^2.1.1",
     "motion": "^12.40.0",
@@ -21,7 +24,8 @@
     "react-dom": "19.1.0",
     "react-image-crop": "^11.0.10",
     "recharts": "^3.8.1",
-    "tailwind-merge": "^3.6.0"
+    "tailwind-merge": "^3.6.0",
+    "three": "^0.184.0"
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3",

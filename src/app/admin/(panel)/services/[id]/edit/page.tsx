@@ -15,7 +15,7 @@ export default async function EditServicePage({ params }: { params: Promise<{ id
   if (!service) notFound();
 
   return (
-    <div className="max-w-3xl">
+    <div className="max-w-9xl">
       <Link href="/admin/services" className="mb-4 inline-flex items-center text-sm font-medium text-slate-500 hover:text-brand-600">← Back to Services</Link>
       <h1 className="mb-4 text-xl font-bold text-slate-900">Edit Service</h1>
       <ServiceForm service={service} doctors={doctors ?? []} />

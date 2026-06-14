@@ -183,12 +183,10 @@ export interface Database {
           patient_name: string;
           phone: string;
           email: string | null;
-          gender: string | null;
           service_id: string | null;
           preferred_date: string | null;
           preferred_time: string | null;
           notes: string | null;
-          payment_mode: string | null;
           status: string;
           terms_accepted: boolean;
           source_page: string | null;

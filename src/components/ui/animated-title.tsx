@@ -45,7 +45,7 @@ export function AnimatedTitle({
     },
   };
 
-  const MotionComponent = motion(Component as any);
+  const MotionComponent = motion.create(Component as any);
 
   return (
     <MotionComponent

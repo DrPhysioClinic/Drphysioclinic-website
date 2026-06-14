@@ -19,6 +19,7 @@ import Image from "next/image";
 import { AnimatedCounter } from "@/components/ui/animated-counter";
 import { TestimonialsSection } from "@/components/public/testimonials-demo";
 import { AnimatedTitle } from "@/components/ui/animated-title";
+import { Hero3DModel } from "@/components/public/hero-3d-model";
 
 export const revalidate = 3600;
 
@@ -42,8 +43,14 @@ export default async function HomePage() {
       <JsonLd data={clinicJsonLd(settings, settings.logo_url)} />
 
       {/* Hero */}
-      <section className="relative flex min-h-[100dvh] items-center bg-[#17153f] pt-16 text-white pb-12">
-        <div className="container-page grid w-full gap-8 lg:grid-cols-2">
+      <section className="relative flex min-h-[100dvh] items-center bg-[#17153f] pt-16 text-white pb-12 overflow-hidden">
+        
+        {/* 3D Background Spanning Entire Section */}
+        <div className="absolute inset-0 z-0">
+          <Hero3DModel />
+        </div>
+
+        <div className="container-page grid w-full gap-8 lg:grid-cols-2 relative z-10 pointer-events-none">
           <div className="flex flex-col justify-center">
             <AnimatedTitle 
               text={settings.clinic_name} 
@@ -52,14 +59,14 @@ export default async function HomePage() {
             />
             <p className="mt-4 max-w-xl text-brand-100">{settings.tagline}</p>
             <div className="mt-8 flex flex-wrap gap-3">
-              <Link href="/contact#appointment" className="btn-accent">
+              <Link href="/contact#appointment" className="btn-accent pointer-events-auto">
                 Book Appointment
               </Link>
               <TrackLink
                 href={telHref(settings.phone_primary)}
                 eventType="call_click"
                 sourcePage="home_hero"
-                className="btn bg-white text-brand-700 hover:bg-brand-50"
+                className="btn bg-white text-brand-700 hover:bg-brand-50 pointer-events-auto"
               >
                 📞 {settings.phone_primary}
               </TrackLink>
@@ -68,20 +75,14 @@ export default async function HomePage() {
                 eventType="whatsapp_click"
                 sourcePage="home_hero"
                 external
-                className="btn border border-white/40 text-white hover:bg-white/10"
+                className="btn border border-white/40 text-white hover:bg-white/10 pointer-events-auto"
               >
                 💬 WhatsApp
               </TrackLink>
             </div>
           </div>
-          <div className="relative hidden min-h-[400px] overflow-hidden rounded-2xl lg:block">
-            <Image
-              src="https://placehold.co/800x600/157f76/ffffff?text=Dr+Physio+Clinic"
-              alt="Physiotherapy clinic"
-              fill
-              className="object-cover"
-              priority
-            />
+          {/* Empty column to keep text on the left while allowing clicks to pass through to the 3D model on the right */}
+          <div className="hidden lg:block pointer-events-none">
           </div>
         </div>
       </section>

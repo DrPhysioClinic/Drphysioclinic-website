@@ -106,8 +106,13 @@ export function AdminShell({
 const Logo = ({ open }: { open: boolean }) => {
   return (
     <Link href="/admin" className="relative z-20 flex items-center py-1 px-2 text-sm font-normal overflow-hidden whitespace-nowrap">
-      <div className="relative h-12 w-12 shrink-0 -ml-[0.4rem]">
-        <Image src="/icon-white-v2.svg" alt="Dr Physio" fill className="object-contain scale-[1.1] origin-left" />
+      <div className={`relative shrink-0 transition-all duration-300 ${open ? "h-12 w-12 -ml-[0.4rem]" : "h-10 w-10 -ml-[0.8rem]"}`}>
+        <Image 
+          src={open ? "/icon-white-v2.svg" : "/Dr physio logo-13.svg"} 
+          alt="Dr Physio" 
+          fill 
+          className="object-contain scale-[1.3]" 
+        />
       </div>
       <motion.span
         initial={{ opacity: 0 }}

@@ -16,7 +16,6 @@ import {
   IconUser,
   IconPhone,
   IconMail,
-  IconGenderBigender,
   IconStethoscope,
   IconCreditCard,
   IconCalendar,
@@ -96,26 +95,12 @@ export function AppointmentForm({
             </div>
           </InputGlow>
         </div>
-        <div className="space-y-1.5">
+        <div className="space-y-1.5 sm:col-span-2">
           <label className="label font-medium text-slate-700" htmlFor="email">Email</label>
           <InputGlow>
             <div className="flex items-center gap-3 bg-white px-3 py-2.5 rounded-[10px]">
               <IconMail className="size-5 text-slate-400 shrink-0" stroke={1.5} />
               <input id="email" name="email" type="email" className="w-full bg-transparent outline-none text-slate-900 placeholder:text-slate-400" placeholder="name@example.com" />
-            </div>
-          </InputGlow>
-        </div>
-        <div className="space-y-1.5">
-          <label className="label font-medium text-slate-700" htmlFor="gender">Gender</label>
-          <InputGlow>
-            <div className="flex items-center gap-3 bg-white px-3 py-2.5 pr-4 rounded-[10px]">
-              <IconGenderBigender className="size-5 text-slate-400 shrink-0" stroke={1.5} />
-              <select id="gender" name="gender" className="w-full bg-transparent outline-none text-slate-900 cursor-pointer appearance-none">
-                <option value="">Select Gender</option>
-                <option>Male</option>
-                <option>Female</option>
-                <option>Other</option>
-              </select>
             </div>
           </InputGlow>
         </div>
