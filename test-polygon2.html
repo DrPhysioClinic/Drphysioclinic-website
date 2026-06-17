@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+  body { background: red; margin: 0; height: 100vh; }
+  .overlay {
+    position: fixed; inset: 0; background: white;
+    clip-path: polygon(
+      0% 0%, 100% 0%, 100% 100%, 0% 100%, 0% 0%, 
+      45% 45%, 35% 45%, 35% 55%, 45% 55%, 45% 65%, 55% 65%, 55% 55%, 65% 55%, 65% 45%, 55% 45%, 55% 35%, 45% 35%, 45% 45%
+    );
+  }
+</style>
+</head>
+<body>
+  <div class="overlay"></div>
+</body>
+</html>

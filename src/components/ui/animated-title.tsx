@@ -3,6 +3,8 @@
 import { motion } from "motion/react";
 import { ElementType } from "react";
 
+import { useLoaderState } from "@/lib/loader-state";
+
 export function AnimatedTitle({
   text,
   className = "",
@@ -13,6 +15,7 @@ export function AnimatedTitle({
   as?: ElementType;
 }) {
   const words = text.split(" ");
+  const isLoaderReady = useLoaderState();
   
   const container = {
     hidden: { opacity: 0 },
@@ -52,7 +55,8 @@ export function AnimatedTitle({
       className={className}
       variants={container}
       initial="hidden"
-      whileInView="visible"
+      animate={isLoaderReady ? undefined : "hidden"}
+      whileInView={isLoaderReady ? "visible" : "hidden"}
       viewport={{ once: true, margin: "-10% 0px" }}
     >
       {words.map((word, index) => (

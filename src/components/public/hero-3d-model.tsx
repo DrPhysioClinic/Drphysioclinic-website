@@ -114,10 +114,13 @@ function SceneController({ revealDone }: { revealDone: boolean }) {
   return null;
 }
 
+import { useLoaderState } from "@/lib/loader-state";
+
 export function Hero3DModel() {
   const [revealDone, setRevealDone] = useState(false);
   const [zoomDone, setZoomDone] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
+  const isLoaderReady = useLoaderState();
   const inView = useInView(containerRef, { once: true, margin: "-100px" });
 
   useEffect(() => {
@@ -137,7 +140,7 @@ export function Hero3DModel() {
         <Environment preset="city" />
         
         <Suspense fallback={null}>
-          <SpineModel onRevealComplete={() => setRevealDone(true)} inView={inView} />
+          <SpineModel onRevealComplete={() => setRevealDone(true)} inView={inView && isLoaderReady} />
         </Suspense>
 
         <SceneController revealDone={revealDone} />

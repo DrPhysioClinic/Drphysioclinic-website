@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+  body { background: red; margin: 0; height: 100vh; overflow: hidden; }
+  .overlay {
+    position: fixed; inset: 0; background: white;
+    clip-path: polygon(
+      0% 0%, 100% 0%, 100% 100%, 0% 100%, 0% 0%, 
+      50% 50%, 50% 50%, 50% 50%, 50% 50%, 50% 50%, 50% 50%, 50% 50%, 50% 50%, 50% 50%, 50% 50%, 50% 50%, 50% 50%, 50% 50%
+    );
+    transition: clip-path 2s ease-in-out;
+  }
+  body:hover .overlay {
+    clip-path: polygon(
+      0% 0%, 100% 0%, 100% 100%, 0% 100%, 0% 0%, 
+      -100% -100%, -250% -100%, -250% 200%, -100% 200%, -100% 350%, 200% 350%, 200% 200%, 350% 200%, 350% -100%, 200% -100%, 200% -250%, -100% -250%, -100% -100%
+    );
+  }
+</style>
+</head>
+<body>
+  <div class="overlay"></div>
+  <h1 style="position: relative; z-index: -1;">Hover me!</h1>
+</body>
+</html>

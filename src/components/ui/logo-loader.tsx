@@ -2,6 +2,7 @@
 
 import React, { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "motion/react";
+import { loaderState } from "@/lib/loader-state";
 
 export function LogoLoader() {
   const [phase, setPhase] = useState<"tracing" | "revealing" | "unmounted">("tracing");
@@ -12,6 +13,7 @@ export function LogoLoader() {
     // Switch to revealing phase at 2500ms
     const revealTimer = setTimeout(() => {
       setPhase("revealing");
+      loaderState.setDone();
     }, 2500);
 
     // Unmount completely after reveal is done
@@ -32,16 +34,54 @@ export function LogoLoader() {
   // Using brand-500 for the final fill color
   const fillColor = "var(--color-brand-500, #2b2775)";
 
+  const tClosed = 0;
+  const wClosed = 0;
+  const plusHoleClosed = `polygon(
+    0% 0%, 100% 0%, 100% 100%, 0% 100%, 0% 0%, 
+    calc(50vw - ${tClosed}px) calc(50vh - ${tClosed}px),
+    calc(50vw - ${wClosed}px) calc(50vh - ${tClosed}px),
+    calc(50vw - ${wClosed}px) calc(50vh + ${tClosed}px),
+    calc(50vw - ${tClosed}px) calc(50vh + ${tClosed}px),
+    calc(50vw - ${tClosed}px) calc(50vh + ${wClosed}px),
+    calc(50vw + ${tClosed}px) calc(50vh + ${wClosed}px),
+    calc(50vw + ${tClosed}px) calc(50vh + ${tClosed}px),
+    calc(50vw + ${wClosed}px) calc(50vh + ${tClosed}px),
+    calc(50vw + ${wClosed}px) calc(50vh - ${tClosed}px),
+    calc(50vw + ${tClosed}px) calc(50vh - ${tClosed}px),
+    calc(50vw + ${tClosed}px) calc(50vh - ${wClosed}px),
+    calc(50vw - ${tClosed}px) calc(50vh - ${wClosed}px),
+    calc(50vw - ${tClosed}px) calc(50vh - ${tClosed}px)
+  )`;
+
+  const tOpen = 1500;
+  const wOpen = 3000;
+  const plusHoleOpen = `polygon(
+    0% 0%, 100% 0%, 100% 100%, 0% 100%, 0% 0%, 
+    calc(50vw - ${tOpen}px) calc(50vh - ${tOpen}px),
+    calc(50vw - ${wOpen}px) calc(50vh - ${tOpen}px),
+    calc(50vw - ${wOpen}px) calc(50vh + ${tOpen}px),
+    calc(50vw - ${tOpen}px) calc(50vh + ${tOpen}px),
+    calc(50vw - ${tOpen}px) calc(50vh + ${wOpen}px),
+    calc(50vw + ${tOpen}px) calc(50vh + ${wOpen}px),
+    calc(50vw + ${tOpen}px) calc(50vh + ${tOpen}px),
+    calc(50vw + ${wOpen}px) calc(50vh + ${tOpen}px),
+    calc(50vw + ${wOpen}px) calc(50vh - ${tOpen}px),
+    calc(50vw + ${tOpen}px) calc(50vh - ${tOpen}px),
+    calc(50vw + ${tOpen}px) calc(50vh - ${wOpen}px),
+    calc(50vw - ${tOpen}px) calc(50vh - ${wOpen}px),
+    calc(50vw - ${tOpen}px) calc(50vh - ${tOpen}px)
+  )`;
+
   return (
     <AnimatePresence>
       {phase !== "unmounted" && (
         <motion.div
           className="fixed inset-0 z-[100] flex items-center justify-center bg-white dark:bg-slate-950 pointer-events-none"
-          initial={{ clipPath: "circle(150% at 50% 50%)" }}
+          initial={{ clipPath: plusHoleClosed }}
           animate={
             phase === "revealing"
-              ? { clipPath: "circle(0% at 50% 50%)", opacity: 0 }
-              : { clipPath: "circle(150% at 50% 50%)", opacity: 1 }
+              ? { clipPath: plusHoleOpen, opacity: 0 }
+              : { clipPath: plusHoleClosed, opacity: 1 }
           }
           transition={{ duration: 1, ease: [0.65, 0, 0.35, 1] }}
           exit={{ opacity: 0 }}
