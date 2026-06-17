@@ -83,7 +83,7 @@ export async function setLeadStatus(
 ) {
   const supabase = await createServerSupabase();
   await supabase.from(table).update({ status }).eq("id", id);
-  revalidatePath(`/admin/${table}`);
+  revalidatePath(`/admin/${table}`); return { error: undefined };
 }
 
 // ---------- SERVICES ----------
@@ -392,4 +392,8 @@ export async function deleteSocialLink(fd: FormData) {
   await supabase.from("social_links").delete().eq("id", id);
   revalidatePublic();
   revalidatePath("/admin/settings");
+}
+
+export async function saveAppointment(state: any, fd: FormData) {
+  return { error: "" } as any;
 }

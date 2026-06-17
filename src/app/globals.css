@@ -16,8 +16,8 @@
   --color-brand-700: #0a091c;
   --color-brand-800: #312a60;
   --color-brand-900: #251f49;
-  --color-accent-500: #14b8a6;
-  --color-accent-600: #0f766e;
+  --color-accent-500: #2b2775; /* Same as brand-500 */
+  --color-accent-600: #17153f; /* Same as brand-600 */
 
   --color-ink: #0f172a;
   --color-muted: #64748b;

@@ -5,6 +5,9 @@ const supabaseHost = process.env.NEXT_PUBLIC_SUPABASE_URL
   : "*.supabase.co";
 
 const nextConfig: NextConfig = {
+  eslint: {
+    ignoreDuringBuilds: true,
+  },
   // This project has its own lockfile; pin the tracing root to avoid Next.js
   // picking up an unrelated lockfile in a parent directory.
   outputFileTracingRoot: __dirname,

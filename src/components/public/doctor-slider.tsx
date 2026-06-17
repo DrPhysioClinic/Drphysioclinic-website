@@ -120,7 +120,7 @@ export function DoctorSlider({ doctors }: { doctors: Doctor[] }) {
             
             <Link 
               href={`/doctors/${currentDoctor.id}`} 
-              className="inline-flex w-fit items-center font-bold text-accent-500 hover:text-accent-400 transition-colors uppercase tracking-widest text-sm"
+              className="inline-flex w-fit items-center font-bold text-teal-500 hover:text-teal-400 transition-colors uppercase tracking-widest text-sm"
             >
               More about {currentDoctor.name || "Doctor"} <span className="ml-2">→</span>
             </Link>

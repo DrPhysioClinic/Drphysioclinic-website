@@ -28,8 +28,8 @@ export const cutoutCardSurfaceShadowClassName = cn(
 )
 
 export const cutoutCardSurfaceClassName = cn(
-  "group/cutout relative cursor-pointer overflow-hidden rounded-[28px] bg-card text-card-foreground",
-  cutoutCardSurfaceShadowClassName
+  "group/cutout relative cursor-pointer bg-card text-card-foreground",
+  ""
 )
 
 /** Staggered text/footer entrance inside `CutoutCardContent` — use with `motion.div` children. */

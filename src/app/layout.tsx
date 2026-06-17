@@ -37,10 +37,15 @@ export async function generateMetadata(): Promise<Metadata> {
   };
 }
 
+import { LogoLoader } from "@/components/ui/logo-loader";
+
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   return (
     <html lang="en" className={cn("font-sans", geist.variable)}>
-      <body className={`${geist.variable} ${playfair.variable} antialiased`}>{children}</body>
+      <body className={`${geist.variable} ${playfair.variable} antialiased`}>
+        {children}
+        <LogoLoader />
+      </body>
     </html>
   );
 }
