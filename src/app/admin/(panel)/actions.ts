@@ -50,7 +50,8 @@ type EntityTable =
   | "gallery"
   | "updates"
   | "videos"
-  | "info_pages";
+  | "info_pages"
+  | "appointments";
 
 export async function deleteRow(table: EntityTable, id: string, listPath: string) {
   const supabase = await createServerSupabase();

@@ -5,6 +5,7 @@ import Link from "next/link";
 import { getDoctorBySlug, getDoctors, getResolvedSettings } from "@/lib/queries";
 import { JsonLd } from "@/components/json-ld";
 import { physicianJsonLd } from "@/lib/seo";
+import { SpinningText } from "@/components/ui/spinning-text";
 
 export const revalidate = 3600;
 
@@ -43,14 +44,22 @@ export default async function DoctorDetailPage({
         ← All doctors
       </Link>
       <div className="mt-4 grid gap-8 md:grid-cols-[240px_1fr]">
-        <div className="relative aspect-square w-full overflow-hidden rounded-xl bg-brand-50">
-          <Image
-            src={doctor.image_url || "https://placehold.co/400x400/eefcf9/157f76?text=Dr"}
-            alt={doctor.name || "Doctor"}
-            fill
-            sizes="240px"
-            className="object-cover"
-          />
+        <div className="relative mx-auto aspect-square w-full max-w-[280px]" style={{ perspective: '1000px' }}>
+          <div className="absolute inset-0 overflow-hidden rounded-xl bg-brand-50">
+            <Image
+              src={doctor.image_url || "https://placehold.co/400x400/eefcf9/157f76?text=Dr"}
+              alt={doctor.name || "Doctor"}
+              fill
+              sizes="240px"
+              className="object-cover"
+            />
+          </div>
+          {/* Spinning Text overlaid over the image as a 3D halo */}
+          <div className="absolute inset-0 z-10 flex items-center justify-center text-brand-700 pointer-events-none">
+            <SpinningText radius={10} duration={8}>
+              learn more • earn more • grow more • 
+            </SpinningText>
+          </div>
         </div>
         <div>
           <h1 className="text-2xl font-bold text-slate-900 sm:text-3xl">{doctor.name}</h1>

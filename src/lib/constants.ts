@@ -61,7 +61,7 @@ export const ADMIN_NAV_LINKS = [
 ] as const;
 
 export const PAYMENT_MODES = ["Cash", "UPI", "Card"] as const;
-export const LEAD_STATUSES = ["new", "contacted", "closed"] as const;
+export const LEAD_STATUSES = ["new", "confirmed", "completed", "cancelled"] as const;
 
 /** ISR revalidation window for public pages (1 hour). */
 export const PUBLIC_REVALIDATE = 3600;

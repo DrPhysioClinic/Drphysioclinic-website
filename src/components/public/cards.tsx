@@ -5,39 +5,56 @@ import type { Doctor, Service, Testimonial, Update, Video } from "@/types/databa
 
 const PLACEHOLDER = "https://placehold.co/600x400/eefcf9/157f76?text=Dr+Physio";
 
+import {
+  CutoutCard,
+  CutoutCardMedia,
+  CutoutCardImage,
+  CutoutCardContent,
+  CutoutCardAction,
+  CutoutCardPin,
+  CutoutCorner,
+  cutoutCardSurfaceClassName,
+} from "@/components/ui/cutout-card";
+
 export function ServiceCard({ service }: { service: Service }) {
   return (
-    <Link
-      href={`/treatments/${service.slug}`}
-      className="card group overflow-hidden transition-shadow hover:shadow-md"
-    >
-      <div className="relative w-full overflow-hidden bg-brand-50">
-        <img
-          src={service.hero_image_url || PLACEHOLDER}
-          alt={service.title || "Treatment"}
-          className="h-auto w-full object-cover transition-transform group-hover:scale-105"
-          loading="lazy"
-        />
-      </div>
-      <div className="p-4">
-        {service.category && (
-          <span className="text-xs font-semibold uppercase tracking-wide text-brand-600">
-            {service.category.replace(/#/g, "").trim()}
+    <Link href={`/treatments/${service.slug}`} className="block h-full outline-none focus-visible:ring-2 focus-visible:ring-brand-500 rounded-[28px]">
+      <CutoutCard className={`${cutoutCardSurfaceClassName} h-full flex flex-col`}>
+        <CutoutCardMedia className="relative h-48 w-full shrink-0">
+          <CutoutCardImage
+            src={service.hero_image_url || PLACEHOLDER}
+            alt={service.title || "Treatment"}
+          />
+          {service.price != null && (
+            <CutoutCardPin className="top-0 right-0 z-20 flex bg-card rounded-bl-[28px] p-3 pb-3 pl-4">
+              <span className="font-bold text-brand-700 bg-brand-50 px-2 py-1 rounded-md text-sm border border-brand-100">
+                ₹{service.price}
+                {service.old_price != null && (
+                  <span className="ml-1 text-xs text-slate-400 line-through">₹{service.old_price}</span>
+                )}
+              </span>
+              <CutoutCorner className="absolute -left-[32px] top-0 text-card -scale-x-100" />
+              <CutoutCorner className="absolute bottom-[-32px] right-0 text-card -scale-y-100" />
+            </CutoutCardPin>
+          )}
+        </CutoutCardMedia>
+        <CutoutCardContent className="flex flex-col flex-1 pb-16">
+          {service.category && (
+            <span className="text-xs font-semibold uppercase tracking-wide text-brand-600 mb-1">
+              {service.category.replace(/#/g, "").trim()}
+            </span>
+          )}
+          <h3 className="font-semibold text-slate-900 line-clamp-2">{service.title}</h3>
+          {service.short_description && (
+            <p className="mt-2 line-clamp-2 text-sm text-slate-600 flex-1">{service.short_description}</p>
+          )}
+        </CutoutCardContent>
+        <CutoutCardAction className="absolute bottom-4 right-4 z-10" revealOnHover={true}>
+          <span className="flex items-center gap-1 rounded-full bg-brand-600 px-4 py-2 text-xs font-semibold text-white shadow-[0_0_15px_rgba(21,127,118,0.6)] transition-all hover:bg-brand-700 hover:shadow-[0_0_25px_rgba(21,127,118,0.8)]">
+            Read More <span aria-hidden="true">&rarr;</span>
           </span>
-        )}
-        <h3 className="mt-1 font-semibold text-slate-900">{service.title}</h3>
-        {service.short_description && (
-          <p className="mt-1 line-clamp-2 text-sm text-slate-600">{service.short_description}</p>
-        )}
-        {service.price != null && (
-          <div className="mt-2 flex items-center gap-2">
-            <span className="font-bold text-brand-700">₹{service.price}</span>
-            {service.old_price != null && (
-              <span className="text-sm text-slate-400 line-through">₹{service.old_price}</span>
-            )}
-          </div>
-        )}
-      </div>
+        </CutoutCardAction>
+      </CutoutCard>
     </Link>
   );
 }
@@ -89,34 +106,39 @@ export function TestimonialCard({ testimonial }: { testimonial: Testimonial }) {
 
 export function UpdateCard({ update }: { update: Update }) {
   return (
-    <Link
-      href={`/updates/${update.slug}`}
-      className="card group overflow-hidden transition-shadow hover:shadow-md"
-    >
-      <div className="relative aspect-[16/9] w-full overflow-hidden bg-brand-50">
-        <Image
-          src={update.image_url || PLACEHOLDER}
-          alt={update.title || "Update"}
-          fill
-          sizes="(max-width: 768px) 100vw, 33vw"
-          className="object-cover transition-transform group-hover:scale-105"
-        />
-      </div>
-      <div className="p-4">
-        <h3 className="font-semibold text-slate-900">{update.title}</h3>
-        {update.excerpt && (
-          <p className="mt-1 line-clamp-2 text-sm text-slate-600">{update.excerpt}</p>
-        )}
-        {update.published_at && (
-          <p className="mt-2 text-xs text-slate-400">
-            {new Date(update.published_at).toLocaleDateString("en-IN", {
-              day: "numeric",
-              month: "short",
-              year: "numeric",
-            })}
-          </p>
-        )}
-      </div>
+    <Link href={`/updates/${update.slug}`} className="block h-full outline-none focus-visible:ring-2 focus-visible:ring-brand-500 rounded-[28px]">
+      <CutoutCard className={`${cutoutCardSurfaceClassName} h-full flex flex-col`}>
+        <CutoutCardMedia className="relative aspect-[16/9] w-full shrink-0">
+          <CutoutCardImage
+            src={update.image_url || PLACEHOLDER}
+            alt={update.title || "Update"}
+          />
+          {update.published_at && (
+            <CutoutCardPin className="top-0 right-0 z-20 flex bg-card rounded-bl-[28px] p-3 pb-3 pl-4">
+              <span className="font-semibold text-brand-700 bg-brand-50 px-2 py-1 rounded-md text-xs border border-brand-100">
+                {new Date(update.published_at).toLocaleDateString("en-IN", {
+                  day: "numeric",
+                  month: "short",
+                  year: "numeric",
+                })}
+              </span>
+              <CutoutCorner className="absolute -left-[32px] top-0 text-card -scale-x-100" />
+              <CutoutCorner className="absolute bottom-[-32px] right-0 text-card -scale-y-100" />
+            </CutoutCardPin>
+          )}
+        </CutoutCardMedia>
+        <CutoutCardContent className="flex flex-col flex-1 pb-16">
+          <h3 className="font-semibold text-slate-900 line-clamp-2">{update.title}</h3>
+          {update.excerpt && (
+            <p className="mt-2 line-clamp-2 text-sm text-slate-600 flex-1">{update.excerpt}</p>
+          )}
+        </CutoutCardContent>
+        <CutoutCardAction className="absolute bottom-4 right-4 z-10" revealOnHover={true}>
+          <span className="flex items-center gap-1 rounded-full bg-brand-600 px-4 py-2 text-xs font-semibold text-white shadow-[0_0_15px_rgba(21,127,118,0.6)] transition-all hover:bg-brand-700 hover:shadow-[0_0_25px_rgba(21,127,118,0.8)]">
+            Read More <span aria-hidden="true">&rarr;</span>
+          </span>
+        </CutoutCardAction>
+      </CutoutCard>
     </Link>
   );
 }

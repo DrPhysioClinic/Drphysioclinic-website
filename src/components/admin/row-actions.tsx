@@ -11,7 +11,8 @@ type Table =
   | "gallery"
   | "updates"
   | "videos"
-  | "info_pages";
+  | "info_pages"
+  | "appointments";
 
 export function RowActions({
   table,

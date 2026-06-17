@@ -56,7 +56,7 @@ export function AnimatedTitle({
       viewport={{ once: true, margin: "-10% 0px" }}
     >
       {words.map((word, index) => (
-        <motion.span variants={child} key={index} className="inline-block whitespace-pre">
+        <motion.span variants={child as any} key={index} className="inline-block whitespace-pre">
           {word}{index !== words.length - 1 ? " " : ""}
         </motion.span>
       ))}

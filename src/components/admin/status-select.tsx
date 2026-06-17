@@ -18,9 +18,17 @@ export function StatusSelect({
     <select
       defaultValue={value}
       disabled={pending}
-      onChange={(e) =>
-        startTransition(() => setLeadStatus(table, id, e.target.value))
-      }
+      onChange={(e) => {
+        const val = e.target.value;
+        startTransition(async () => {
+          const res = await setLeadStatus(table, id, val);
+          if (res?.error) {
+            alert(res.error);
+            // Reset to previous value on error
+            e.target.value = value;
+          }
+        });
+      }}
       className="rounded-md border border-slate-300 px-2 py-1 text-xs capitalize"
     >
       {LEAD_STATUSES.map((s) => (

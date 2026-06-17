@@ -190,10 +190,15 @@ export interface Database {
           status: string;
           terms_accepted: boolean;
           source_page: string | null;
+          consultation_type: string;
+          zoom_meeting_id: string | null;
+          zoom_join_url: string | null;
+          zoom_start_url: string | null;
         } & Timestamps;
         Insert: Partial<Database["public"]["Tables"]["appointments"]["Row"]> & {
           patient_name: string;
           phone: string;
+          consultation_type?: string;
         };
         Update: Partial<Database["public"]["Tables"]["appointments"]["Row"]>;
         Relationships: [

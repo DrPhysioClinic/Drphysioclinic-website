@@ -22,6 +22,8 @@ import {
   IconClock,
   IconNote,
   IconMessageCircle,
+  IconVideo,
+  IconBuildingHospital,
 } from "@tabler/icons-react";
 
 const initialState: FormState = { ok: false, message: "" };
@@ -41,7 +43,7 @@ function Honeypot() {
 function SubmitButton({ label }: { label: string }) {
   const { pending } = useFormStatus();
   return (
-    <button type="submit" disabled={pending} className="btn-primary w-full">
+    <button type="submit" formNoValidate disabled={pending} className="btn-primary w-full">
       {pending ? "Submitting…" : label}
     </button>
   );
@@ -80,7 +82,7 @@ export function AppointmentForm({
           <InputGlow>
             <div className="flex items-center gap-3 bg-white px-3 py-2.5 rounded-[10px]">
               <IconUser className="size-5 text-slate-400 shrink-0" stroke={1.5} />
-              <input id="patient_name" name="patient_name" required className="w-full bg-transparent outline-none text-slate-900 placeholder:text-slate-400" placeholder="Your name" />
+              <input id="patient_name" name="patient_name" required className="w-full bg-transparent outline-none text-slate-900 placeholder:text-slate-400" />
             </div>
           </InputGlow>
         </div>
@@ -91,7 +93,7 @@ export function AppointmentForm({
           <InputGlow>
             <div className="flex items-center gap-3 bg-white px-3 py-2.5 rounded-[10px]">
               <IconPhone className="size-5 text-slate-400 shrink-0" stroke={1.5} />
-              <input id="phone" name="phone" type="tel" required className="w-full bg-transparent outline-none text-slate-900 placeholder:text-slate-400" placeholder="+91" />
+              <input id="phone" name="phone" type="tel" required className="w-full bg-transparent outline-none text-slate-900 placeholder:text-slate-400" />
             </div>
           </InputGlow>
         </div>
@@ -100,9 +102,24 @@ export function AppointmentForm({
           <InputGlow>
             <div className="flex items-center gap-3 bg-white px-3 py-2.5 rounded-[10px]">
               <IconMail className="size-5 text-slate-400 shrink-0" stroke={1.5} />
-              <input id="email" name="email" type="email" className="w-full bg-transparent outline-none text-slate-900 placeholder:text-slate-400" placeholder="name@example.com" />
+              <input id="email" name="email" type="email" className="w-full bg-transparent outline-none text-slate-900 placeholder:text-slate-400"  />
             </div>
           </InputGlow>
+        </div>
+        <div className="space-y-1.5 sm:col-span-2">
+          <label className="label font-medium text-slate-700">Consultation Type</label>
+          <div className="grid grid-cols-2 gap-4">
+            <label className="flex cursor-pointer items-center justify-center gap-2 rounded-xl border border-slate-200 bg-white p-3 hover:bg-slate-50 has-[:checked]:border-brand-600 has-[:checked]:bg-brand-50 has-[:checked]:text-brand-700 transition-colors">
+              <input type="radio" name="consultation_type" value="in_person" defaultChecked className="sr-only" />
+              <IconBuildingHospital className="size-5" />
+              <span className="font-medium text-sm">In Clinic</span>
+            </label>
+            <label className="flex cursor-pointer items-center justify-center gap-2 rounded-xl border border-slate-200 bg-white p-3 hover:bg-slate-50 has-[:checked]:border-brand-600 has-[:checked]:bg-brand-50 has-[:checked]:text-brand-700 transition-colors">
+              <input type="radio" name="consultation_type" value="online" className="sr-only" />
+              <IconVideo className="size-5" />
+              <span className="font-medium text-sm">Online Video</span>
+            </label>
+          </div>
         </div>
         <div className="space-y-1.5 sm:col-span-2">
           <label className="label font-medium text-slate-700" htmlFor="service_id">Service Required</label>
@@ -132,7 +149,7 @@ export function AppointmentForm({
           <InputGlow>
             <div className="flex items-center gap-3 bg-white px-3 py-2.5 rounded-[10px]">
               <IconClock className="size-5 text-slate-400 shrink-0" stroke={1.5} />
-              <input id="preferred_time" name="preferred_time" type="time" className="w-full bg-transparent outline-none text-slate-900 placeholder:text-slate-400" />
+              <input id="preferred_time" name="preferred_time" type="text" placeholder="e.g. 14:30 or 02:30 PM" className="w-full bg-transparent outline-none text-slate-900 placeholder:text-slate-400" />
             </div>
           </InputGlow>
         </div>
@@ -170,7 +187,7 @@ export function EnquiryForm({ sourcePage = "/contact" }: { sourcePage?: string }
         <InputGlow>
           <div className="flex items-center gap-3 bg-white px-3 py-2.5 rounded-[10px]">
             <IconUser className="size-5 text-slate-400 shrink-0" stroke={1.5} />
-            <input id="enq_name" name="name" required className="w-full bg-transparent outline-none text-slate-900 placeholder:text-slate-400" placeholder="Your Name" />
+            <input id="enq_name" name="name" required className="w-full bg-transparent outline-none text-slate-900 placeholder:text-slate-400"  />
           </div>
         </InputGlow>
       </div>
@@ -181,7 +198,7 @@ export function EnquiryForm({ sourcePage = "/contact" }: { sourcePage?: string }
         <InputGlow>
           <div className="flex items-center gap-3 bg-white px-3 py-2.5 rounded-[10px]">
             <IconMessageCircle className="size-5 text-slate-400 shrink-0" stroke={1.5} />
-            <input id="enq_contact" name="contact" required className="w-full bg-transparent outline-none text-slate-900 placeholder:text-slate-400" placeholder="+91 00000 00000" />
+            <input id="enq_contact" name="contact" required className="w-full bg-transparent outline-none text-slate-900 placeholder:text-slate-400" />
           </div>
         </InputGlow>
       </div>

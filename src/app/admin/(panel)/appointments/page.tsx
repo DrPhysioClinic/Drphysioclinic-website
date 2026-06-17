@@ -1,5 +1,6 @@
 import { createServerSupabase } from "@/lib/supabase/server";
 import { StatusSelect } from "@/components/admin/status-select";
+import { RowActions } from "@/components/admin/row-actions";
 
 export const dynamic = "force-dynamic";
 
@@ -8,7 +9,7 @@ export default async function AdminAppointmentsPage() {
   const { data } = await supabase
     .from("appointments")
     .select(
-      "id, patient_name, phone, email, preferred_date, preferred_time, payment_mode, status, notes, created_at, services(title)"
+      "id, patient_name, phone, email, preferred_date, preferred_time, status, notes, consultation_type, zoom_start_url, created_at, services(title)"
     )
     .order("created_at", { ascending: false });
 
@@ -23,9 +24,9 @@ export default async function AdminAppointmentsPage() {
               <th className="px-4 py-3">Contact</th>
               <th className="px-4 py-3">Service</th>
               <th className="px-4 py-3">Preferred</th>
-              <th className="px-4 py-3">Pay</th>
-              <th className="px-4 py-3">Received</th>
+              <th className="px-4 py-3">Type</th>
               <th className="px-4 py-3">Status</th>
+              <th className="px-4 py-3 text-right">Actions</th>
             </tr>
           </thead>
           <tbody className="divide-y divide-slate-100">
@@ -45,12 +46,31 @@ export default async function AdminAppointmentsPage() {
                   <td className="px-4 py-3 text-slate-500">
                     {a.preferred_date ?? "—"} {a.preferred_time ?? ""}
                   </td>
-                  <td className="px-4 py-3 text-slate-500">{a.payment_mode ?? "—"}</td>
-                  <td className="px-4 py-3 text-xs text-slate-400">
-                    {new Date(a.created_at).toLocaleDateString("en-IN")}
+                  <td className="px-4 py-3 text-slate-500">
+                    {a.consultation_type === 'online' && a.status === 'confirmed' && a.zoom_start_url ? (
+                      <a href={a.zoom_start_url} target="_blank" rel="noopener noreferrer" className="inline-block rounded bg-blue-600 px-3 py-1 text-xs font-semibold tracking-wide text-white hover:bg-blue-700 shadow-sm transition-colors">
+                        ▶ Start Video Call
+                      </a>
+                    ) : (
+                      <span className={`inline-flex items-center rounded-full px-2 py-0.5 text-xs font-medium ${a.consultation_type === 'online' ? 'bg-blue-50 text-blue-700 ring-1 ring-inset ring-blue-700/10' : 'bg-slate-100 text-slate-700 ring-1 ring-inset ring-slate-500/10'}`}>
+                        {a.consultation_type === 'online' ? 'Online Video' : 'In Clinic'}
+                      </span>
+                    )}
                   </td>
                   <td className="px-4 py-3">
                     <StatusSelect table="appointments" id={a.id} value={a.status} />
+                  </td>
+                  <td className="px-4 py-3">
+                    <div className="flex justify-end">
+                      <RowActions 
+                        table="appointments" 
+                        id={a.id} 
+                        listPath="/admin/appointments" 
+                        editHref={`/admin/appointments/${a.id}/edit`} 
+                        showPublish={false} 
+                        showFeatured={false} 
+                      />
+                    </div>
                   </td>
                 </tr>
               );

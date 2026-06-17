@@ -1,13 +1,11 @@
 import type { Metadata } from "next";
-import { Outfit, Playfair_Display } from "next/font/google";
+import { Outfit, Playfair_Display, Geist } from "next/font/google";
 import "./globals.css";
 import { getResolvedSettings } from "@/lib/queries";
 import { SITE_URL } from "@/lib/constants";
+import { cn } from "@/lib/utils";
 
-const outfit = Outfit({
-  variable: "--font-sans",
-  subsets: ["latin"],
-});
+const geist = Geist({subsets:['latin'],variable:'--font-sans'});
 
 const playfair = Playfair_Display({
   variable: "--font-playfair",
@@ -41,8 +39,8 @@ export async function generateMetadata(): Promise<Metadata> {
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html lang="en">
-      <body className={`${outfit.variable} ${playfair.variable} antialiased`}>{children}</body>
+    <html lang="en" className={cn("font-sans", geist.variable)}>
+      <body className={`${geist.variable} ${playfair.variable} antialiased`}>{children}</body>
     </html>
   );
 }

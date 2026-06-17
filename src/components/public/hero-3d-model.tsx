@@ -5,9 +5,7 @@ import { useGLTF, PresentationControls, Environment, Float, Center } from "@reac
 import { Suspense, useEffect, useMemo, useRef, useState } from "react";
 import { useInView } from "framer-motion";
 
-import * as THREE from "three";
-
-function SpineModel({ onRevealComplete, inView }: { onRevealComplete: () => void, inView: boolean }) {
+import * as THREE from "three";function SpineModel({ onRevealComplete, inView }: { onRevealComplete: () => void, inView: boolean }) {
   const { scene } = useGLTF("/spine.glb");
   const startTime = useRef<number | null>(null);
   const doneRef = useRef(false);

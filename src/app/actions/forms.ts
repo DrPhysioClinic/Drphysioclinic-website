@@ -3,6 +3,7 @@
 import { createPublicClient } from "@/lib/supabase/public";
 import { verifyTurnstile } from "@/lib/turnstile";
 import { logEvent } from "@/app/actions/analytics";
+import { parseTime } from "@/lib/utils";
 
 export type FormState = {
   ok: boolean;
@@ -45,9 +46,10 @@ export async function submitAppointment(
     phone,
     email: ((formData.get("email") as string) || "").trim() || null,
     service_id: serviceId && serviceId !== "" ? serviceId : null,
-    preferred_date: ((formData.get("preferred_date") as string) || "") || null,
-    preferred_time: ((formData.get("preferred_time") as string) || "").trim() || null,
+    preferred_date: ((formData.get("preferred_date") as string) || "").trim() || null,
+    preferred_time: parseTime(((formData.get("preferred_time") as string) || "").trim()),
     notes: ((formData.get("notes") as string) || "").trim() || null,
+    consultation_type: ((formData.get("consultation_type") as string) || "in_person"),
     terms_accepted: true,
     source_page: ((formData.get("source_page") as string) || "").trim() || null,
     status: "new",
