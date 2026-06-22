@@ -82,6 +82,17 @@ export async function setLeadStatus(
   status: string
 ) {
   const supabase = await createServerSupabase();
+
+  if (table === "appointments" && status === "cancelled") {
+    const { data: appt } = await supabase.from("appointments").select("*").eq("id", id).single();
+    if (appt && appt.email) {
+      const { sendCancellationEmail } = await import("@/lib/email");
+      const { data: settings } = await supabase.from("settings").select("email").single();
+      const replyTo = settings?.email || "appointments@drphysioclinic.com";
+      await sendCancellationEmail(appt.email, appt.patient_name, replyTo);
+    }
+  }
+
   await supabase.from(table).update({ status }).eq("id", id);
   revalidatePath(`/admin/${table}`); return { error: undefined };
 }
@@ -449,14 +460,20 @@ export async function saveAppointment(state: any, fd: FormData) {
   }
 
   if (appt.email) {
-    const { sendZoomConfirmationEmail, sendClinicConfirmationEmail } = await import("@/lib/email");
+    const { sendZoomConfirmationEmail, sendClinicConfirmationEmail, sendRescheduleEmail } = await import("@/lib/email");
     const { data: settings } = await supabase.from("settings").select("email").single();
-    const replyTo = settings?.email || "info@drphysioclinic.com";
+    const replyTo = settings?.email || "appointments@drphysioclinic.com";
 
-    if (appt.consultation_type === "online" && zoom_join_url) {
-      await sendZoomConfirmationEmail(appt.email, appt.patient_name, preferred_date, preferred_time, zoom_join_url, replyTo);
-    } else if (appt.consultation_type !== "online") {
-      await sendClinicConfirmationEmail(appt.email, appt.patient_name, preferred_date, preferred_time, replyTo);
+    const isReschedule = appt.status === "confirmed" && (appt.preferred_date !== preferred_date || appt.preferred_time !== preferred_time);
+
+    if (isReschedule) {
+      await sendRescheduleEmail(appt.email, appt.patient_name, preferred_date, preferred_time, appt.consultation_type === "online", replyTo);
+    } else {
+      if (appt.consultation_type === "online" && zoom_join_url) {
+        await sendZoomConfirmationEmail(appt.email, appt.patient_name, preferred_date, preferred_time, zoom_join_url, replyTo);
+      } else if (appt.consultation_type !== "online") {
+        await sendClinicConfirmationEmail(appt.email, appt.patient_name, preferred_date, preferred_time, replyTo);
+      }
     }
   }
 

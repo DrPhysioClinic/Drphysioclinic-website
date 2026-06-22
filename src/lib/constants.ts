@@ -9,7 +9,7 @@ export const CLINIC_FALLBACK = {
   phone_primary: "+91 7874837101",
   phone_secondary: "+91 8048039022",
   whatsapp_number: "+91 7874837101",
-  email: "drphysioahmedabad@gmail.com",
+  email: "dr.jeetendra@drphysioclinic.com",
   address:
     "5, 2nd Floor, Amrapali Axiom Complex, Above Sankalp Restaurant, Bopal, Ahmedabad-380058 Gujarat",
   latitude: 23.028059387527982,
