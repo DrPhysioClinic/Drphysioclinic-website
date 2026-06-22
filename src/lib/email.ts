@@ -13,7 +13,7 @@ export async function sendZoomConfirmationEmail(toEmail: string, patientName: st
     await resend.emails.send({
       from: FROM_EMAIL,
       to: toEmail,
-      reply_to: replyTo,
+      replyTo: replyTo,
       subject: 'Your Online Consultation is Confirmed - Dr. Physio Clinic',
       html: `
         <div style="font-family: sans-serif; max-width: 600px; margin: 0 auto; color: #333;">
@@ -41,7 +41,7 @@ export async function sendClinicConfirmationEmail(toEmail: string, patientName: 
     await resend.emails.send({
       from: FROM_EMAIL,
       to: toEmail,
-      reply_to: replyTo,
+      replyTo: replyTo,
       subject: 'Your Appointment is Confirmed - Dr. Physio Clinic',
       html: `
         <div style="font-family: sans-serif; max-width: 600px; margin: 0 auto; color: #333;">
@@ -67,7 +67,7 @@ export async function sendCancellationEmail(toEmail: string, patientName: string
     await resend.emails.send({
       from: FROM_EMAIL,
       to: toEmail,
-      reply_to: replyTo,
+      replyTo: replyTo,
       subject: 'Consultation Cancelled - Dr. Physio Clinic',
       html: `
         <div style="font-family: sans-serif; max-width: 600px; margin: 0 auto; color: #333;">
@@ -90,7 +90,7 @@ export async function sendRescheduleEmail(toEmail: string, patientName: string, 
     await resend.emails.send({
       from: FROM_EMAIL,
       to: toEmail,
-      reply_to: replyTo,
+      replyTo: replyTo,
       subject: 'Appointment Rescheduled - Dr. Physio Clinic',
       html: `
         <div style="font-family: sans-serif; max-width: 600px; margin: 0 auto; color: #333;">
