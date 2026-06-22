@@ -6,6 +6,9 @@ import { useState, useEffect } from "react";
 import { usePathname } from "next/navigation";
 import { NAV_LINKS, telHref } from "@/lib/constants";
 import { TrackLink } from "@/components/public/track-link";
+import { HoverBorderGradient } from "@/components/ui/hover-border-gradient";
+import { motion, AnimatePresence } from "motion/react";
+import { useHeroInView } from "@/lib/hero-state";
 
 export function SiteHeader({
   clinicName,
@@ -17,6 +20,7 @@ export function SiteHeader({
   const [open, setOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const pathname = usePathname();
+  const isHeroInView = useHeroInView();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -161,14 +165,30 @@ export function SiteHeader({
               Call Now
             </span>
           </TrackLink>
-          <Link 
-            href="/contact#appointment" 
-            className={`hidden sm:inline-flex ${
-              isSolid ? "btn-accent" : "btn bg-white text-brand-800 hover:bg-brand-50"
-            }`}
-          >
-            Book Appointment
-          </Link>
+          <AnimatePresence>
+            {(!isHome || !isHeroInView) && (
+              <motion.div
+                layoutId="book-appointment-btn"
+                initial={{ opacity: 0, scale: 0.9 }}
+                animate={{ opacity: 1, scale: 1 }}
+                exit={{ opacity: 0, scale: 0.9 }}
+                transition={{ type: "spring", stiffness: 300, damping: 25 }}
+                className="hidden sm:flex"
+              >
+                <HoverBorderGradient
+                  as={Link}
+                  href="/contact#appointment"
+                  containerClassName="flex rounded-xl"
+                  className={`transition-colors font-semibold bg-transparent ${
+                    isSolid ? "text-brand-700 hover:bg-brand-50/50" : "text-white hover:bg-white/10"
+                  }`}
+                  duration={1.5}
+                >
+                  Book Appointment
+                </HoverBorderGradient>
+              </motion.div>
+            )}
+          </AnimatePresence>
           <button
             type="button"
             aria-label="Toggle menu"

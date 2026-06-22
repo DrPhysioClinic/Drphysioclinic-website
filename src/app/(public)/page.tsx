@@ -20,6 +20,9 @@ import { AnimatedCounter } from "@/components/ui/animated-counter";
 import { TestimonialsSection } from "@/components/public/testimonials-demo";
 import { AnimatedTitle } from "@/components/ui/animated-title";
 import { Hero3DModel } from "@/components/public/hero-3d-model";
+import RotatingText from "@/components/ui/RotatingText";
+import { HeroVisibilityTracker } from "@/components/public/hero-visibility-tracker";
+import { HeroBookAppointmentButton } from "@/components/public/hero-book-appointment-button";
 
 export const revalidate = 3600;
 
@@ -57,28 +60,31 @@ export default async function HomePage() {
               as="h1" 
               className="text-3xl font-bold leading-tight sm:text-4xl lg:text-5xl" 
             />
-            <p className="mt-4 max-w-xl text-brand-100">{settings.tagline}</p>
-            <div className="mt-8 flex flex-wrap gap-3">
-              <Link href="/contact#appointment" className="btn-accent pointer-events-auto">
-                Book Appointment
-              </Link>
-              <TrackLink
-                href={telHref(settings.phone_primary)}
-                eventType="call_click"
-                sourcePage="home_hero"
-                className="btn bg-white text-brand-700 hover:bg-brand-50 pointer-events-auto"
-              >
-                📞 {settings.phone_primary}
-              </TrackLink>
-              <TrackLink
-                href={whatsappHref(settings.whatsapp_number, "Hi, I'd like to book an appointment.")}
-                eventType="whatsapp_click"
-                sourcePage="home_hero"
-                external
-                className="btn border border-white/40 text-white hover:bg-white/10 pointer-events-auto"
-              >
-                💬 WhatsApp
-              </TrackLink>
+            <div className="mt-6 sm:mt-8 w-full max-w-2xl">
+              <div className="flex flex-wrap items-center text-2xl sm:text-3xl lg:text-4xl font-bold tracking-tight">
+                <RotatingText
+                  texts={[
+                    "Physiotherapy",
+                    "Sports and Injury Clinic",
+                    "Fitness studio",
+                    "Child development centre"
+                  ]}
+                  mainClassName="px-5 sm:px-6 bg-brand-500 text-white overflow-hidden py-2 sm:py-3 rounded-2xl shadow-2xl shadow-brand-500/40 border border-brand-400/20"
+                  staggerFrom="first"
+                  initial={{ y: "100%" }}
+                  animate={{ y: 0 }}
+                  exit={{ y: "-120%" }}
+                  staggerDuration={0.03}
+                  splitLevelClassName="overflow-hidden pb-1 sm:pb-2"
+                  transition={{ type: "spring", damping: 30, stiffness: 400 }}
+                  rotationInterval={2000}
+                  animatePresenceMode="popLayout"
+                />
+              </div>
+            </div>
+            <div className="mt-8 flex flex-wrap gap-3 pointer-events-auto h-[44px] relative">
+              <HeroVisibilityTracker />
+              <HeroBookAppointmentButton />
             </div>
           </div>
           {/* Empty column to keep text on the left while allowing clicks to pass through to the 3D model on the right */}
@@ -110,7 +116,7 @@ export default async function HomePage() {
       <Section title="Our Treatments" href="/treatments" linkLabel="View all treatments">
         <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
           {services.map((s) => (
-            <ServiceCard key={s.id} service={s} />
+            <ServiceCard key={s.id} service={s} hidePrice={true} redirectToList={true} />
           ))}
           {services.length === 0 && <EmptyNote label="treatments" />}
         </div>
@@ -135,7 +141,7 @@ export default async function HomePage() {
         <Section title="Latest Updates" href="/updates" linkLabel="All updates" muted>
           <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
             {updates.slice(0, 3).map((u) => (
-              <UpdateCard key={u.id} update={u} />
+              <UpdateCard key={u.id} update={u} redirectToList={true} />
             ))}
           </div>
         </Section>

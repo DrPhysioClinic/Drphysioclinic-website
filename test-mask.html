@@ -2,21 +2,26 @@
 <html>
 <head>
 <style>
-  body { background: url('https://placehold.co/800x600') center/cover; margin: 0; height: 100vh; }
-  .overlay {
-    position: fixed; inset: 0; background: #fff;
-    mask: url(#plus-mask);
-    -webkit-mask: url(#plus-mask);
+  body { background: url('https://placehold.co/800x600') center/cover; padding: 100px; }
+  .btn {
+    position: relative; padding: 20px 40px; border-radius: 50px;
+    color: white; font-size: 20px; font-weight: bold; font-family: sans-serif;
+  }
+  .gradient-border {
+    position: absolute; inset: 0; z-index: -1;
+    border-radius: inherit;
+    background: radial-gradient(circle at 50% 0%, red, transparent);
+    padding: 2px;
+    -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
   }
 </style>
 </head>
 <body>
-  <svg width="0" height="0">
-    <mask id="plus-mask">
-      <rect width="100%" height="100%" fill="white" />
-      <path d="..." fill="black" />
-    </mask>
-  </svg>
-  <div class="overlay"></div>
+  <div class="btn">
+    <div class="gradient-border"></div>
+    Hover Me
+  </div>
 </body>
 </html>

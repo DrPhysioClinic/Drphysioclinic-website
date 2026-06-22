@@ -16,16 +16,17 @@ import {
   cutoutCardSurfaceClassName,
 } from "@/components/ui/cutout-card";
 
-export function ServiceCard({ service }: { service: Service }) {
+export function ServiceCard({ service, hidePrice, redirectToList }: { service: Service, hidePrice?: boolean, redirectToList?: boolean }) {
   return (
-    <Link href={`/treatments/${service.slug}`} className="block h-full outline-none focus-visible:ring-2 focus-visible:ring-brand-500 rounded-[28px] border border-slate-200 overflow-hidden shadow-sm hover:shadow-md">
+    <Link href={redirectToList ? "/treatments" : `/treatments/${service.slug}`} className="group block h-full outline-none focus-visible:ring-2 focus-visible:ring-brand-500 rounded-[28px] border border-slate-200 overflow-hidden shadow-sm hover:shadow-md">
       <CutoutCard className={`${cutoutCardSurfaceClassName} h-full flex flex-col isolate bg-white`}>
         <CutoutCardMedia className="relative h-48 w-full shrink-0">
           <CutoutCardImage
             src={service.hero_image_url || PLACEHOLDER}
             alt={service.title || "Treatment"}
+            className="transition-transform duration-700 ease-[cubic-bezier(0.23,1,0.32,1)] group-hover:scale-110"
           />
-          {service.price != null && (
+          {!hidePrice && service.price != null && (
             <CutoutCardPin className="top-0 right-0 z-20 flex bg-card rounded-bl-2xl p-2 pl-3 pb-2">
               <span className="font-bold text-brand-700 bg-brand-50 px-2 py-1 rounded-md text-sm border border-brand-100">
                 ₹{service.price}
@@ -38,7 +39,7 @@ export function ServiceCard({ service }: { service: Service }) {
             </CutoutCardPin>
           )}
         </CutoutCardMedia>
-        <CutoutCardContent className="flex flex-col isolate flex-1 pb-16">
+        <CutoutCardContent className="flex flex-col isolate flex-1 pb-6">
           {service.category && (
             <span className="text-xs font-semibold uppercase tracking-wide text-brand-600 mb-1">
               {service.category.replace(/#/g, "").trim()}
@@ -48,12 +49,12 @@ export function ServiceCard({ service }: { service: Service }) {
           {service.short_description && (
             <p className="mt-2 line-clamp-2 text-sm text-slate-600 flex-1">{service.short_description}</p>
           )}
+          <div className="mt-6 flex justify-end transition-transform duration-300 group-hover:-translate-y-1">
+            <span className="inline-flex items-center gap-1 rounded-full bg-brand-600 px-4 py-2 text-xs font-semibold text-white shadow-[0_0_15px_rgba(43,39,117,0.6)] transition-all group-hover:bg-brand-700 group-hover:shadow-[0_0_25px_rgba(43,39,117,0.8)]">
+              Read More <span aria-hidden="true">&rarr;</span>
+            </span>
+          </div>
         </CutoutCardContent>
-        <CutoutCardAction className="absolute bottom-4 right-4 z-10" revealOnHover={true}>
-          <span className="flex items-center gap-1 rounded-full bg-brand-600 px-4 py-2 text-xs font-semibold text-white shadow-[0_0_15px_rgba(43,39,117,0.6)] transition-all hover:bg-brand-700 hover:shadow-[0_0_25px_rgba(43,39,117,0.8)]">
-            Read More <span aria-hidden="true">&rarr;</span>
-          </span>
-        </CutoutCardAction>
       </CutoutCard>
     </Link>
   );
@@ -68,7 +69,7 @@ export function DoctorCard({ doctor }: { doctor: Doctor }) {
           alt={doctor.name || "Doctor"}
           fill
           sizes="112px"
-          className="object-cover"
+          className="object-cover transition-transform duration-500 group-hover:scale-110"
         />
       </div>
       <div className="p-4">
@@ -104,14 +105,15 @@ export function TestimonialCard({ testimonial }: { testimonial: Testimonial }) {
   );
 }
 
-export function UpdateCard({ update }: { update: Update }) {
+export function UpdateCard({ update, redirectToList }: { update: Update, redirectToList?: boolean }) {
   return (
-    <Link href={`/updates/${update.slug}`} className="block h-full outline-none focus-visible:ring-2 focus-visible:ring-brand-500 rounded-[28px] border border-slate-200 overflow-hidden shadow-sm hover:shadow-md">
+    <Link href={redirectToList ? "/updates" : `/updates/${update.slug}`} className="group block h-full outline-none focus-visible:ring-2 focus-visible:ring-brand-500 rounded-[28px] border border-slate-200 overflow-hidden shadow-sm hover:shadow-md">
       <CutoutCard className={`${cutoutCardSurfaceClassName} h-full flex flex-col isolate bg-white`}>
         <CutoutCardMedia className="relative aspect-[16/9] w-full shrink-0">
           <CutoutCardImage
             src={update.image_url || PLACEHOLDER}
             alt={update.title || "Update"}
+            className="transition-transform duration-700 ease-[cubic-bezier(0.23,1,0.32,1)] group-hover:scale-110"
           />
           {update.published_at && (
             <CutoutCardPin className="top-0 right-0 z-20 flex bg-card rounded-bl-2xl p-2 pl-3 pb-2">
@@ -127,17 +129,17 @@ export function UpdateCard({ update }: { update: Update }) {
             </CutoutCardPin>
           )}
         </CutoutCardMedia>
-        <CutoutCardContent className="flex flex-col isolate flex-1 pb-16">
+        <CutoutCardContent className="flex flex-col isolate flex-1 pb-6">
           <h3 className="font-semibold text-slate-900 line-clamp-2">{update.title}</h3>
           {update.excerpt && (
             <p className="mt-2 line-clamp-2 text-sm text-slate-600 flex-1">{update.excerpt}</p>
           )}
+          <div className="mt-6 flex justify-end transition-transform duration-300 group-hover:-translate-y-1">
+            <span className="inline-flex items-center gap-1 rounded-full bg-brand-600 px-4 py-2 text-xs font-semibold text-white shadow-[0_0_15px_rgba(43,39,117,0.6)] transition-all group-hover:bg-brand-700 group-hover:shadow-[0_0_25px_rgba(43,39,117,0.8)]">
+              Read More <span aria-hidden="true">&rarr;</span>
+            </span>
+          </div>
         </CutoutCardContent>
-        <CutoutCardAction className="absolute bottom-4 right-4 z-10" revealOnHover={true}>
-          <span className="flex items-center gap-1 rounded-full bg-brand-600 px-4 py-2 text-xs font-semibold text-white shadow-[0_0_15px_rgba(43,39,117,0.6)] transition-all hover:bg-brand-700 hover:shadow-[0_0_25px_rgba(43,39,117,0.8)]">
-            Read More <span aria-hidden="true">&rarr;</span>
-          </span>
-        </CutoutCardAction>
       </CutoutCard>
     </Link>
   );

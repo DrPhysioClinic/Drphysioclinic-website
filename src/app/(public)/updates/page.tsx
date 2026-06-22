@@ -5,12 +5,36 @@ import { UpdateCard } from "@/components/public/cards";
 import Link from "next/link";
 import { redirect } from "next/navigation";
 
+import {
+  Pagination,
+  PaginationContent,
+  PaginationEllipsis,
+  PaginationItem,
+  PaginationLink,
+  PaginationNext,
+  PaginationPrevious,
+} from "@/components/ui/pagination";
+
 export const revalidate = 3600;
 
 export const metadata: Metadata = {
   title: "Updates & Health Tips",
   description: "News, health tips and articles from Dr Physio, Ahmedabad.",
 };
+
+// Helper for complex pagination logic like MUI
+function generatePagination(currentPage: number, totalPages: number) {
+  if (totalPages <= 7) {
+    return Array.from({ length: totalPages }, (_, i) => i + 1);
+  }
+  if (currentPage <= 3) {
+    return [1, 2, 3, 4, "ellipsis", totalPages];
+  }
+  if (currentPage >= totalPages - 2) {
+    return [1, "ellipsis", totalPages - 3, totalPages - 2, totalPages - 1, totalPages];
+  }
+  return [1, "ellipsis", currentPage - 1, currentPage, currentPage + 1, "ellipsis", totalPages];
+}
 
 export default async function UpdatesPage(props: {
   searchParams: Promise<{ [key: string]: string | string[] | undefined }>
@@ -31,6 +55,8 @@ export default async function UpdatesPage(props: {
   const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
   const currentUpdates = updates.slice(startIndex, startIndex + ITEMS_PER_PAGE);
 
+  const paginationRange = generatePagination(currentPage, totalPages);
+
   return (
     <div className="container-page pt-28 pb-12">
       <h1 className="section-title">Updates &amp; Health Tips</h1>
@@ -44,48 +70,39 @@ export default async function UpdatesPage(props: {
       </div>
 
       {totalPages > 1 && (
-        <div className="mt-12 flex items-center justify-center gap-2">
-          {currentPage > 1 ? (
-            <Link
-              href={`/updates?page=${currentPage - 1}`}
-              className="flex h-10 w-10 items-center justify-center rounded-full border border-slate-200 text-slate-500 transition-colors hover:bg-slate-50 hover:text-brand-600"
-            >
-              <IconChevronLeft size={20} />
-            </Link>
-          ) : (
-            <span className="flex h-10 w-10 items-center justify-center rounded-full border border-slate-200 text-slate-500 opacity-50 cursor-not-allowed">
-              <IconChevronLeft size={20} />
-            </span>
-          )}
-          
-          <div className="flex items-center gap-1">
-            {Array.from({ length: totalPages }, (_, i) => i + 1).map((p) => (
-              <Link
-                key={p}
-                href={`/updates?page=${p}`}
-                className={`flex h-10 w-10 items-center justify-center rounded-full text-sm font-medium transition-colors ${
-                  currentPage === p
-                    ? "bg-brand-600 text-white shadow-sm"
-                    : "text-slate-600 hover:bg-slate-100"
-                }`}
-              >
-                {p}
-              </Link>
-            ))}
-          </div>
+        <div className="mt-12 flex justify-center">
+          <Pagination>
+            <PaginationContent>
+              <PaginationItem>
+                <PaginationPrevious 
+                  href={currentPage > 1 ? `/updates?page=${currentPage - 1}` : "#"} 
+                  className={currentPage <= 1 ? "pointer-events-none opacity-50" : ""}
+                />
+              </PaginationItem>
 
-          {currentPage < totalPages ? (
-            <Link
-              href={`/updates?page=${currentPage + 1}`}
-              className="flex h-10 w-10 items-center justify-center rounded-full border border-slate-200 text-slate-500 transition-colors hover:bg-slate-50 hover:text-brand-600"
-            >
-              <IconChevronRight size={20} />
-            </Link>
-          ) : (
-            <span className="flex h-10 w-10 items-center justify-center rounded-full border border-slate-200 text-slate-500 opacity-50 cursor-not-allowed">
-              <IconChevronRight size={20} />
-            </span>
-          )}
+              {paginationRange.map((page, i) => (
+                <PaginationItem key={i}>
+                  {page === "ellipsis" ? (
+                    <PaginationEllipsis />
+                  ) : (
+                    <PaginationLink 
+                      href={`/updates?page=${page}`} 
+                      isActive={currentPage === page}
+                    >
+                      {page}
+                    </PaginationLink>
+                  )}
+                </PaginationItem>
+              ))}
+
+              <PaginationItem>
+                <PaginationNext 
+                  href={currentPage < totalPages ? `/updates?page=${currentPage + 1}` : "#"} 
+                  className={currentPage >= totalPages ? "pointer-events-none opacity-50" : ""}
+                />
+              </PaginationItem>
+            </PaginationContent>
+          </Pagination>
         </div>
       )}
     </div>
