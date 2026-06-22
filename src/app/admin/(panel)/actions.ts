@@ -83,18 +83,70 @@ export async function setLeadStatus(
 ) {
   const supabase = await createServerSupabase();
 
-  if (table === "appointments" && status === "cancelled") {
+  if (table === "appointments") {
     const { data: appt } = await supabase.from("appointments").select("*").eq("id", id).single();
-    if (appt && appt.email) {
-      const { sendCancellationEmail } = await import("@/lib/email");
-      const { data: settings } = await supabase.from("settings").select("email").single();
-      const replyTo = settings?.email || "appointments@drphysioclinic.com";
-      await sendCancellationEmail(appt.email, appt.patient_name, replyTo);
+    
+    if (appt) {
+      // 1. CONFIRMATION LOGIC
+      if (status === "confirmed") {
+        if (!appt.preferred_date || !appt.preferred_time) {
+          return { error: "Cannot confirm: preferred date and time must be set first. Please edit the appointment." };
+        }
+        
+        const payload: any = { status: "confirmed" };
+        let zoom_join_url = appt.zoom_join_url;
+
+        if (appt.consultation_type === "online" && !appt.zoom_start_url) {
+          try {
+            const { createZoomMeeting } = await import("@/lib/zoom");
+            const start_time = `${appt.preferred_date}T${appt.preferred_time}:00`;
+            const meeting = await createZoomMeeting({
+              topic: `Consultation with ${appt.patient_name}`,
+              start_time,
+              duration: 30,
+            });
+            payload.zoom_meeting_id = meeting.id?.toString();
+            payload.zoom_join_url = meeting.join_url;
+            payload.zoom_start_url = meeting.start_url;
+            zoom_join_url = meeting.join_url;
+          } catch (err: any) {
+            console.error("Zoom creation failed:", err);
+            return { error: "Failed to create Zoom meeting. Ensure Zoom credentials are correct." };
+          }
+        }
+
+        const { error: updateError } = await supabase.from("appointments").update(payload).eq("id", id);
+        if (updateError) return { error: updateError.message };
+        
+        if (appt.email) {
+          const { sendZoomConfirmationEmail, sendClinicConfirmationEmail } = await import("@/lib/email");
+          const { data: settings } = await supabase.from("settings").select("email").single();
+          const replyTo = settings?.email || "appointments@drphysioclinic.com";
+
+          if (appt.consultation_type === "online" && zoom_join_url) {
+            await sendZoomConfirmationEmail(appt.email, appt.patient_name, appt.preferred_date, appt.preferred_time, zoom_join_url, replyTo);
+          } else if (appt.consultation_type !== "online") {
+            await sendClinicConfirmationEmail(appt.email, appt.patient_name, appt.preferred_date, appt.preferred_time, replyTo);
+          }
+        }
+        
+        revalidatePath(`/admin/${table}`);
+        return { error: undefined };
+      }
+
+      // 2. CANCELLATION LOGIC
+      if (status === "cancelled" && appt.email) {
+        const { sendCancellationEmail } = await import("@/lib/email");
+        const { data: settings } = await supabase.from("settings").select("email").single();
+        const replyTo = settings?.email || "appointments@drphysioclinic.com";
+        await sendCancellationEmail(appt.email, appt.patient_name, replyTo);
+      }
     }
   }
 
   await supabase.from(table).update({ status }).eq("id", id);
-  revalidatePath(`/admin/${table}`); return { error: undefined };
+  revalidatePath(`/admin/${table}`); 
+  return { error: undefined };
 }
 
 // ---------- SERVICES ----------

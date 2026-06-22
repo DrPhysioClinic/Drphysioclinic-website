@@ -4,7 +4,7 @@ const resend = new Resend(process.env.RESEND_API_KEY);
 const FROM_EMAIL = 'Dr. Physio Clinic <noreply@send.drphysioclinic.com>';
 const REPLY_TO_EMAIL = 'appointments@drphysioclinic.com';
 
-const LOGO_URL = 'https://www.drphysioclinic.com/Dr%20physio%20logo%20combined.png';
+const LOGO_URL = 'https://sfznvsrwaquadutvlviq.supabase.co/storage/v1/object/public/media/Dr-physio-logo-combined.png';
 
 const BRAND = {
   primary: '#2b2775',
