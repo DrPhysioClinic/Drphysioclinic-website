@@ -1,11 +1,10 @@
 import { Resend } from 'resend';
 
 const resend = new Resend(process.env.RESEND_API_KEY);
-// For testing locally without verified domain, Resend requires from: 'onboarding@resend.dev' and to: 'your-email'
-// In production, this should be 'updates@drphysioclinic.com' or similar.
-const FROM_EMAIL = 'onboarding@resend.dev';
+const FROM_EMAIL = 'Dr. Physio Clinic <noreply@send.drphysioclinic.com>';
+const REPLY_TO_EMAIL = 'appointments@drphysioclinic.com';
 
-export async function sendZoomConfirmationEmail(toEmail: string, patientName: string, date: string, time: string, joinUrl: string) {
+export async function sendZoomConfirmationEmail(toEmail: string, patientName: string, date: string, time: string, joinUrl: string, replyTo: string = REPLY_TO_EMAIL) {
   try {
     if (!process.env.RESEND_API_KEY) {
       console.warn("RESEND_API_KEY is not set. Skipping confirmation email.");
@@ -14,6 +13,7 @@ export async function sendZoomConfirmationEmail(toEmail: string, patientName: st
     await resend.emails.send({
       from: FROM_EMAIL,
       to: toEmail,
+      reply_to: replyTo,
       subject: 'Your Online Consultation is Confirmed - Dr. Physio Clinic',
       html: `
         <div style="font-family: sans-serif; max-width: 600px; margin: 0 auto; color: #333;">
@@ -35,12 +35,13 @@ export async function sendZoomConfirmationEmail(toEmail: string, patientName: st
   }
 }
 
-export async function sendClinicConfirmationEmail(toEmail: string, patientName: string, date: string, time: string) {
+export async function sendClinicConfirmationEmail(toEmail: string, patientName: string, date: string, time: string, replyTo: string = REPLY_TO_EMAIL) {
   try {
     if (!process.env.RESEND_API_KEY) return;
     await resend.emails.send({
       from: FROM_EMAIL,
       to: toEmail,
+      reply_to: replyTo,
       subject: 'Your Appointment is Confirmed - Dr. Physio Clinic',
       html: `
         <div style="font-family: sans-serif; max-width: 600px; margin: 0 auto; color: #333;">
@@ -57,7 +58,7 @@ export async function sendClinicConfirmationEmail(toEmail: string, patientName: 
   }
 }
 
-export async function sendCancellationEmail(toEmail: string, patientName: string) {
+export async function sendCancellationEmail(toEmail: string, patientName: string, replyTo: string = REPLY_TO_EMAIL) {
   try {
     if (!process.env.RESEND_API_KEY) {
       console.warn("RESEND_API_KEY is not set. Skipping cancellation email.");
@@ -66,6 +67,7 @@ export async function sendCancellationEmail(toEmail: string, patientName: string
     await resend.emails.send({
       from: FROM_EMAIL,
       to: toEmail,
+      reply_to: replyTo,
       subject: 'Consultation Cancelled - Dr. Physio Clinic',
       html: `
         <div style="font-family: sans-serif; max-width: 600px; margin: 0 auto; color: #333;">
@@ -82,12 +84,13 @@ export async function sendCancellationEmail(toEmail: string, patientName: string
   }
 }
 
-export async function sendRescheduleEmail(toEmail: string, patientName: string, newDate: string, newTime: string, isOnline: boolean) {
+export async function sendRescheduleEmail(toEmail: string, patientName: string, newDate: string, newTime: string, isOnline: boolean, replyTo: string = REPLY_TO_EMAIL) {
   try {
     if (!process.env.RESEND_API_KEY) return;
     await resend.emails.send({
       from: FROM_EMAIL,
       to: toEmail,
+      reply_to: replyTo,
       subject: 'Appointment Rescheduled - Dr. Physio Clinic',
       html: `
         <div style="font-family: sans-serif; max-width: 600px; margin: 0 auto; color: #333;">

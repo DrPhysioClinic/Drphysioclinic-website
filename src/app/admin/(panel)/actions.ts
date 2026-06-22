@@ -395,5 +395,71 @@ export async function deleteSocialLink(fd: FormData) {
 }
 
 export async function saveAppointment(state: any, fd: FormData) {
-  return { error: "" } as any;
+  const id = str(fd, "id");
+  const preferred_date = str(fd, "preferred_date");
+  const preferred_time = str(fd, "preferred_time");
+  const notes = str(fd, "notes");
+
+  if (!id || !preferred_date || !preferred_time) {
+    return { error: "Date and time are required." } as any;
+  }
+
+  const supabase = await createServerSupabase();
+  const { data: appt } = await supabase.from("appointments").select("*").eq("id", id).single();
+  
+  if (!appt) {
+    return { error: "Appointment not found." } as any;
+  }
+
+  const payload: any = {
+    preferred_date,
+    preferred_time,
+    notes,
+    status: "confirmed"
+  };
+
+  let zoom_join_url = appt.zoom_join_url;
+
+  if (appt.consultation_type === "online" && !appt.zoom_start_url) {
+    try {
+      const { createZoomMeeting } = await import("@/lib/zoom");
+      
+      const start_time = `${preferred_date}T${preferred_time}:00`;
+      
+      const meeting = await createZoomMeeting({
+        topic: `Consultation with ${appt.patient_name}`,
+        start_time,
+        duration: 30,
+      });
+      
+      payload.zoom_meeting_id = meeting.id?.toString();
+      payload.zoom_join_url = meeting.join_url;
+      payload.zoom_start_url = meeting.start_url;
+      zoom_join_url = meeting.join_url;
+    } catch (err: any) {
+      console.error("Zoom creation failed:", err);
+      return { error: "Failed to create Zoom meeting. Ensure Zoom credentials are correct." } as any;
+    }
+  }
+
+  const { error } = await supabase.from("appointments").update(payload).eq("id", id);
+  
+  if (error) {
+    return { error: error.message } as any;
+  }
+
+  if (appt.email) {
+    const { sendZoomConfirmationEmail, sendClinicConfirmationEmail } = await import("@/lib/email");
+    const { data: settings } = await supabase.from("settings").select("email").single();
+    const replyTo = settings?.email || "info@drphysioclinic.com";
+
+    if (appt.consultation_type === "online" && zoom_join_url) {
+      await sendZoomConfirmationEmail(appt.email, appt.patient_name, preferred_date, preferred_time, zoom_join_url, replyTo);
+    } else if (appt.consultation_type !== "online") {
+      await sendClinicConfirmationEmail(appt.email, appt.patient_name, preferred_date, preferred_time, replyTo);
+    }
+  }
+
+  revalidatePath("/admin/appointments");
+  redirect("/admin/appointments");
 }
