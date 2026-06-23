@@ -11,7 +11,7 @@ export function AppointmentForm({ appt }: { appt: any }) {
   const [state, action] = useActionState(saveAppointment, emptySave);
 
   return (
-    <form action={action} className="card space-y-6">
+    <form action={action} className="card p-6 space-y-6">
       <input type="hidden" name="id" value={appt.id} />
 
       <div className="grid grid-cols-2 gap-4">
@@ -43,7 +43,8 @@ export function AppointmentForm({ appt }: { appt: any }) {
           name="notes"
           defaultValue={appt.notes || ""}
           rows={3}
-          className="w-full rounded-md border border-slate-300 px-3 py-2 text-sm"
+          readOnly
+          className="w-full rounded-md border border-slate-300 px-3 py-2 text-sm bg-slate-50 text-slate-500 focus:outline-none cursor-not-allowed"
         />
       </div>
 

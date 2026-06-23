@@ -193,3 +193,16 @@ body {
 .animate-pulse-glow-whatsapp {
   animation: pulse-glow-whatsapp 1.5s ease-in-out infinite;
 }
+
+@keyframes shake {
+  0% { transform: rotate(0deg); }
+  20% { transform: rotate(15deg); }
+  40% { transform: rotate(-10deg); }
+  60% { transform: rotate(5deg); }
+  80% { transform: rotate(-5deg); }
+  100% { transform: rotate(0deg); }
+}
+
+@utility animate-shake {
+  animation: shake 0.5s ease-in-out;
+}

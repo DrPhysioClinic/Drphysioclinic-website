@@ -118,7 +118,7 @@ export async function setLeadStatus(
         const { error: updateError } = await supabase.from("appointments").update(payload).eq("id", id);
         if (updateError) return { error: updateError.message };
         
-        if (appt.email) {
+        if (appt.email && !appt.confirmation_email_sent) {
           const { sendZoomConfirmationEmail, sendClinicConfirmationEmail } = await import("@/lib/email");
           const { data: settings } = await supabase.from("settings").select("email").single();
           const replyTo = settings?.email || "appointments@drphysioclinic.com";
@@ -128,6 +128,8 @@ export async function setLeadStatus(
           } else if (appt.consultation_type !== "online") {
             await sendClinicConfirmationEmail(appt.email, appt.patient_name, appt.preferred_date, appt.preferred_time, replyTo);
           }
+
+          await supabase.from("appointments").update({ confirmation_email_sent: true }).eq("id", id);
         }
         
         revalidatePath(`/admin/${table}`);
@@ -135,11 +137,12 @@ export async function setLeadStatus(
       }
 
       // 2. CANCELLATION LOGIC
-      if (status === "cancelled" && appt.email) {
+      if (status === "cancelled" && appt.email && !appt.cancellation_email_sent) {
         const { sendCancellationEmail } = await import("@/lib/email");
         const { data: settings } = await supabase.from("settings").select("email").single();
         const replyTo = settings?.email || "appointments@drphysioclinic.com";
         await sendCancellationEmail(appt.email, appt.patient_name, replyTo);
+        await supabase.from("appointments").update({ cancellation_email_sent: true }).eq("id", id);
       }
     }
   }
@@ -521,14 +524,25 @@ export async function saveAppointment(state: any, fd: FormData) {
     if (isReschedule) {
       await sendRescheduleEmail(appt.email, appt.patient_name, preferred_date, preferred_time, appt.consultation_type === "online", replyTo);
     } else {
-      if (appt.consultation_type === "online" && zoom_join_url) {
-        await sendZoomConfirmationEmail(appt.email, appt.patient_name, preferred_date, preferred_time, zoom_join_url, replyTo);
-      } else if (appt.consultation_type !== "online") {
-        await sendClinicConfirmationEmail(appt.email, appt.patient_name, preferred_date, preferred_time, replyTo);
+      if (!appt.confirmation_email_sent) {
+        if (appt.consultation_type === "online" && zoom_join_url) {
+          await sendZoomConfirmationEmail(appt.email, appt.patient_name, preferred_date, preferred_time, zoom_join_url, replyTo);
+        } else if (appt.consultation_type !== "online") {
+          await sendClinicConfirmationEmail(appt.email, appt.patient_name, preferred_date, preferred_time, replyTo);
+        }
+        await supabase.from("appointments").update({ confirmation_email_sent: true }).eq("id", id);
       }
     }
   }
 
   revalidatePath("/admin/appointments");
   redirect("/admin/appointments");
+}
+
+export async function saveDoctorNotes(id: string, notes: string) {
+  const supabase = await createServerSupabase();
+  const { error } = await supabase.from("appointments").update({ doctor_notes: notes }).eq("id", id);
+  if (error) return { error: error.message };
+  revalidatePath("/admin/appointments");
+  return { success: true };
 }

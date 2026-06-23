@@ -1,6 +1,6 @@
 "use client";
-
 import Link from "next/link";
+import { NotificationCenter } from "./notification-center";
 import { usePathname } from "next/navigation";
 import { useState } from "react";
 import { signOut } from "@/app/admin/auth-actions";
@@ -88,11 +88,13 @@ export function AdminShell({
           <div className="flex items-center gap-3">
             <h1 className="font-semibold text-slate-800">Admin Portal</h1>
           </div>
-          <div className="flex items-center gap-4 text-sm">
+          <div className="flex items-center gap-3 text-sm">
             <Link href="/" target="_blank" className="text-brand-600 hover:text-brand-700 font-medium">
               View live site ↗
             </Link>
-            <span className="hidden text-slate-500 sm:inline">{userEmail}</span>
+            <div className="h-4 w-px bg-slate-300 mx-1"></div>
+            <NotificationCenter />
+            <span className="hidden text-slate-500 sm:inline ml-2">{userEmail}</span>
           </div>
         </header>
         <div className="flex-1 p-4 md:p-8">

@@ -16,7 +16,7 @@ export default async function EditAppointmentPage({
   if (!appt) notFound();
 
   return (
-    <div className="max-w-2xl">
+    <div className="max-w-2xl mx-auto mt-8">
       <h1 className="mb-6 text-2xl font-bold text-slate-900">
         Reschedule Appointment
       </h1>

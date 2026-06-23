@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { useTransition } from "react";
 import { deleteRow, toggleField } from "@/app/admin/(panel)/actions";
+import { IconEdit, IconTrash } from "@tabler/icons-react";
 
 type Table =
   | "services"
@@ -36,10 +37,10 @@ export function RowActions({
   const [pending, startTransition] = useTransition();
 
   return (
-    <div className="flex flex-wrap items-center gap-2 text-xs">
+    <div className="flex flex-nowrap items-center gap-2 text-xs">
       {editHref && (
-        <Link href={editHref} className="rounded border border-slate-300 px-2 py-1 hover:bg-slate-50 cursor-pointer">
-          Edit
+        <Link href={editHref} title="Edit" className="rounded border border-slate-300 p-1.5 text-slate-600 hover:bg-slate-50 cursor-pointer transition-colors">
+          <IconEdit className="w-4 h-4" />
         </Link>
       )}
       {showPublish && (
@@ -70,14 +71,15 @@ export function RowActions({
       )}
       <button
         disabled={pending}
+        title="Delete"
         onClick={() => {
           if (confirm("Delete this item? This cannot be undone.")) {
             startTransition(() => deleteRow(table, id, listPath));
           }
         }}
-        className="rounded border border-red-200 px-2 py-1 text-red-600 hover:bg-red-50 cursor-pointer disabled:cursor-not-allowed disabled:opacity-50 transition-colors"
+        className="rounded border border-red-200 p-1.5 text-red-600 hover:bg-red-50 cursor-pointer disabled:cursor-not-allowed disabled:opacity-50 transition-colors"
       >
-        Delete
+        <IconTrash className="w-4 h-4" />
       </button>
     </div>
   );

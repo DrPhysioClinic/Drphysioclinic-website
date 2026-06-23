@@ -60,6 +60,19 @@ export interface Database {
         Update: Partial<Database["public"]["Tables"]["doctors"]["Row"]>;
         Relationships: [];
       };
+      notifications: {
+        Row: {
+          id: string;
+          type: "appointment" | "enquiry" | "testimonial";
+          title: string;
+          message: string;
+          link: string | null;
+          is_read: boolean;
+        } & Timestamps;
+        Insert: Partial<Database["public"]["Tables"]["notifications"]["Row"]>;
+        Update: Partial<Database["public"]["Tables"]["notifications"]["Row"]>;
+        Relationships: [];
+      };
       services: {
         Row: {
           id: string;
@@ -187,6 +200,7 @@ export interface Database {
           preferred_date: string | null;
           preferred_time: string | null;
           notes: string | null;
+          doctor_notes: string | null;
           status: string;
           terms_accepted: boolean;
           source_page: string | null;
@@ -194,6 +208,8 @@ export interface Database {
           zoom_meeting_id: string | null;
           zoom_join_url: string | null;
           zoom_start_url: string | null;
+          confirmation_email_sent: boolean;
+          cancellation_email_sent: boolean;
         } & Timestamps;
         Insert: Partial<Database["public"]["Tables"]["appointments"]["Row"]> & {
           patient_name: string;

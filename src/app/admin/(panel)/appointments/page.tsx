@@ -1,6 +1,7 @@
 import { createServerSupabase } from "@/lib/supabase/server";
 import { StatusSelect } from "@/components/admin/status-select";
 import { RowActions } from "@/components/admin/row-actions";
+import { AppointmentNotesModal } from "@/components/admin/appointment-notes-modal";
 
 export const dynamic = "force-dynamic";
 
@@ -9,7 +10,7 @@ export default async function AdminAppointmentsPage() {
   const { data } = await supabase
     .from("appointments")
     .select(
-      "id, patient_name, phone, email, preferred_date, preferred_time, status, notes, consultation_type, zoom_start_url, created_at, services(title)"
+      "id, patient_name, phone, email, preferred_date, preferred_time, status, notes, doctor_notes, consultation_type, zoom_start_url, created_at, services(title)"
     )
     .order("created_at", { ascending: false });
 
@@ -61,7 +62,8 @@ export default async function AdminAppointmentsPage() {
                     <StatusSelect table="appointments" id={a.id} value={a.status} />
                   </td>
                   <td className="px-4 py-3">
-                    <div className="flex justify-end">
+                    <div className="flex justify-end items-center gap-2 flex-nowrap">
+                      <AppointmentNotesModal id={a.id} patientNotes={a.notes} initialDoctorNotes={a.doctor_notes} />
                       <RowActions 
                         table="appointments" 
                         id={a.id} 
