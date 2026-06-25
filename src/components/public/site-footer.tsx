@@ -27,7 +27,7 @@ type FooterSettings = {
   clinic_name: string;
   tagline: string;
   phone_primary: string;
-  phone_secondary: string;
+  phone_secondary?: string | null;
   email: string;
   address: string;
 };

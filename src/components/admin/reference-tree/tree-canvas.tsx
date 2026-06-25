@@ -200,7 +200,7 @@ export function TreeCanvas({
         nodes={nodes}
         edges={edges}
         nodeTypes={nodeTypes}
-        onNodesChange={onNodesChange}
+        onNodesChange={onNodesChange as any}
         onEdgesChange={onEdgesChange}
         onConnect={onConnect}
         onInit={setRfInstance}

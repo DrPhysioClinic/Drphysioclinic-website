@@ -38,8 +38,8 @@ export default async function AdminVideosPage() {
                       id={v.id}
                       listPath="/admin/videos"
                       editHref={`/admin/videos/${v.id}/edit`}
-                      isPublished={v.is_published}
-                      isFeatured={v.is_featured}
+                      isPublished={v.is_published ?? false}
+                      isFeatured={v.is_featured ?? false}
                     />
                   </div>
                 </td>

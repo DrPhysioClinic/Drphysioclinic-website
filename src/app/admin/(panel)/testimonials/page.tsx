@@ -40,8 +40,8 @@ export default async function AdminTestimonialsPage() {
                       id={t.id}
                       listPath="/admin/testimonials"
                       editHref={`/admin/testimonials/${t.id}/edit`}
-                      isPublished={t.is_published}
-                      isFeatured={t.is_featured}
+                      isPublished={t.is_published ?? false}
+                      isFeatured={t.is_featured ?? false}
                     />
                   </div>
                 </td>

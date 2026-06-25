@@ -38,8 +38,8 @@ export default async function AdminDoctorsPage() {
                       id={d.id}
                       listPath="/admin/doctors"
                       editHref={`/admin/doctors/${d.id}/edit`}
-                      isPublished={d.is_published}
-                      isFeatured={d.is_featured}
+                      isPublished={d.is_published ?? false}
+                      isFeatured={d.is_featured ?? false}
                     />
                   </div>
                 </td>

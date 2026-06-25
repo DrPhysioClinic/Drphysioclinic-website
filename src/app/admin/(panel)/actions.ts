@@ -247,7 +247,7 @@ export async function saveTestimonial(_prev: SaveState, fd: FormData): Promise<S
   const payload = {
     patient_name,
     treatment_category: str(fd, "treatment_category"),
-    testimonial: str(fd, "testimonial"),
+    testimonial: str(fd, "testimonial") || "",
     rating: num(fd, "rating"),
     image_url: str(fd, "image_url"),
     video_url: str(fd, "video_url"),

@@ -920,3 +920,16 @@ export const Constants = {
     Enums: {},
   },
 } as const
+
+// Helper types
+export type Doctor = Database["public"]["Tables"]["doctors"]["Row"];
+export type InfoPage = Database["public"]["Tables"]["info_pages"]["Row"];
+export type Settings = Database["public"]["Tables"]["settings"]["Row"];
+export type Update = Database["public"]["Tables"]["updates"]["Row"];
+export type GalleryItem = Database["public"]["Tables"]["gallery"]["Row"];
+export type Testimonial = Database["public"]["Tables"]["testimonials"]["Row"];
+export type Video = Database["public"]["Tables"]["videos"]["Row"];
+export type Service = Database["public"]["Tables"]["services"]["Row"];
+export type Appointment = Database["public"]["Tables"]["appointments"]["Row"];
+export type SocialLink = Database["public"]["Tables"]["social_links"]["Row"];
+

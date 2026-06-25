@@ -38,7 +38,7 @@ export default async function AdminInfoPagesPage() {
                       id={p.id}
                       listPath="/admin/info-pages"
                       editHref={`/admin/info-pages/${p.id}/edit`}
-                      isPublished={p.is_published}
+                      isPublished={p.is_published ?? false}
                       showFeatured={false}
                     />
                   </div>

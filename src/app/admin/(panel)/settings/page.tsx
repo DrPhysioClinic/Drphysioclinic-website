@@ -42,7 +42,7 @@ export default async function AdminSettingsPage() {
                 <input name="url" defaultValue={link.url ?? ""} className="input" />
               </div>
               <label className="flex items-center gap-2 pb-2 text-sm">
-                <input type="checkbox" name="is_active" defaultChecked={link.is_active} />
+                <input type="checkbox" name="is_active" defaultChecked={link.is_active ?? false} />
                 Active
               </label>
               <button type="submit" className="btn-outline">Save</button>

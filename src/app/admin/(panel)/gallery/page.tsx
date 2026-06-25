@@ -33,8 +33,8 @@ export default async function AdminGalleryPage() {
                   id={g.id}
                   listPath="/admin/gallery"
                   editHref={`/admin/gallery/${g.id}/edit`}
-                  isPublished={g.is_published}
-                  isFeatured={g.is_featured}
+                  isPublished={g.is_published ?? false}
+                  isFeatured={g.is_featured ?? false}
                 />
               </div>
             </div>

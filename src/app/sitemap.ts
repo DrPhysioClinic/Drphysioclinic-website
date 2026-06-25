@@ -43,19 +43,19 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const dynamicRoutes = [
     ...services
       .filter((s) => s.slug)
-      .map((s) => ({ url: `${SITE_URL}/treatments/${s.slug}`, lastModified: new Date(s.updated_at) })),
+      .map((s) => ({ url: `${SITE_URL}/treatments/${s.slug}`, lastModified: new Date(s.updated_at || new Date()) })),
     ...doctors
       .filter((d) => d.slug)
-      .map((d) => ({ url: `${SITE_URL}/doctors/${d.slug}`, lastModified: new Date(d.updated_at) })),
+      .map((d) => ({ url: `${SITE_URL}/doctors/${d.slug}`, lastModified: new Date(d.updated_at || new Date()) })),
     ...updates
       .filter((u) => u.slug)
       .map((u) => ({
         url: `${SITE_URL}/updates/${u.slug}`,
-        lastModified: new Date(u.updated_at),
+        lastModified: new Date(u.updated_at || new Date()),
       })),
     ...infoPages
       .filter((p) => p.slug)
-      .map((p) => ({ url: `${SITE_URL}/info/${p.slug}`, lastModified: new Date(p.updated_at) })),
+      .map((p) => ({ url: `${SITE_URL}/info/${p.slug}`, lastModified: new Date(p.updated_at || new Date()) })),
   ];
 
   // videos table has no detail route, but is referenced by the /videos page

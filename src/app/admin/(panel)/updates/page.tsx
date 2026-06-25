@@ -47,8 +47,8 @@ export default async function AdminUpdatesPage() {
                       id={u.id}
                       listPath="/admin/updates"
                       editHref={`/admin/updates/${u.id}/edit`}
-                      isPublished={u.is_published}
-                      isFeatured={u.is_featured}
+                      isPublished={u.is_published ?? false}
+                      isFeatured={u.is_featured ?? false}
                     />
                   </div>
                 </td>

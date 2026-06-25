@@ -104,9 +104,9 @@ export default async function TreatmentDetailPage({
             </div>
           )}
 
-          {service.gallery_urls?.length > 0 && (
+          {(service.gallery_urls?.length ?? 0) > 0 && (
             <div className="mt-6 grid grid-cols-2 gap-3 sm:grid-cols-3">
-              {service.gallery_urls.map((url, i) => (
+              {service.gallery_urls?.map((url, i) => (
                 <div key={i} className="relative aspect-square overflow-hidden rounded-lg bg-brand-50">
                   <ExpandableImage src={url} alt={`${service.title} ${i + 1}`} className="absolute inset-0 h-full w-full" />
                 </div>
@@ -114,9 +114,9 @@ export default async function TreatmentDetailPage({
             </div>
           )}
 
-          {service.tags?.length > 0 && (
+          {(service.tags?.length ?? 0) > 0 && (
             <div className="mt-6 flex flex-wrap gap-2">
-              {service.tags.map((t) => (
+              {service.tags?.map((t) => (
                 <span key={t} className="rounded-full bg-brand-50 px-3 py-1 text-xs text-brand-700">
                   {t.replace(/#/g, "").trim()}
                 </span>

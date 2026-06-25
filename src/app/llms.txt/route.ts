@@ -28,7 +28,7 @@ export async function GET() {
     output.push("## Services");
     for (const s of services) {
       if (!s.slug) continue;
-      const desc = s.seo_description || s.short_description || s.excerpt || s.title;
+      const desc = s.seo_description || s.short_description || s.title;
       output.push(`- [${s.title}](${SITE_URL}/treatments/${s.slug}): ${desc}`);
     }
     output.push("");

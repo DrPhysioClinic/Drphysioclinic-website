@@ -49,8 +49,8 @@ export default async function AdminServicesPage() {
                       id={s.id}
                       listPath="/admin/services"
                       editHref={`/admin/services/${s.id}/edit`}
-                      isPublished={s.is_published}
-                      isFeatured={s.is_featured}
+                      isPublished={s.is_published ?? false}
+                      isFeatured={s.is_featured ?? false}
                     />
                   </div>
                 </td>

@@ -33,10 +33,10 @@ export default async function AdminEnquiriesPage() {
                 <td className="px-4 py-3 max-w-sm text-slate-600">{e.message}</td>
                 <td className="px-4 py-3 text-xs text-slate-400">{e.source_page}</td>
                 <td className="px-4 py-3 text-xs text-slate-400">
-                  {new Date(e.created_at).toLocaleDateString("en-IN")}
+                  {e.created_at ? new Date(e.created_at).toLocaleDateString("en-IN") : "-"}
                 </td>
                 <td className="px-4 py-3">
-                  <StatusSelect table="enquiries" id={e.id} value={e.status} />
+                  <StatusSelect table="enquiries" id={e.id} value={e.status ?? ""} />
                 </td>
               </tr>
             ))}
