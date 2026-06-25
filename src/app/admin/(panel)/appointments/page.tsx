@@ -49,11 +49,11 @@ export default async function AdminAppointmentsPage() {
                   </td>
                   <td className="px-4 py-3 text-slate-500">
                     {a.consultation_type === 'online' && a.status === 'confirmed' && a.zoom_start_url ? (
-                      <a href={a.zoom_start_url} target="_blank" rel="noopener noreferrer" className="inline-block rounded bg-blue-600 px-3 py-1 text-xs font-semibold tracking-wide text-white hover:bg-blue-700 shadow-sm transition-colors">
-                        ▶ Start Video Call
+                      <a href={a.zoom_start_url} target="_blank" rel="noopener noreferrer" className="inline-block rounded bg-brand-900 px-3 py-1 text-xs font-semibold tracking-wide text-white hover:bg-brand-800 shadow-sm transition-colors">
+                        ▶ Start Meeting
                       </a>
                     ) : (
-                      <span className={`inline-flex items-center rounded-full px-2 py-0.5 text-xs font-medium ${a.consultation_type === 'online' ? 'bg-blue-50 text-blue-700 ring-1 ring-inset ring-blue-700/10' : 'bg-slate-100 text-slate-700 ring-1 ring-inset ring-slate-500/10'}`}>
+                      <span className={`inline-flex items-center rounded-full px-2 py-0.5 text-xs font-medium ${a.consultation_type === 'online' ? 'bg-brand-50 text-brand-700 ring-1 ring-inset ring-brand-700/10' : 'bg-slate-100 text-slate-700 ring-1 ring-inset ring-slate-500/10'}`}>
                         {a.consultation_type === 'online' ? 'Online Video' : 'In Clinic'}
                       </span>
                     )}

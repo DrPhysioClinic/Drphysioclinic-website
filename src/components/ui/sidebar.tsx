@@ -93,7 +93,7 @@ export const DesktopSidebar = ({
           className
         )}
         animate={{
-          width: animate ? (open ? "300px" : "60px") : "300px",
+          width: animate ? (open ? "300px" : "72px") : "300px",
         }}
         onMouseEnter={() => setOpen(true)}
         onMouseLeave={() => setOpen(false)}
@@ -179,7 +179,7 @@ export const SidebarLink = ({
         animate={{
           opacity: animate ? (open ? 1 : 0) : 1,
         }}
-        className="text-brand-100 text-sm group-hover/sidebar:translate-x-1 transition duration-150 whitespace-pre inline-block !p-0 !m-0"
+        className="text-brand-100 text-sm group-hover/sidebar:translate-x-1 transition-transform duration-150 whitespace-pre inline-block !p-0 !m-0"
       >
         {link.label}
       </motion.span>

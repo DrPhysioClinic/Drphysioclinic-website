@@ -33,7 +33,7 @@ export function StatusSelect({
             }
           });
         }}
-        className="appearance-none w-full rounded-md border border-slate-200 bg-white px-3 py-1.5 pr-8 text-xs font-medium text-slate-700 shadow-sm transition-all hover:border-slate-300 focus:border-brand-500 focus:outline-none focus:ring-1 focus:ring-brand-500 disabled:opacity-50 cursor-pointer capitalize"
+        className="appearance-none w-full rounded-md border border-slate-200 bg-white px-3 py-1.5 pr-8 text-xs font-medium text-slate-700 shadow-sm transition-all hover:border-brand-500 focus:border-brand-500 focus:outline-none focus:ring-1 focus:ring-brand-500 disabled:opacity-50 cursor-pointer capitalize"
       >
         {LEAD_STATUSES.map((s) => (
           <option key={s} value={s} className="bg-white text-slate-700 font-medium">

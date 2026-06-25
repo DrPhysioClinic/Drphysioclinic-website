@@ -73,7 +73,7 @@ export function AdminShell({
                   animate={{
                     opacity: open ? 1 : 0,
                   }}
-                  className="whitespace-pre inline-block !p-0 !m-0 text-sm font-medium text-red-400 group-hover/sidebar:translate-x-1 transition duration-150"
+                  className="whitespace-pre inline-block !p-0 !m-0 text-sm font-medium text-red-400 group-hover/sidebar:translate-x-1 transition-transform duration-150"
                 >
                   Sign Out
                 </motion.span>
@@ -107,13 +107,13 @@ export function AdminShell({
 
 const Logo = ({ open }: { open: boolean }) => {
   return (
-    <Link href="/admin" className="relative z-20 flex items-center py-1 px-2 text-sm font-normal overflow-hidden whitespace-nowrap">
-      <div className={`relative shrink-0 transition-all duration-300 ${open ? "h-12 w-12 -ml-[0.4rem]" : "h-10 w-10 -ml-[0.8rem]"}`}>
+    <Link href="/admin" className="relative z-20 flex items-center py-1 text-sm font-normal whitespace-nowrap">
+      <div className={`relative shrink-0 transition-all duration-300 ${open ? "h-12 w-12" : "h-9 w-9 ml-0.5"}`}>
         <Image 
-          src={open ? "/icon-white-v2.svg" : "/icon-primary-v2.svg"} 
+          src="/icon-white-v2.svg" 
           alt="Dr Physio" 
           fill 
-          className="object-contain scale-[1.3]" 
+          className="object-contain scale-[1.1]" 
         />
       </div>
       <motion.span

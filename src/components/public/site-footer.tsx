@@ -73,7 +73,7 @@ export function SiteFooter({
             </p>
           </div>
 
-          <div>
+          <div className="min-w-max">
             <h4 className="text-lg font-semibold text-white whitespace-nowrap">Quick Links</h4>
             <ul className="mt-3 space-y-2 text-base">
               {NAV_LINKS.map((l) => (
@@ -83,11 +83,11 @@ export function SiteFooter({
                   </Link>
                   {l.sublinks && (
                     <div className="grid grid-rows-[0fr] opacity-0 group-hover:grid-rows-[1fr] group-hover:opacity-100 transition-all duration-300 ease-in-out">
-                      <div className="overflow-hidden">
-                        <ul className="mt-1 ml-4 space-y-2 pb-1">
+                      <div className="overflow-hidden pr-8 -mr-8">
+                        <ul className="mt-1 ml-4 space-y-2 pb-1 pr-4">
                           {l.sublinks.filter(s => s.href !== l.href).map((sub) => (
                             <li key={sub.href}>
-                              <Link href={sub.href} className="hover:text-brand-300 text-slate-400 hover:text-slate-200 transition-colors">
+                              <Link href={sub.href} className="hover:text-brand-300 text-slate-400 hover:text-slate-200 transition-colors whitespace-nowrap inline-block pr-2">
                                 {sub.label}
                               </Link>
                             </li>

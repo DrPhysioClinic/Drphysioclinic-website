@@ -119,7 +119,7 @@ export function SiteHeader({
                   >
                     {link.label}
                   </Link>
-                  <div className="absolute left-0 top-full hidden w-48 pt-2 group-hover:block">
+                  <div className="absolute left-0 top-full w-48 pt-2 opacity-0 invisible translate-y-2 group-hover:opacity-100 group-hover:visible group-hover:translate-y-0 transition-all duration-300 ease-out z-50">
                     <div className="flex flex-col overflow-hidden rounded-md border border-slate-200 bg-white shadow-lg">
                       {link.sublinks.map((sub) => (
                         <Link
