@@ -5,10 +5,13 @@ import { DoctorCard } from "@/components/public/cards";
 
 export const revalidate = 3600;
 
+import { getCanonicalUrl } from "@/lib/utils";
+
 export const metadata: Metadata = {
-  title: "About Us",
+  title: "About Us | Dr Physio Clinic in Ahmedabad",
   description:
-    "About Dr Physio – Ortho & Sports Injury Clinic, Bopal, Ahmedabad. Our mission, team and approach.",
+    "Learn about Dr Physio Clinic, our expert physiotherapists, and our mission to provide the best physiotherapy care in Bopal, Ahmedabad.",
+  alternates: { canonical: getCanonicalUrl("/about") },
 };
 
 export default async function AboutPage() {

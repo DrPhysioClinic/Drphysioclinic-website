@@ -3,6 +3,7 @@ import { notFound } from "next/navigation";
 import Image from "next/image";
 import Link from "next/link";
 import { getUpdateBySlug, getUpdates, getResolvedSettings } from "@/lib/queries";
+import { getCanonicalUrl } from "@/lib/utils";
 import { JsonLd } from "@/components/json-ld";
 import { updateJsonLd } from "@/lib/seo";
 
@@ -24,6 +25,7 @@ export async function generateMetadata({
   return {
     title: update.seo_title || update.title || "Update",
     description: update.seo_description || update.excerpt || undefined,
+    alternates: { canonical: getCanonicalUrl(`/updates/${slug}`) },
   };
 }
 

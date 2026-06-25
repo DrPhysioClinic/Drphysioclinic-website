@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { getInfoPageBySlug, getInfoPages } from "@/lib/queries";
+import { getCanonicalUrl } from "@/lib/utils";
 
 export const revalidate = 3600;
 
@@ -20,6 +21,7 @@ export async function generateMetadata({
   return {
     title: page.seo_title || page.title || "Information",
     description: page.seo_description || undefined,
+    alternates: { canonical: getCanonicalUrl(`/info/${slug}`) },
   };
 }
 

@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { getCanonicalUrl } from "@/lib/utils";
 import { getVideos } from "@/lib/queries";
 import { VideoCard } from "@/components/public/cards";
 import { JsonLd } from "@/components/json-ld";

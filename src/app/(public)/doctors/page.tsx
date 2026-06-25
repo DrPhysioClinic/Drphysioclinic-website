@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { getCanonicalUrl } from "@/lib/utils";
 import { getDoctors } from "@/lib/queries";
 import { DoctorCard } from "@/components/public/cards";
 

@@ -3,6 +3,7 @@ import { notFound } from "next/navigation";
 import Image from "next/image";
 import Link from "next/link";
 import { getDoctorBySlug, getDoctors, getResolvedSettings } from "@/lib/queries";
+import { getCanonicalUrl } from "@/lib/utils";
 import { JsonLd } from "@/components/json-ld";
 import { physicianJsonLd } from "@/lib/seo";
 import { SpinningText } from "@/components/ui/spinning-text";
@@ -25,6 +26,7 @@ export async function generateMetadata({
   return {
     title: doctor.seo_title || doctor.name || "Doctor",
     description: doctor.seo_description || doctor.specialization || undefined,
+    alternates: { canonical: getCanonicalUrl(`/doctors/${slug}`) },
   };
 }
 

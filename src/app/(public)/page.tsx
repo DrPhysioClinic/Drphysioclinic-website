@@ -13,7 +13,7 @@ import { NewsletterForm } from "@/components/public/forms";
 import { TrackLink } from "@/components/public/track-link";
 import { JsonLd } from "@/components/json-ld";
 import { DoctorSlider } from "@/components/public/doctor-slider";
-import { clinicJsonLd } from "@/lib/seo";
+
 import { telHref, whatsappHref } from "@/lib/constants";
 import Image from "next/image";
 import { AnimatedCounter } from "@/components/ui/animated-counter";
@@ -23,6 +23,15 @@ import { Hero3DModel } from "@/components/public/hero-3d-model";
 import RotatingText from "@/components/ui/RotatingText";
 import { HeroVisibilityTracker } from "@/components/public/hero-visibility-tracker";
 import { HeroBookAppointmentButton } from "@/components/public/hero-book-appointment-button";
+import { getCanonicalUrl } from "@/lib/utils";
+
+
+
+export const metadata = {
+  title: "Best Physiotherapist in Ahmedabad | Dr Physio",
+  description: "Expert physiotherapy, sports injury rehab, and child development in Bopal, Ahmedabad. Book your appointment with Dr Jeetendra Brahmbhatt today.",
+  alternates: { canonical: getCanonicalUrl("/") },
+};
 
 export const revalidate = 3600;
 
@@ -43,8 +52,6 @@ export default async function HomePage() {
 
   return (
     <>
-      <JsonLd data={clinicJsonLd(settings, settings.logo_url)} />
-
       {/* Hero */}
       <section className="relative flex min-h-[100dvh] items-center bg-[#17153f] pt-16 text-white pb-12 overflow-hidden">
         

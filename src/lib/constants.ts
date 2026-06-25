@@ -7,7 +7,7 @@ export const CLINIC_FALLBACK = {
   tagline:
     "Physiotherapy, Sports Injury Clinic, Fitness Studio & Child Development Center",
   phone_primary: "+91 7874837101",
-  phone_secondary: "+91 8048039022",
+  phone_secondary: null,
   whatsapp_number: "+91 7874837101",
   email: "dr.jeetendra@drphysioclinic.com",
   address:

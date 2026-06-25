@@ -5,6 +5,7 @@ import { WhatsAppButton } from "@/components/public/whatsapp-button";
 import { getResolvedSettings, getSocialLinks } from "@/lib/queries";
 import { PageTracker } from "@/components/public/page-tracker";
 import { ClickSpark } from "@/components/ui/click-spark";
+import { ClinicSchema } from "@/components/public/clinic-schema";
 
 // Public chrome is static + ISR; reads happen at build/revalidate, not per request.
 export const revalidate = 3600;
@@ -31,6 +32,7 @@ export default async function PublicLayout({ children }: { children: React.React
         <MobileCtaBar phone={settings.phone_primary} whatsappNumber={settings.whatsapp_number} />
         <WhatsAppButton whatsappNumber={settings.whatsapp_number} />
         <PageTracker />
+        <ClinicSchema />
       </div>
     </ClickSpark>
   );

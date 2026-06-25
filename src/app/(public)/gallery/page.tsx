@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { getCanonicalUrl } from "@/lib/utils";
 import { getGallery } from "@/lib/queries";
 import { GalleryBrowser } from "@/components/public/gallery-browser";
 

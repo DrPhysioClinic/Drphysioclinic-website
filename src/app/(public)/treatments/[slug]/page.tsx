@@ -3,6 +3,7 @@ import { notFound } from "next/navigation";
 import Image from "next/image";
 import Link from "next/link";
 import { getServiceBySlug, getServices, getResolvedSettings } from "@/lib/queries";
+import { getCanonicalUrl } from "@/lib/utils";
 import { createPublicClient } from "@/lib/supabase/public";
 import { ServiceCard } from "@/components/public/cards";
 import { TrackLink } from "@/components/public/track-link";
@@ -30,6 +31,7 @@ export async function generateMetadata({
   return {
     title: service.seo_title || service.title || "Treatment",
     description: service.seo_description || service.short_description || undefined,
+    alternates: { canonical: getCanonicalUrl(`/treatments/${slug}`) },
   };
 }
 

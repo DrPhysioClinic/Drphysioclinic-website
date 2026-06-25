@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { getCanonicalUrl } from "@/lib/utils";
 import { getServices, getServiceCategories } from "@/lib/queries";
 import { TreatmentsBrowser } from "@/components/public/treatments-browser";
 

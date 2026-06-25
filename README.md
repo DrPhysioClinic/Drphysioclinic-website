@@ -74,6 +74,5 @@ Placeholder images (placehold.co) are used until real assets are added.
 
 ## Notes / TODO
 
-- **Phone:** `+91 8048039022` may be a Boost360/Justdial virtual number — `+91 7874837101`
-  is the primary CTA. All phone values come from the `settings` table; nothing is hardcoded.
+- **Phone:** All phone values come from the `settings` table; nothing is hardcoded.
 - Cosmetic polish, real imagery, and richer content come in a later phase.

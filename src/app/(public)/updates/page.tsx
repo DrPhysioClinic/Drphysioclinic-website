@@ -1,5 +1,6 @@
 import { IconChevronLeft, IconChevronRight } from "@tabler/icons-react";
 import type { Metadata } from "next";
+import { getCanonicalUrl } from "@/lib/utils";
 import { getUpdates } from "@/lib/queries";
 import { UpdateCard } from "@/components/public/cards";
 import Link from "next/link";

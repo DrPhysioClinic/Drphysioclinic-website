@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { getCanonicalUrl } from "@/lib/utils";
 import { getResolvedSettings, getServices } from "@/lib/queries";
 import { AppointmentForm, EnquiryForm } from "@/components/public/forms";
 import { TrackLink } from "@/components/public/track-link";
@@ -7,9 +8,10 @@ import { telHref, whatsappHref } from "@/lib/constants";
 export const revalidate = 3600;
 
 export const metadata: Metadata = {
-  title: "Contact & Book Appointment",
+  title: "Contact Us | Dr Physio in Ahmedabad",
   description:
     "Book an appointment or send an enquiry to Dr Physio, Bopal, Ahmedabad. Address, phone and directions.",
+  alternates: { canonical: getCanonicalUrl("/contact") },
 };
 
 export default async function ContactPage() {
