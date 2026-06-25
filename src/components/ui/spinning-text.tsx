@@ -63,7 +63,7 @@ export function SpinningText({
   }
 
   const containerVariants: Variants = {
-    visible: { rotateY: reverse ? -360 : 360 },
+    visible: { rotate: reverse ? -360 : 360 },
     ...variants?.container,
   }
 
@@ -84,6 +84,15 @@ export function SpinningText({
       variants={containerVariants}
       transition={finalTransition}
     >
+      <style>{`
+        @keyframes spinning-text-blur {
+          0% { filter: blur(0px); opacity: 1; }
+          25% { filter: blur(0px); opacity: 1; }
+          50% { filter: blur(4px); opacity: 0.3; }
+          75% { filter: blur(0px); opacity: 1; }
+          100% { filter: blur(0px); opacity: 1; }
+        }
+      `}</style>
       {letters.map((letter, index) => (
         <motion.span
           aria-hidden="true"
@@ -97,11 +106,10 @@ export function SpinningText({
               "--radius": radius,
               transform: `
                   translate(-50%, -50%)
-                  rotateY(calc(360deg / var(--total) * var(--index)))
-                  translateZ(calc(var(--radius, 5) * 1ch))
+                  rotate(calc(360deg / var(--total) * var(--index)))
+                  translateY(calc(var(--radius, 5) * -1ch))
                 `,
               transformOrigin: "center",
-              backfaceVisibility: "visible",
             } as React.CSSProperties
           }
         >

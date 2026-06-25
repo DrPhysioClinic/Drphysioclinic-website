@@ -1,368 +1,922 @@
-/**
- * Supabase database types for the Dr Physio clinic project.
- *
- * NOTE: This file mirrors the live schema (project `sfznvsrwaquadutvlviq`).
- * The authoritative way to regenerate it is the Supabase CLI:
- *
- *     supabase login          # one-time
- *     npm run gen:types       # supabase gen types typescript --project-id sfznvsrwaquadutvlviq
- *
- * Until you run that, this hand-mirrored version keeps the app type-safe.
- */
-
 export type Json =
   | string
   | number
   | boolean
   | null
   | { [key: string]: Json | undefined }
-  | Json[];
+  | Json[]
 
-type Timestamps = {
-  created_at: string;
-  updated_at: string;
-};
-
-export interface Database {
+export type Database = {
+  // Allows to automatically instantiate createClient with right options
+  // instead of createClient<Database, { PostgrestVersion: 'XX' }>(URL, KEY)
+  __InternalSupabase: {
+    PostgrestVersion: "14.5"
+  }
   public: {
     Tables: {
-      admins: {
-        Row: { user_id: string; email: string | null; created_at: string };
-        Insert: { user_id: string; email?: string | null; created_at?: string };
-        Update: { user_id?: string; email?: string | null; created_at?: string };
-        Relationships: [];
-      };
-      doctors: {
-        Row: {
-          id: string;
-          name: string | null;
-          slug: string | null;
-          title: string | null;
-          specialization: string | null;
-          experience_years: number | null;
-          education: string | null;
-          memberships: string | null;
-          registration_no: string | null;
-          phone: string | null;
-          email: string | null;
-          bio: string | null;
-          hero_bio: string | null;
-          homepage_label: string | null;
-          image_url: string | null;
-          cutout_url: string | null;
-          sort_order: number;
-          is_featured: boolean;
-          is_published: boolean;
-          seo_title: string | null;
-          seo_description: string | null;
-        } & Timestamps;
-        Insert: Partial<Database["public"]["Tables"]["doctors"]["Row"]> & { name?: string | null };
-        Update: Partial<Database["public"]["Tables"]["doctors"]["Row"]>;
-        Relationships: [];
-      };
-      notifications: {
-        Row: {
-          id: string;
-          type: "appointment" | "enquiry" | "testimonial";
-          title: string;
-          message: string;
-          link: string | null;
-          is_read: boolean;
-        } & Timestamps;
-        Insert: Partial<Database["public"]["Tables"]["notifications"]["Row"]>;
-        Update: Partial<Database["public"]["Tables"]["notifications"]["Row"]>;
-        Relationships: [];
-      };
-      services: {
-        Row: {
-          id: string;
-          title: string | null;
-          slug: string | null;
-          category: string | null;
-          short_description: string | null;
-          full_description: string | null;
-          price: number | null;
-          old_price: number | null;
-          doctor_id: string | null;
-          hero_image_url: string | null;
-          gallery_urls: string[];
-          tags: string[];
-          faqs: Json;
-          seo_title: string | null;
-          seo_description: string | null;
-          sort_order: number;
-          is_featured: boolean;
-          is_published: boolean;
-          scheduled_at: string | null;
-        } & Timestamps;
-        Insert: Partial<Database["public"]["Tables"]["services"]["Row"]>;
-        Update: Partial<Database["public"]["Tables"]["services"]["Row"]>;
-        Relationships: [
-          {
-            foreignKeyName: "services_doctor_id_fkey";
-            columns: ["doctor_id"];
-            referencedRelation: "doctors";
-            referencedColumns: ["id"];
-          }
-        ];
-      };
-      testimonials: {
-        Row: {
-          id: string;
-          patient_name: string | null;
-          treatment_category: string | null;
-          testimonial: string | null;
-          rating: number | null;
-          image_url: string | null;
-          video_url: string | null;
-          is_featured: boolean;
-          is_published: boolean;
-          sort_order: number;
-        } & Timestamps;
-        Insert: Partial<Database["public"]["Tables"]["testimonials"]["Row"]>;
-        Update: Partial<Database["public"]["Tables"]["testimonials"]["Row"]>;
-        Relationships: [];
-      };
-      gallery: {
-        Row: {
-          id: string;
-          title: string | null;
-          image_url: string;
-          category: string | null;
-          alt_text: string | null;
-          is_featured: boolean;
-          is_published: boolean;
-          sort_order: number;
-        } & Timestamps;
-        Insert: Partial<Database["public"]["Tables"]["gallery"]["Row"]> & { image_url: string };
-        Update: Partial<Database["public"]["Tables"]["gallery"]["Row"]>;
-        Relationships: [];
-      };
-      updates: {
-        Row: {
-          id: string;
-          title: string | null;
-          slug: string | null;
-          excerpt: string | null;
-          content: string | null;
-          image_url: string | null;
-          tags: string[] | null;
-          seo_title: string | null;
-          seo_description: string | null;
-          is_featured: boolean;
-          is_published: boolean;
-          published_at: string | null;
-          scheduled_at: string | null;
-        } & Timestamps;
-        Insert: Partial<Database["public"]["Tables"]["updates"]["Row"]>;
-        Update: Partial<Database["public"]["Tables"]["updates"]["Row"]>;
-        Relationships: [];
-      };
-      videos: {
-        Row: {
-          id: string;
-          title: string | null;
-          slug: string | null;
-          description: string | null;
-          video_url: string;
-          thumbnail_url: string | null;
-          category: string | null;
-          is_featured: boolean;
-          is_published: boolean;
-          sort_order: number;
-        } & Timestamps;
-        Insert: Partial<Database["public"]["Tables"]["videos"]["Row"]> & { video_url: string };
-        Update: Partial<Database["public"]["Tables"]["videos"]["Row"]>;
-        Relationships: [];
-      };
-      info_pages: {
-        Row: {
-          id: string;
-          title: string | null;
-          slug: string | null;
-          content: string | null;
-          seo_title: string | null;
-          seo_description: string | null;
-          is_published: boolean;
-          sort_order: number;
-        } & Timestamps;
-        Insert: Partial<Database["public"]["Tables"]["info_pages"]["Row"]>;
-        Update: Partial<Database["public"]["Tables"]["info_pages"]["Row"]>;
-        Relationships: [];
-      };
-      appointments: {
-        Row: {
-          id: string;
-          patient_name: string;
-          phone: string;
-          email: string | null;
-          service_id: string | null;
-          preferred_date: string | null;
-          preferred_time: string | null;
-          notes: string | null;
-          doctor_notes: string | null;
-          status: string;
-          terms_accepted: boolean;
-          source_page: string | null;
-          consultation_type: string;
-          zoom_meeting_id: string | null;
-          zoom_join_url: string | null;
-          zoom_start_url: string | null;
-          confirmation_email_sent: boolean;
-          cancellation_email_sent: boolean;
-        } & Timestamps;
-        Insert: Partial<Database["public"]["Tables"]["appointments"]["Row"]> & {
-          patient_name: string;
-          phone: string;
-          consultation_type?: string;
-        };
-        Update: Partial<Database["public"]["Tables"]["appointments"]["Row"]>;
-        Relationships: [
-          {
-            foreignKeyName: "appointments_service_id_fkey";
-            columns: ["service_id"];
-            referencedRelation: "services";
-            referencedColumns: ["id"];
-          }
-        ];
-      };
-      enquiries: {
-        Row: {
-          id: string;
-          name: string;
-          contact: string;
-          message: string | null;
-          source_page: string | null;
-          status: string;
-        } & Timestamps;
-        Insert: Partial<Database["public"]["Tables"]["enquiries"]["Row"]> & {
-          name: string;
-          contact: string;
-        };
-        Update: Partial<Database["public"]["Tables"]["enquiries"]["Row"]>;
-        Relationships: [];
-      };
-      newsletter_subscribers: {
-        Row: {
-          id: string;
-          email: string;
-          status: string;
-          source_page: string | null;
-          created_at: string;
-        };
-        Insert: { id?: string; email: string; status?: string; source_page?: string | null; created_at?: string };
-        Update: Partial<Database["public"]["Tables"]["newsletter_subscribers"]["Row"]>;
-        Relationships: [];
-      };
-      settings: {
-        Row: {
-          id: string;
-          clinic_name: string;
-          tagline: string | null;
-          phone_primary: string | null;
-          phone_secondary: string | null;
-          whatsapp_number: string | null;
-          email: string | null;
-          address: string | null;
-          google_maps_url: string | null;
-          latitude: number | null;
-          longitude: number | null;
-          opening_hours: string | null;
-          logo_url: string | null;
-          favicon_url: string | null;
-          seo_title: string | null;
-          seo_description: string | null;
-        } & Timestamps;
-        Insert: Partial<Database["public"]["Tables"]["settings"]["Row"]> & { clinic_name: string };
-        Update: Partial<Database["public"]["Tables"]["settings"]["Row"]>;
-        Relationships: [];
-      };
-      social_links: {
-        Row: {
-          id: string;
-          platform: string;
-          label: string | null;
-          url: string | null;
-          username: string | null;
-          is_active: boolean;
-          sort_order: number;
-          created_at: string;
-          updated_at: string | null;
-        };
-        Insert: Partial<Database["public"]["Tables"]["social_links"]["Row"]> & { platform: string };
-        Update: Partial<Database["public"]["Tables"]["social_links"]["Row"]>;
-        Relationships: [];
-      };
-      analytics_events: {
-        Row: {
-          id: string;
-          event_type: string;
-          event_name: string | null;
-          source_page: string | null;
-          metadata: Json;
-          user_agent: string | null;
-          ip_hash: string | null;
-          created_at: string;
-        };
-        Insert: {
-          id?: string;
-          event_type: string;
-          event_name?: string | null;
-          source_page?: string | null;
-          metadata?: Json;
-          user_agent?: string | null;
-          ip_hash?: string | null;
-          created_at?: string;
-        };
-        Update: Partial<Database["public"]["Tables"]["analytics_events"]["Row"]>;
-        Relationships: [];
-      };
       admin_activity_logs: {
         Row: {
-          id: string;
-          admin_user_id: string | null;
-          action: string;
-          table_name: string | null;
-          record_id: string | null;
-          metadata: Json;
-          created_at: string;
-        };
+          action: string
+          admin_user_id: string | null
+          created_at: string | null
+          id: string
+          metadata: Json | null
+          record_id: string | null
+          table_name: string | null
+        }
         Insert: {
-          id?: string;
-          admin_user_id?: string | null;
-          action: string;
-          table_name?: string | null;
-          record_id?: string | null;
-          metadata?: Json;
-          created_at?: string;
-        };
-        Update: Partial<Database["public"]["Tables"]["admin_activity_logs"]["Row"]>;
-        Relationships: [];
-      };
-    };
-    Views: Record<string, never>;
+          action: string
+          admin_user_id?: string | null
+          created_at?: string | null
+          id?: string
+          metadata?: Json | null
+          record_id?: string | null
+          table_name?: string | null
+        }
+        Update: {
+          action?: string
+          admin_user_id?: string | null
+          created_at?: string | null
+          id?: string
+          metadata?: Json | null
+          record_id?: string | null
+          table_name?: string | null
+        }
+        Relationships: []
+      }
+      admins: {
+        Row: {
+          created_at: string | null
+          email: string | null
+          user_id: string
+        }
+        Insert: {
+          created_at?: string | null
+          email?: string | null
+          user_id: string
+        }
+        Update: {
+          created_at?: string | null
+          email?: string | null
+          user_id?: string
+        }
+        Relationships: []
+      }
+      analytics_events: {
+        Row: {
+          created_at: string | null
+          event_name: string | null
+          event_type: string
+          id: string
+          ip_hash: string | null
+          metadata: Json | null
+          source_page: string | null
+          user_agent: string | null
+        }
+        Insert: {
+          created_at?: string | null
+          event_name?: string | null
+          event_type: string
+          id?: string
+          ip_hash?: string | null
+          metadata?: Json | null
+          source_page?: string | null
+          user_agent?: string | null
+        }
+        Update: {
+          created_at?: string | null
+          event_name?: string | null
+          event_type?: string
+          id?: string
+          ip_hash?: string | null
+          metadata?: Json | null
+          source_page?: string | null
+          user_agent?: string | null
+        }
+        Relationships: []
+      }
+      appointments: {
+        Row: {
+          cancellation_email_sent: boolean | null
+          confirmation_email_sent: boolean | null
+          consultation_type: string | null
+          created_at: string | null
+          doctor_notes: string | null
+          email: string | null
+          id: string
+          notes: string | null
+          patient_name: string
+          phone: string
+          preferred_date: string | null
+          preferred_time: string | null
+          service_id: string | null
+          source_page: string | null
+          status: string | null
+          terms_accepted: boolean | null
+          updated_at: string | null
+          zoom_join_url: string | null
+          zoom_meeting_id: string | null
+          zoom_start_url: string | null
+        }
+        Insert: {
+          cancellation_email_sent?: boolean | null
+          confirmation_email_sent?: boolean | null
+          consultation_type?: string | null
+          created_at?: string | null
+          doctor_notes?: string | null
+          email?: string | null
+          id?: string
+          notes?: string | null
+          patient_name: string
+          phone: string
+          preferred_date?: string | null
+          preferred_time?: string | null
+          service_id?: string | null
+          source_page?: string | null
+          status?: string | null
+          terms_accepted?: boolean | null
+          updated_at?: string | null
+          zoom_join_url?: string | null
+          zoom_meeting_id?: string | null
+          zoom_start_url?: string | null
+        }
+        Update: {
+          cancellation_email_sent?: boolean | null
+          confirmation_email_sent?: boolean | null
+          consultation_type?: string | null
+          created_at?: string | null
+          doctor_notes?: string | null
+          email?: string | null
+          id?: string
+          notes?: string | null
+          patient_name?: string
+          phone?: string
+          preferred_date?: string | null
+          preferred_time?: string | null
+          service_id?: string | null
+          source_page?: string | null
+          status?: string | null
+          terms_accepted?: boolean | null
+          updated_at?: string | null
+          zoom_join_url?: string | null
+          zoom_meeting_id?: string | null
+          zoom_start_url?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "appointments_service_id_fkey"
+            columns: ["service_id"]
+            isOneToOne: false
+            referencedRelation: "services"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      doctors: {
+        Row: {
+          bio: string | null
+          created_at: string | null
+          cutout_url: string | null
+          education: string | null
+          email: string | null
+          experience_years: number | null
+          hero_bio: string | null
+          homepage_label: string | null
+          id: string
+          image_url: string | null
+          is_featured: boolean | null
+          is_published: boolean | null
+          memberships: string | null
+          name: string
+          phone: string | null
+          registration_no: string | null
+          seo_description: string | null
+          seo_title: string | null
+          slug: string
+          sort_order: number | null
+          specialization: string | null
+          title: string | null
+          updated_at: string | null
+        }
+        Insert: {
+          bio?: string | null
+          created_at?: string | null
+          cutout_url?: string | null
+          education?: string | null
+          email?: string | null
+          experience_years?: number | null
+          hero_bio?: string | null
+          homepage_label?: string | null
+          id?: string
+          image_url?: string | null
+          is_featured?: boolean | null
+          is_published?: boolean | null
+          memberships?: string | null
+          name: string
+          phone?: string | null
+          registration_no?: string | null
+          seo_description?: string | null
+          seo_title?: string | null
+          slug: string
+          sort_order?: number | null
+          specialization?: string | null
+          title?: string | null
+          updated_at?: string | null
+        }
+        Update: {
+          bio?: string | null
+          created_at?: string | null
+          cutout_url?: string | null
+          education?: string | null
+          email?: string | null
+          experience_years?: number | null
+          hero_bio?: string | null
+          homepage_label?: string | null
+          id?: string
+          image_url?: string | null
+          is_featured?: boolean | null
+          is_published?: boolean | null
+          memberships?: string | null
+          name?: string
+          phone?: string | null
+          registration_no?: string | null
+          seo_description?: string | null
+          seo_title?: string | null
+          slug?: string
+          sort_order?: number | null
+          specialization?: string | null
+          title?: string | null
+          updated_at?: string | null
+        }
+        Relationships: []
+      }
+      enquiries: {
+        Row: {
+          contact: string
+          created_at: string | null
+          id: string
+          message: string | null
+          name: string
+          source_page: string | null
+          status: string | null
+          updated_at: string | null
+        }
+        Insert: {
+          contact: string
+          created_at?: string | null
+          id?: string
+          message?: string | null
+          name: string
+          source_page?: string | null
+          status?: string | null
+          updated_at?: string | null
+        }
+        Update: {
+          contact?: string
+          created_at?: string | null
+          id?: string
+          message?: string | null
+          name?: string
+          source_page?: string | null
+          status?: string | null
+          updated_at?: string | null
+        }
+        Relationships: []
+      }
+      gallery: {
+        Row: {
+          alt_text: string | null
+          category: string | null
+          created_at: string | null
+          id: string
+          image_url: string
+          is_featured: boolean | null
+          is_published: boolean | null
+          sort_order: number | null
+          title: string | null
+          updated_at: string | null
+        }
+        Insert: {
+          alt_text?: string | null
+          category?: string | null
+          created_at?: string | null
+          id?: string
+          image_url: string
+          is_featured?: boolean | null
+          is_published?: boolean | null
+          sort_order?: number | null
+          title?: string | null
+          updated_at?: string | null
+        }
+        Update: {
+          alt_text?: string | null
+          category?: string | null
+          created_at?: string | null
+          id?: string
+          image_url?: string
+          is_featured?: boolean | null
+          is_published?: boolean | null
+          sort_order?: number | null
+          title?: string | null
+          updated_at?: string | null
+        }
+        Relationships: []
+      }
+      info_pages: {
+        Row: {
+          content: string | null
+          created_at: string | null
+          id: string
+          is_published: boolean | null
+          seo_description: string | null
+          seo_title: string | null
+          slug: string | null
+          sort_order: number | null
+          title: string | null
+          updated_at: string | null
+        }
+        Insert: {
+          content?: string | null
+          created_at?: string | null
+          id?: string
+          is_published?: boolean | null
+          seo_description?: string | null
+          seo_title?: string | null
+          slug?: string | null
+          sort_order?: number | null
+          title?: string | null
+          updated_at?: string | null
+        }
+        Update: {
+          content?: string | null
+          created_at?: string | null
+          id?: string
+          is_published?: boolean | null
+          seo_description?: string | null
+          seo_title?: string | null
+          slug?: string | null
+          sort_order?: number | null
+          title?: string | null
+          updated_at?: string | null
+        }
+        Relationships: []
+      }
+      newsletter_subscribers: {
+        Row: {
+          created_at: string | null
+          email: string
+          id: string
+          source_page: string | null
+          status: string | null
+        }
+        Insert: {
+          created_at?: string | null
+          email: string
+          id?: string
+          source_page?: string | null
+          status?: string | null
+        }
+        Update: {
+          created_at?: string | null
+          email?: string
+          id?: string
+          source_page?: string | null
+          status?: string | null
+        }
+        Relationships: []
+      }
+      notifications: {
+        Row: {
+          created_at: string | null
+          id: string
+          is_read: boolean | null
+          link: string | null
+          message: string
+          title: string
+          type: string
+        }
+        Insert: {
+          created_at?: string | null
+          id?: string
+          is_read?: boolean | null
+          link?: string | null
+          message: string
+          title: string
+          type: string
+        }
+        Update: {
+          created_at?: string | null
+          id?: string
+          is_read?: boolean | null
+          link?: string | null
+          message?: string
+          title?: string
+          type?: string
+        }
+        Relationships: []
+      }
+      reference_trees: {
+        Row: {
+          created_at: string
+          edges: Json
+          id: string
+          name: string
+          nodes: Json
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          edges?: Json
+          id?: string
+          name?: string
+          nodes?: Json
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          edges?: Json
+          id?: string
+          name?: string
+          nodes?: Json
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      services: {
+        Row: {
+          category: string | null
+          created_at: string | null
+          doctor_id: string | null
+          faqs: Json | null
+          full_description: string | null
+          gallery_urls: string[] | null
+          hero_image_url: string | null
+          id: string
+          is_featured: boolean | null
+          is_published: boolean | null
+          old_price: number | null
+          price: number | null
+          scheduled_at: string | null
+          seo_description: string | null
+          seo_title: string | null
+          short_description: string | null
+          slug: string
+          sort_order: number | null
+          tags: string[] | null
+          title: string
+          updated_at: string | null
+        }
+        Insert: {
+          category?: string | null
+          created_at?: string | null
+          doctor_id?: string | null
+          faqs?: Json | null
+          full_description?: string | null
+          gallery_urls?: string[] | null
+          hero_image_url?: string | null
+          id?: string
+          is_featured?: boolean | null
+          is_published?: boolean | null
+          old_price?: number | null
+          price?: number | null
+          scheduled_at?: string | null
+          seo_description?: string | null
+          seo_title?: string | null
+          short_description?: string | null
+          slug: string
+          sort_order?: number | null
+          tags?: string[] | null
+          title: string
+          updated_at?: string | null
+        }
+        Update: {
+          category?: string | null
+          created_at?: string | null
+          doctor_id?: string | null
+          faqs?: Json | null
+          full_description?: string | null
+          gallery_urls?: string[] | null
+          hero_image_url?: string | null
+          id?: string
+          is_featured?: boolean | null
+          is_published?: boolean | null
+          old_price?: number | null
+          price?: number | null
+          scheduled_at?: string | null
+          seo_description?: string | null
+          seo_title?: string | null
+          short_description?: string | null
+          slug?: string
+          sort_order?: number | null
+          tags?: string[] | null
+          title?: string
+          updated_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "services_doctor_id_fkey"
+            columns: ["doctor_id"]
+            isOneToOne: false
+            referencedRelation: "doctors"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      settings: {
+        Row: {
+          address: string | null
+          clinic_name: string
+          created_at: string | null
+          email: string | null
+          favicon_url: string | null
+          google_maps_url: string | null
+          id: string
+          latitude: number | null
+          logo_url: string | null
+          longitude: number | null
+          opening_hours: string | null
+          phone_primary: string | null
+          phone_secondary: string | null
+          seo_description: string | null
+          seo_title: string | null
+          tagline: string | null
+          updated_at: string | null
+          whatsapp_number: string | null
+        }
+        Insert: {
+          address?: string | null
+          clinic_name: string
+          created_at?: string | null
+          email?: string | null
+          favicon_url?: string | null
+          google_maps_url?: string | null
+          id?: string
+          latitude?: number | null
+          logo_url?: string | null
+          longitude?: number | null
+          opening_hours?: string | null
+          phone_primary?: string | null
+          phone_secondary?: string | null
+          seo_description?: string | null
+          seo_title?: string | null
+          tagline?: string | null
+          updated_at?: string | null
+          whatsapp_number?: string | null
+        }
+        Update: {
+          address?: string | null
+          clinic_name?: string
+          created_at?: string | null
+          email?: string | null
+          favicon_url?: string | null
+          google_maps_url?: string | null
+          id?: string
+          latitude?: number | null
+          logo_url?: string | null
+          longitude?: number | null
+          opening_hours?: string | null
+          phone_primary?: string | null
+          phone_secondary?: string | null
+          seo_description?: string | null
+          seo_title?: string | null
+          tagline?: string | null
+          updated_at?: string | null
+          whatsapp_number?: string | null
+        }
+        Relationships: []
+      }
+      social_links: {
+        Row: {
+          created_at: string | null
+          id: string
+          is_active: boolean | null
+          label: string | null
+          platform: string
+          sort_order: number | null
+          updated_at: string | null
+          url: string | null
+          username: string | null
+        }
+        Insert: {
+          created_at?: string | null
+          id?: string
+          is_active?: boolean | null
+          label?: string | null
+          platform: string
+          sort_order?: number | null
+          updated_at?: string | null
+          url?: string | null
+          username?: string | null
+        }
+        Update: {
+          created_at?: string | null
+          id?: string
+          is_active?: boolean | null
+          label?: string | null
+          platform?: string
+          sort_order?: number | null
+          updated_at?: string | null
+          url?: string | null
+          username?: string | null
+        }
+        Relationships: []
+      }
+      testimonials: {
+        Row: {
+          created_at: string | null
+          id: string
+          image_url: string | null
+          is_featured: boolean | null
+          is_published: boolean | null
+          patient_name: string
+          rating: number | null
+          sort_order: number | null
+          testimonial: string
+          treatment_category: string | null
+          updated_at: string | null
+          video_url: string | null
+        }
+        Insert: {
+          created_at?: string | null
+          id?: string
+          image_url?: string | null
+          is_featured?: boolean | null
+          is_published?: boolean | null
+          patient_name: string
+          rating?: number | null
+          sort_order?: number | null
+          testimonial: string
+          treatment_category?: string | null
+          updated_at?: string | null
+          video_url?: string | null
+        }
+        Update: {
+          created_at?: string | null
+          id?: string
+          image_url?: string | null
+          is_featured?: boolean | null
+          is_published?: boolean | null
+          patient_name?: string
+          rating?: number | null
+          sort_order?: number | null
+          testimonial?: string
+          treatment_category?: string | null
+          updated_at?: string | null
+          video_url?: string | null
+        }
+        Relationships: []
+      }
+      updates: {
+        Row: {
+          content: string | null
+          created_at: string | null
+          excerpt: string | null
+          id: string
+          image_url: string | null
+          is_featured: boolean | null
+          is_published: boolean | null
+          published_at: string | null
+          scheduled_at: string | null
+          seo_description: string | null
+          seo_title: string | null
+          slug: string
+          tags: string[] | null
+          title: string
+          updated_at: string | null
+        }
+        Insert: {
+          content?: string | null
+          created_at?: string | null
+          excerpt?: string | null
+          id?: string
+          image_url?: string | null
+          is_featured?: boolean | null
+          is_published?: boolean | null
+          published_at?: string | null
+          scheduled_at?: string | null
+          seo_description?: string | null
+          seo_title?: string | null
+          slug: string
+          tags?: string[] | null
+          title: string
+          updated_at?: string | null
+        }
+        Update: {
+          content?: string | null
+          created_at?: string | null
+          excerpt?: string | null
+          id?: string
+          image_url?: string | null
+          is_featured?: boolean | null
+          is_published?: boolean | null
+          published_at?: string | null
+          scheduled_at?: string | null
+          seo_description?: string | null
+          seo_title?: string | null
+          slug?: string
+          tags?: string[] | null
+          title?: string
+          updated_at?: string | null
+        }
+        Relationships: []
+      }
+      videos: {
+        Row: {
+          category: string | null
+          created_at: string | null
+          description: string | null
+          id: string
+          is_featured: boolean | null
+          is_published: boolean | null
+          slug: string | null
+          sort_order: number | null
+          thumbnail_url: string | null
+          title: string | null
+          updated_at: string | null
+          video_url: string
+        }
+        Insert: {
+          category?: string | null
+          created_at?: string | null
+          description?: string | null
+          id?: string
+          is_featured?: boolean | null
+          is_published?: boolean | null
+          slug?: string | null
+          sort_order?: number | null
+          thumbnail_url?: string | null
+          title?: string | null
+          updated_at?: string | null
+          video_url: string
+        }
+        Update: {
+          category?: string | null
+          created_at?: string | null
+          description?: string | null
+          id?: string
+          is_featured?: boolean | null
+          is_published?: boolean | null
+          slug?: string | null
+          sort_order?: number | null
+          thumbnail_url?: string | null
+          title?: string | null
+          updated_at?: string | null
+          video_url?: string
+        }
+        Relationships: []
+      }
+    }
+    Views: {
+      [_ in never]: never
+    }
     Functions: {
-      is_admin: { Args: Record<string, never>; Returns: boolean };
-    };
-    Enums: Record<string, never>;
-    CompositeTypes: Record<string, never>;
-  };
+      get_visitor_stats:
+        | {
+            Args: never
+            Returns: {
+              month_start: string
+              total_pageviews: number
+              unique_visitors: number
+            }[]
+          }
+        | {
+            Args: { p_year?: number }
+            Returns: {
+              month_start: string
+              total_pageviews: number
+              unique_visitors: number
+            }[]
+          }
+      is_admin: { Args: never; Returns: boolean }
+    }
+    Enums: {
+      [_ in never]: never
+    }
+    CompositeTypes: {
+      [_ in never]: never
+    }
+  }
 }
 
-// Convenience row aliases
-type PublicTables = Database["public"]["Tables"];
-export type Tables<T extends keyof PublicTables> = PublicTables[T]["Row"];
-export type TablesInsert<T extends keyof PublicTables> = PublicTables[T]["Insert"];
-export type TablesUpdate<T extends keyof PublicTables> = PublicTables[T]["Update"];
+type DatabaseWithoutInternals = Omit<Database, "__InternalSupabase">
 
-export type Doctor = Tables<"doctors">;
-export type Service = Tables<"services">;
-export type Testimonial = Tables<"testimonials">;
-export type GalleryItem = Tables<"gallery">;
-export type Update = Tables<"updates">;
-export type Video = Tables<"videos">;
-export type InfoPage = Tables<"info_pages">;
-export type Appointment = Tables<"appointments">;
-export type Enquiry = Tables<"enquiries">;
-export type Settings = Tables<"settings">;
-export type SocialLink = Tables<"social_links">;
+type DefaultSchema = DatabaseWithoutInternals[Extract<keyof Database, "public">]
+
+export type Tables<
+  DefaultSchemaTableNameOrOptions extends
+    | keyof (DefaultSchema["Tables"] & DefaultSchema["Views"])
+    | { schema: keyof DatabaseWithoutInternals },
+  TableName extends DefaultSchemaTableNameOrOptions extends {
+    schema: keyof DatabaseWithoutInternals
+  }
+    ? keyof (DatabaseWithoutInternals[DefaultSchemaTableNameOrOptions["schema"]]["Tables"] &
+        DatabaseWithoutInternals[DefaultSchemaTableNameOrOptions["schema"]]["Views"])
+    : never = never,
+> = DefaultSchemaTableNameOrOptions extends {
+  schema: keyof DatabaseWithoutInternals
+}
+  ? (DatabaseWithoutInternals[DefaultSchemaTableNameOrOptions["schema"]]["Tables"] &
+      DatabaseWithoutInternals[DefaultSchemaTableNameOrOptions["schema"]]["Views"])[TableName] extends {
+      Row: infer R
+    }
+    ? R
+    : never
+  : DefaultSchemaTableNameOrOptions extends keyof (DefaultSchema["Tables"] &
+        DefaultSchema["Views"])
+    ? (DefaultSchema["Tables"] &
+        DefaultSchema["Views"])[DefaultSchemaTableNameOrOptions] extends {
+        Row: infer R
+      }
+      ? R
+      : never
+    : never
+
+export type TablesInsert<
+  DefaultSchemaTableNameOrOptions extends
+    | keyof DefaultSchema["Tables"]
+    | { schema: keyof DatabaseWithoutInternals },
+  TableName extends DefaultSchemaTableNameOrOptions extends {
+    schema: keyof DatabaseWithoutInternals
+  }
+    ? keyof DatabaseWithoutInternals[DefaultSchemaTableNameOrOptions["schema"]]["Tables"]
+    : never = never,
+> = DefaultSchemaTableNameOrOptions extends {
+  schema: keyof DatabaseWithoutInternals
+}
+  ? DatabaseWithoutInternals[DefaultSchemaTableNameOrOptions["schema"]]["Tables"][TableName] extends {
+      Insert: infer I
+    }
+    ? I
+    : never
+  : DefaultSchemaTableNameOrOptions extends keyof DefaultSchema["Tables"]
+    ? DefaultSchema["Tables"][DefaultSchemaTableNameOrOptions] extends {
+        Insert: infer I
+      }
+      ? I
+      : never
+    : never
+
+export type TablesUpdate<
+  DefaultSchemaTableNameOrOptions extends
+    | keyof DefaultSchema["Tables"]
+    | { schema: keyof DatabaseWithoutInternals },
+  TableName extends DefaultSchemaTableNameOrOptions extends {
+    schema: keyof DatabaseWithoutInternals
+  }
+    ? keyof DatabaseWithoutInternals[DefaultSchemaTableNameOrOptions["schema"]]["Tables"]
+    : never = never,
+> = DefaultSchemaTableNameOrOptions extends {
+  schema: keyof DatabaseWithoutInternals
+}
+  ? DatabaseWithoutInternals[DefaultSchemaTableNameOrOptions["schema"]]["Tables"][TableName] extends {
+      Update: infer U
+    }
+    ? U
+    : never
+  : DefaultSchemaTableNameOrOptions extends keyof DefaultSchema["Tables"]
+    ? DefaultSchema["Tables"][DefaultSchemaTableNameOrOptions] extends {
+        Update: infer U
+      }
+      ? U
+      : never
+    : never
+
+export type Enums<
+  DefaultSchemaEnumNameOrOptions extends
+    | keyof DefaultSchema["Enums"]
+    | { schema: keyof DatabaseWithoutInternals },
+  EnumName extends DefaultSchemaEnumNameOrOptions extends {
+    schema: keyof DatabaseWithoutInternals
+  }
+    ? keyof DatabaseWithoutInternals[DefaultSchemaEnumNameOrOptions["schema"]]["Enums"]
+    : never = never,
+> = DefaultSchemaEnumNameOrOptions extends {
+  schema: keyof DatabaseWithoutInternals
+}
+  ? DatabaseWithoutInternals[DefaultSchemaEnumNameOrOptions["schema"]]["Enums"][EnumName]
+  : DefaultSchemaEnumNameOrOptions extends keyof DefaultSchema["Enums"]
+    ? DefaultSchema["Enums"][DefaultSchemaEnumNameOrOptions]
+    : never
+
+export type CompositeTypes<
+  PublicCompositeTypeNameOrOptions extends
+    | keyof DefaultSchema["CompositeTypes"]
+    | { schema: keyof DatabaseWithoutInternals },
+  CompositeTypeName extends PublicCompositeTypeNameOrOptions extends {
+    schema: keyof DatabaseWithoutInternals
+  }
+    ? keyof DatabaseWithoutInternals[PublicCompositeTypeNameOrOptions["schema"]]["CompositeTypes"]
+    : never = never,
+> = PublicCompositeTypeNameOrOptions extends {
+  schema: keyof DatabaseWithoutInternals
+}
+  ? DatabaseWithoutInternals[PublicCompositeTypeNameOrOptions["schema"]]["CompositeTypes"][CompositeTypeName]
+  : PublicCompositeTypeNameOrOptions extends keyof DefaultSchema["CompositeTypes"]
+    ? DefaultSchema["CompositeTypes"][PublicCompositeTypeNameOrOptions]
+    : never
+
+export const Constants = {
+  public: {
+    Enums: {},
+  },
+} as const

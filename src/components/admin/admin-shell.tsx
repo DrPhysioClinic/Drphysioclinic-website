@@ -18,6 +18,7 @@ import {
   IconMail,
   IconSettings,
   IconLogout,
+  IconSitemap,
 } from "@tabler/icons-react";
 import { motion } from "motion/react";
 import Image from "next/image";
@@ -33,6 +34,7 @@ const links = [
   { href: "/admin/info-pages", label: "Info Pages", icon: <IconFileText className="h-5 w-5 shrink-0 text-brand-200" /> },
   { href: "/admin/appointments", label: "Appointments", icon: <IconCalendarEvent className="h-5 w-5 shrink-0 text-brand-200" /> },
   { href: "/admin/enquiries", label: "Enquiries", icon: <IconMail className="h-5 w-5 shrink-0 text-brand-200" /> },
+  { href: "/admin/reference-tree", label: "Reference Tree", icon: <IconSitemap className="h-5 w-5 shrink-0 text-brand-200" /> },
   { href: "/admin/settings", label: "Settings", icon: <IconSettings className="h-5 w-5 shrink-0 text-brand-200" /> },
 ];
 

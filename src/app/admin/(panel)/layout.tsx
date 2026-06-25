@@ -1,6 +1,7 @@
 import { redirect } from "next/navigation";
 import { createServerSupabase } from "@/lib/supabase/server";
 import { AdminShell } from "@/components/admin/admin-shell";
+import { Toaster } from "sonner";
 
 export const dynamic = "force-dynamic";
 
@@ -22,5 +23,10 @@ export default async function PanelLayout({ children }: { children: React.ReactN
     redirect("/admin/login");
   }
 
-  return <AdminShell userEmail={user.email ?? ""}>{children}</AdminShell>;
+  return (
+    <>
+      <AdminShell userEmail={user.email ?? ""}>{children}</AdminShell>
+      <Toaster position="bottom-right" richColors />
+    </>
+  );
 }

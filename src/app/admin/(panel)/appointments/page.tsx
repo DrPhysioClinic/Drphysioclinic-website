@@ -59,7 +59,7 @@ export default async function AdminAppointmentsPage() {
                     )}
                   </td>
                   <td className="px-4 py-3">
-                    <StatusSelect table="appointments" id={a.id} value={a.status} />
+                    <StatusSelect table="appointments" id={a.id} value={a.status ?? ''} />
                   </td>
                   <td className="px-4 py-3">
                     <div className="flex justify-end items-center gap-2 flex-nowrap">
