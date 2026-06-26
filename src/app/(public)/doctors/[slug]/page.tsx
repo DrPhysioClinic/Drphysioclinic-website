@@ -26,8 +26,8 @@ export async function generateMetadata({
   const doctor = await getDoctorBySlug(slug);
   if (!doctor) return { title: "Doctor not found" };
   return {
-    title: doctor.seo_title || doctor.name || "Doctor",
-    description: doctor.seo_description || doctor.specialization || undefined,
+    title: doctor.seo_title || `${doctor.name} | Dr Physio`,
+    description: doctor.seo_description || doctor.specialization || `Book a consultation with ${doctor.name} at Dr Physio, Ahmedabad.`,
     alternates: { canonical: getCanonicalUrl(`/doctors/${slug}`) },
   };
 }

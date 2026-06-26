@@ -166,6 +166,33 @@ export function faqPageJsonLd(condition: Condition) {
   };
 }
 
+/** schema.org FAQPage for service pages based on raw QA pairs. */
+export function serviceFaqPageJsonLd(faqs: { question?: string; answer?: string }[]) {
+  const isValid = (text: string | null | undefined) => text && !text.includes("[PLACEHOLDER]");
+  const mainEntity = [];
+
+  for (const faq of faqs) {
+    if (isValid(faq.question) && isValid(faq.answer)) {
+      mainEntity.push({
+        "@type": "Question",
+        name: faq.question,
+        acceptedAnswer: {
+          "@type": "Answer",
+          text: faq.answer,
+        },
+      });
+    }
+  }
+
+  if (mainEntity.length === 0) return null;
+
+  return {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    mainEntity,
+  };
+}
+
 /** schema.org Service/LocalBusiness reference for area pages. */
 export function areaJsonLd(area: Area, clinicName: string) {
   return {

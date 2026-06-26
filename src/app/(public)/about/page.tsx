@@ -18,13 +18,13 @@ export default async function AboutPage() {
   const [settings, doctors] = await Promise.all([getResolvedSettings(), getDoctors()]);
   return (
     <div className="container-page pt-28 pb-12">
-      <h1 className="section-title">About {settings.clinic_name}</h1>
+      <h1 className="section-title">Why choose {settings.clinic_name} for your recovery?</h1>
       <p className="mt-4 max-w-3xl text-slate-700">{settings.tagline}</p>
       <p className="mt-4 max-w-3xl text-slate-600">
-        We are a multidisciplinary physiotherapy clinic in Bopal, Ahmedabad, offering ortho &amp;
+        Our team combines evidence-based treatment with personalised care
+        to help you move better and recover faster. We are a multidisciplinary physiotherapy clinic in Bopal, Ahmedabad, offering ortho &amp;
         sports injury rehabilitation, pediatric physiotherapy, a child development center and a
-        personal fitness studio. Our team combines evidence-based treatment with personalised care
-        to help you move better and recover faster.
+        personal fitness studio.
       </p>
 
       <div className="mt-10 grid gap-5 sm:grid-cols-3">
@@ -41,7 +41,7 @@ export default async function AboutPage() {
       </div>
 
       <div className="mt-12">
-        <h2 className="section-title">Our Team</h2>
+        <h2 className="section-title">Who are the physiotherapists treating you?</h2>
         <div className="mt-6 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
           {doctors.map((d) => (
             <DoctorCard key={d.id} doctor={d} />

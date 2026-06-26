@@ -9,7 +9,7 @@ import { ServiceCard } from "@/components/public/cards";
 import { TrackLink } from "@/components/public/track-link";
 import { ExpandableImage } from "@/components/ui/expandable-image";
 import { JsonLd } from "@/components/json-ld";
-import { treatmentJsonLd } from "@/lib/seo";
+import { treatmentJsonLd, serviceFaqPageJsonLd } from "@/lib/seo";
 import { whatsappHref } from "@/lib/constants";
 import type { Doctor } from "@/types/database";
 
@@ -29,8 +29,8 @@ export async function generateMetadata({
   const service = await getServiceBySlug(slug);
   if (!service) return { title: "Treatment not found" };
   return {
-    title: service.seo_title || service.title || "Treatment",
-    description: service.seo_description || service.short_description || undefined,
+    title: service.seo_title || `${service.title} | Dr Physio`,
+    description: service.seo_description || service.short_description || `Comprehensive ${service.title} treatment at Dr Physio, Ahmedabad. Book an appointment today.`,
     alternates: { canonical: getCanonicalUrl(`/treatments/${slug}`) },
   };
 }
@@ -73,9 +73,12 @@ export default async function TreatmentDetailPage({
     ? (service.faqs as { question?: string; answer?: string }[])
     : [];
 
+  const faqSchema = serviceFaqPageJsonLd(faqs);
+
   return (
     <div className="container-page pt-28 pb-12">
       <JsonLd data={treatmentJsonLd(service, settings.clinic_name)} />
+      {faqSchema ? <JsonLd data={faqSchema as any} /> : null}
       <Link href="/treatments" className="text-sm text-brand-600 hover:text-brand-700">
         ← All treatments
       </Link>
@@ -126,7 +129,7 @@ export default async function TreatmentDetailPage({
 
           {faqs.length > 0 && (
             <div className="mt-8">
-              <h2 className="text-lg font-bold text-slate-900">FAQs</h2>
+              <h2 className="text-lg font-bold text-slate-900">Frequently Asked Questions about {service.title}</h2>
               <div className="mt-3 space-y-3">
                 {faqs.map((f, i) => (
                   <details key={i} className="card p-4">
@@ -192,7 +195,7 @@ export default async function TreatmentDetailPage({
 
       {related.length > 0 && (
         <div className="mt-12">
-          <h2 className="section-title">Related Treatments</h2>
+          <h2 className="section-title">What other treatments might help?</h2>
           <div className="mt-6 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
             {related.map((s) => (
               <ServiceCard key={s.id} service={s} />

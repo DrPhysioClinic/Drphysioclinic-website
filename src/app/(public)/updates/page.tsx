@@ -19,8 +19,10 @@ import {
 export const revalidate = 3600;
 
 export const metadata: Metadata = {
-  title: "Updates & Health Tips",
-  description: "News, health tips and articles from Dr Physio, Ahmedabad.",
+  title: "Latest Updates & Articles",
+  description:
+    "Read the latest health tips, clinic updates, and physiotherapy articles from Dr Physio, Bopal.",
+  alternates: { canonical: getCanonicalUrl("/updates") },
 };
 
 // Helper for complex pagination logic like MUI

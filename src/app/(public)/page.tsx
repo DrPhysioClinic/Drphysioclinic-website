@@ -120,7 +120,7 @@ export default async function HomePage() {
       </section>
 
       {/* Services preview */}
-      <Section title="Our Treatments" href="/treatments" linkLabel="View all treatments">
+      <Section title="What conditions do we treat?" href="/treatments" linkLabel="View all treatments">
         <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
           {services.map((s) => (
             <ServiceCard key={s.id} service={s} hidePrice={true} redirectToList={true} />
@@ -134,7 +134,7 @@ export default async function HomePage() {
 
       {/* Testimonials preview */}
       {testimonials.length > 0 && (
-        <Section title="What Our Patients Say" href="/testimonials" linkLabel="More reviews">
+        <Section title="What do patients say about our physiotherapy?" href="/testimonials" linkLabel="More reviews">
           <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
             {testimonials.slice(0, 3).map((t) => (
               <TestimonialCard key={t.id} testimonial={t} />
@@ -156,7 +156,7 @@ export default async function HomePage() {
 
       {/* Gallery preview */}
       {gallery.length > 0 && (
-        <Section title="Clinic Gallery" href="/gallery" linkLabel="View gallery">
+        <Section title="What does our clinic look like?" href="/gallery" linkLabel="View gallery">
           <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4">
             {gallery.slice(0, 8).map((g) => (
               <div

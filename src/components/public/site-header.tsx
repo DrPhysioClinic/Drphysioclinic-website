@@ -113,12 +113,18 @@ export function SiteHeader({
             if (link.sublinks) {
               return (
                 <div key={link.href} className="group relative py-2">
-                  <Link
-                    href={link.href}
-                    className={`rounded-md px-3 py-2 text-base font-medium transition-colors ${textColorClass}`}
-                  >
-                    {link.label}
-                  </Link>
+                  {link.href === "#" ? (
+                    <span className={`rounded-md px-3 py-2 text-base font-medium transition-colors cursor-default ${textColorClass}`}>
+                      {link.label}
+                    </span>
+                  ) : (
+                    <Link
+                      href={link.href}
+                      className={`rounded-md px-3 py-2 text-base font-medium transition-colors ${textColorClass}`}
+                    >
+                      {link.label}
+                    </Link>
+                  )}
                   <div className="absolute left-0 top-full w-48 pt-2 opacity-0 invisible translate-y-2 group-hover:opacity-100 group-hover:visible group-hover:translate-y-0 transition-all duration-300 ease-out z-50">
                     <div className="flex flex-col overflow-hidden rounded-md border border-slate-200 bg-white shadow-lg">
                       {link.sublinks.map((sub) => (
@@ -221,13 +227,19 @@ export function SiteHeader({
           <div className="container-page flex flex-col py-6 gap-2">
             {NAV_LINKS.map((link) => (
               <div key={link.href} className="flex flex-col">
-                <Link
-                  href={link.href}
-                  onClick={() => { setOpen(false); document.body.style.overflow = ""; }}
-                  className="rounded-md px-3 py-3 text-lg font-medium text-slate-800 hover:bg-brand-50"
-                >
-                  {link.label}
-                </Link>
+                {link.href === "#" ? (
+                  <span className="rounded-md px-3 py-3 text-lg font-medium text-slate-800 cursor-default">
+                    {link.label}
+                  </span>
+                ) : (
+                  <Link
+                    href={link.href}
+                    onClick={() => { setOpen(false); document.body.style.overflow = ""; }}
+                    className="rounded-md px-3 py-3 text-lg font-medium text-slate-800 hover:bg-brand-50"
+                  >
+                    {link.label}
+                  </Link>
+                )}
                 {link.sublinks && (
                   <div className="ml-4 flex flex-col border-l-2 border-slate-100 pl-4 mb-4 mt-2 gap-2">
                     {link.sublinks.map((sub) => (

@@ -8,6 +8,7 @@ export const revalidate = 3600;
 export const metadata: Metadata = {
   title: "Gallery",
   description: "Photos of our clinic, equipment and treatments at Dr Physio, Ahmedabad.",
+  alternates: { canonical: getCanonicalUrl("/gallery") },
 };
 
 export default async function GalleryPage() {

@@ -8,6 +8,7 @@ export const revalidate = 3600;
 export const metadata: Metadata = {
   title: "Our Doctors",
   description: "Meet our experienced physiotherapists at Dr Physio, Bopal, Ahmedabad.",
+  alternates: { canonical: getCanonicalUrl("/doctors") },
 };
 
 export default async function DoctorsPage() {

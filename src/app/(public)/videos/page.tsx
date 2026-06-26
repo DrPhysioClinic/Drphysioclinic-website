@@ -9,6 +9,7 @@ export const revalidate = 3600;
 export const metadata: Metadata = {
   title: "Videos",
   description: "Exercise demos and patient stories from Dr Physio, Ahmedabad.",
+  alternates: { canonical: getCanonicalUrl("/videos") },
 };
 
 export default async function VideosPage() {

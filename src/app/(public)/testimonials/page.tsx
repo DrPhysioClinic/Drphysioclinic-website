@@ -8,6 +8,7 @@ export const revalidate = 3600;
 export const metadata: Metadata = {
   title: "Patient Testimonials",
   description: "Read what our patients say about their recovery at Dr Physio, Ahmedabad.",
+  alternates: { canonical: getCanonicalUrl("/testimonials") },
 };
 
 export default async function TestimonialsPage() {

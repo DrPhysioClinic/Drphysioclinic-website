@@ -19,8 +19,8 @@ export async function generateMetadata({
   const page = await getInfoPageBySlug(slug);
   if (!page) return { title: "Page not found" };
   return {
-    title: page.seo_title || page.title || "Information",
-    description: page.seo_description || undefined,
+    title: page.seo_title || `${page.title} | Dr Physio`,
+    description: page.seo_description || `Learn more about ${page.title} at Dr Physio.`,
     alternates: { canonical: getCanonicalUrl(`/info/${slug}`) },
   };
 }

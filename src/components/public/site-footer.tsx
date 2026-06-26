@@ -78,9 +78,15 @@ export function SiteFooter({
             <ul className="mt-3 space-y-2 text-base">
               {NAV_LINKS.map((l) => (
                 <li key={l.href} className="group relative">
-                  <Link href={l.href} className="hover:text-brand-300 inline-block py-1">
-                    {l.label}
-                  </Link>
+                  {l.href === "#" ? (
+                    <span className="hover:text-brand-300 inline-block py-1 cursor-default text-white">
+                      {l.label}
+                    </span>
+                  ) : (
+                    <Link href={l.href} className="hover:text-brand-300 inline-block py-1">
+                      {l.label}
+                    </Link>
+                  )}
                   {l.sublinks && (
                     <div className="grid grid-rows-[0fr] opacity-0 group-hover:grid-rows-[1fr] group-hover:opacity-100 transition-all duration-300 ease-in-out">
                       <div className="overflow-hidden pr-8 -mr-8">

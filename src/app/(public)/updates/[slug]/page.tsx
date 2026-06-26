@@ -25,8 +25,8 @@ export async function generateMetadata({
   const update = await getUpdateBySlug(slug);
   if (!update) return { title: "Update not found" };
   return {
-    title: update.seo_title || update.title || "Update",
-    description: update.seo_description || update.excerpt || undefined,
+    title: update.seo_title || `${update.title} | Dr Physio`,
+    description: update.seo_description || update.excerpt || `Read ${update.title} from Dr Physio.`,
     alternates: { canonical: getCanonicalUrl(`/updates/${slug}`) },
   };
 }
