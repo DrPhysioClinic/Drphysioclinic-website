@@ -25,6 +25,20 @@ const nextConfig: NextConfig = {
       { protocol: "https", hostname: "img.youtube.com" },
     ],
   },
+  async redirects() {
+    return [
+      {
+        source: '/all-treatment',
+        destination: '/treatments',
+        permanent: true,
+      },
+      {
+        source: '/treatment/:slug',
+        destination: '/treatments/:slug',
+        permanent: true,
+      },
+    ];
+  },
 };
 
 export default nextConfig;
