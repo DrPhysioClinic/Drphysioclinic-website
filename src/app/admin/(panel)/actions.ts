@@ -144,6 +144,15 @@ export async function setLeadStatus(
         await sendCancellationEmail(appt.email, appt.patient_name, replyTo);
         await supabase.from("appointments").update({ cancellation_email_sent: true }).eq("id", id);
       }
+
+      // 3. COMPLETED LOGIC (Review Request)
+      if (status === "completed" && appt.email && !appt.review_email_sent) {
+        const { sendReviewRequestEmail } = await import("@/lib/email");
+        const { data: settings } = await supabase.from("settings").select("email").single();
+        const replyTo = settings?.email || "appointments@drphysioclinic.com";
+        await sendReviewRequestEmail(appt.email, appt.patient_name, replyTo);
+        await supabase.from("appointments").update({ review_email_sent: true }).eq("id", id);
+      }
     }
   }
 

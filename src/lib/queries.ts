@@ -10,6 +10,8 @@ import type {
   InfoPage,
   Settings,
   SocialLink,
+  Condition,
+  Area,
 } from "@/types/database";
 
 /**
@@ -253,6 +255,70 @@ export async function getInfoPageBySlug(slug: string): Promise<InfoPage | null> 
       .select("*")
       .eq("slug", slug)
       .eq("is_published", true)
+      .maybeSingle();
+    return data ?? null;
+  } catch {
+    return null;
+  }
+}
+
+// ---------- Conditions ----------
+export async function getConditions(): Promise<Condition[]> {
+  try {
+    const supabase = createPublicClient();
+    const { data } = await supabase
+      .from("conditions")
+      .select("*")
+      .eq("is_published", true)
+      .or(`scheduled_at.is.null,scheduled_at.lte.${new Date().toISOString()}`)
+      .order("created_at", { ascending: true });
+    return data ?? [];
+  } catch {
+    return [];
+  }
+}
+
+export async function getConditionBySlug(slug: string): Promise<Condition | null> {
+  try {
+    const supabase = createPublicClient();
+    const { data } = await supabase
+      .from("conditions")
+      .select("*")
+      .eq("slug", slug)
+      .eq("is_published", true)
+      .or(`scheduled_at.is.null,scheduled_at.lte.${new Date().toISOString()}`)
+      .maybeSingle();
+    return data ?? null;
+  } catch {
+    return null;
+  }
+}
+
+// ---------- Areas ----------
+export async function getAreas(): Promise<Area[]> {
+  try {
+    const supabase = createPublicClient();
+    const { data } = await supabase
+      .from("areas")
+      .select("*")
+      .eq("is_published", true)
+      .or(`scheduled_at.is.null,scheduled_at.lte.${new Date().toISOString()}`)
+      .order("created_at", { ascending: true });
+    return data ?? [];
+  } catch {
+    return [];
+  }
+}
+
+export async function getAreaBySlug(slug: string): Promise<Area | null> {
+  try {
+    const supabase = createPublicClient();
+    const { data } = await supabase
+      .from("areas")
+      .select("*")
+      .eq("slug", slug)
+      .eq("is_published", true)
+      .or(`scheduled_at.is.null,scheduled_at.lte.${new Date().toISOString()}`)
       .maybeSingle();
     return data ?? null;
   } catch {

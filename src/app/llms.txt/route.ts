@@ -1,14 +1,16 @@
 import { NextResponse } from "next/server";
-import { getResolvedSettings, getServices, getDoctors } from "@/lib/queries";
+import { getResolvedSettings, getServices, getDoctors, getConditions, getAreas } from "@/lib/queries";
 import { SITE_URL } from "@/lib/constants";
 
 export const revalidate = 3600;
 
 export async function GET() {
-  const [settings, services, doctors] = await Promise.all([
+  const [settings, services, doctors, conditions, areas] = await Promise.all([
     getResolvedSettings(),
     getServices(),
     getDoctors(),
+    getConditions(),
+    getAreas(),
   ]);
 
   const output: string[] = [];
@@ -44,6 +46,28 @@ export async function GET() {
       output.push(
         `- [${d.name}${credentials ? `, ${credentials}` : ""}](${SITE_URL}/doctors/${d.slug}): ${spec}`
       );
+    }
+    output.push("");
+  }
+
+  // Conditions
+  if (conditions.length > 0) {
+    output.push("## Conditions We Treat");
+    for (const c of conditions) {
+      if (!c.slug) continue;
+      const desc = c.seo_description || c.title;
+      output.push(`- [${c.title}](${SITE_URL}/conditions/${c.slug}): ${desc}`);
+    }
+    output.push("");
+  }
+
+  // Service Areas
+  if (areas.length > 0) {
+    output.push("## Service Areas");
+    for (const a of areas) {
+      if (!a.slug) continue;
+      const desc = a.seo_description || a.title;
+      output.push(`- [${a.title}](${SITE_URL}/areas/${a.slug}): ${desc}`);
     }
     output.push("");
   }

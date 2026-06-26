@@ -109,6 +109,7 @@ export type Database = {
           phone: string
           preferred_date: string | null
           preferred_time: string | null
+          review_email_sent: boolean | null
           service_id: string | null
           source_page: string | null
           status: string | null
@@ -131,6 +132,7 @@ export type Database = {
           phone: string
           preferred_date?: string | null
           preferred_time?: string | null
+          review_email_sent?: boolean | null
           service_id?: string | null
           source_page?: string | null
           status?: string | null
@@ -153,6 +155,7 @@ export type Database = {
           phone?: string
           preferred_date?: string | null
           preferred_time?: string | null
+          review_email_sent?: boolean | null
           service_id?: string | null
           source_page?: string | null
           status?: string | null
@@ -171,6 +174,84 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      areas: {
+        Row: {
+          body: string | null
+          created_at: string | null
+          id: string
+          is_published: boolean | null
+          scheduled_at: string | null
+          seo_description: string | null
+          seo_title: string | null
+          slug: string
+          title: string
+          updated_at: string | null
+        }
+        Insert: {
+          body?: string | null
+          created_at?: string | null
+          id?: string
+          is_published?: boolean | null
+          scheduled_at?: string | null
+          seo_description?: string | null
+          seo_title?: string | null
+          slug: string
+          title: string
+          updated_at?: string | null
+        }
+        Update: {
+          body?: string | null
+          created_at?: string | null
+          id?: string
+          is_published?: boolean | null
+          scheduled_at?: string | null
+          seo_description?: string | null
+          seo_title?: string | null
+          slug?: string
+          title?: string
+          updated_at?: string | null
+        }
+        Relationships: []
+      }
+      conditions: {
+        Row: {
+          body: string | null
+          created_at: string | null
+          id: string
+          is_published: boolean | null
+          scheduled_at: string | null
+          seo_description: string | null
+          seo_title: string | null
+          slug: string
+          title: string
+          updated_at: string | null
+        }
+        Insert: {
+          body?: string | null
+          created_at?: string | null
+          id?: string
+          is_published?: boolean | null
+          scheduled_at?: string | null
+          seo_description?: string | null
+          seo_title?: string | null
+          slug: string
+          title: string
+          updated_at?: string | null
+        }
+        Update: {
+          body?: string | null
+          created_at?: string | null
+          id?: string
+          is_published?: boolean | null
+          scheduled_at?: string | null
+          seo_description?: string | null
+          seo_title?: string | null
+          slug?: string
+          title?: string
+          updated_at?: string | null
+        }
+        Relationships: []
       }
       doctors: {
         Row: {
@@ -921,15 +1002,15 @@ export const Constants = {
   },
 } as const
 
-// Helper types
 export type Doctor = Database["public"]["Tables"]["doctors"]["Row"];
+export type Service = Database["public"]["Tables"]["services"]["Row"];
+export type Testimonial = Database["public"]["Tables"]["testimonials"]["Row"];
+export type GalleryItem = Database["public"]["Tables"]["gallery"]["Row"];
+export type Update = Database["public"]["Tables"]["updates"]["Row"];
+export type Video = Database["public"]["Tables"]["videos"]["Row"];
 export type InfoPage = Database["public"]["Tables"]["info_pages"]["Row"];
 export type Settings = Database["public"]["Tables"]["settings"]["Row"];
-export type Update = Database["public"]["Tables"]["updates"]["Row"];
-export type GalleryItem = Database["public"]["Tables"]["gallery"]["Row"];
-export type Testimonial = Database["public"]["Tables"]["testimonials"]["Row"];
-export type Video = Database["public"]["Tables"]["videos"]["Row"];
-export type Service = Database["public"]["Tables"]["services"]["Row"];
-export type Appointment = Database["public"]["Tables"]["appointments"]["Row"];
 export type SocialLink = Database["public"]["Tables"]["social_links"]["Row"];
-
+export type Condition = Database["public"]["Tables"]["conditions"]["Row"];
+export type Area = Database["public"]["Tables"]["areas"]["Row"];
+export type Appointment = Database["public"]["Tables"]["appointments"]["Row"];

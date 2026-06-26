@@ -205,3 +205,27 @@ export async function sendRescheduleEmail(toEmail: string, patientName: string, 
     console.error("Failed to send reschedule email:", error);
   }
 }
+
+export async function sendReviewRequestEmail(toEmail: string, patientName: string, replyTo: string = REPLY_TO_EMAIL) {
+  try {
+    if (!process.env.RESEND_API_KEY) return;
+    const placeId = process.env.GOOGLE_PLACE_ID || process.env.NEXT_PUBLIC_GOOGLE_PLACE_ID;
+    const reviewUrl = placeId ? `https://search.google.com/local/writereview?placeid=${placeId}` : 'https://g.page/r/reviews';
+    const content = `
+      ${paragraph(`Hi ${patientName},`)}
+      ${paragraph(`Thank you for visiting Dr. Physio Clinic. We hope you had a great experience and are feeling better!`, 20)}
+      ${paragraph(`Your feedback helps us continue providing the best possible care. If you have a moment, we would greatly appreciate it if you could leave a short review on our Google profile.`, 28)}
+      ${button('Leave a Google Review', reviewUrl)}
+      ${paragraph(`Thank you for choosing Dr. Physio Clinic!`, 0)}
+    `;
+    await resend.emails.send({
+      from: FROM_EMAIL,
+      to: toEmail,
+      replyTo: replyTo,
+      subject: 'How was your visit? - Dr. Physio Clinic',
+      html: renderEmail('We value your feedback', content),
+    });
+  } catch (error) {
+    console.error("Failed to send review request email:", error);
+  }
+}
