@@ -85,7 +85,7 @@ export default async function ConditionDetailPage({
             <MedicalReview reviewer={reviewer} reviewedAt={conditionData.reviewed_at} />
             {conditionData.updated_at && (
               <div className="mt-1 text-sm text-slate-500">
-                Last updated: {new Date(conditionData.updated_at).toLocaleDateString("en-US", {
+                Last updated: {new Date(conditionData.updated_at!).toLocaleDateString("en-US", {
                   year: "numeric",
                   month: "long",
                   day: "numeric"

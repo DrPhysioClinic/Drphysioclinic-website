@@ -66,7 +66,7 @@ export default async function UpdateDetailPage({
         <div className="mt-1 flex items-center gap-2 text-sm text-slate-400 flex-wrap">
           {updateData.published_at && (
             <span>
-              Published: {new Date(updateData.published_at).toLocaleDateString("en-US", {
+              Published: {new Date(updateData.published_at!).toLocaleDateString("en-US", {
                 day: "numeric",
                 month: "long",
                 year: "numeric",
@@ -77,7 +77,7 @@ export default async function UpdateDetailPage({
             <>
               {updateData.published_at && <span className="text-slate-300">·</span>}
               <span>
-                Last updated: {new Date(updateData.updated_at).toLocaleDateString("en-US", {
+                Last updated: {new Date(updateData.updated_at!).toLocaleDateString("en-US", {
                   day: "numeric",
                   month: "long",
                   year: "numeric",
