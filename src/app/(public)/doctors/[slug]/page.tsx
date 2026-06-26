@@ -5,8 +5,10 @@ import Link from "next/link";
 import { getDoctorBySlug, getDoctors, getResolvedSettings } from "@/lib/queries";
 import { getCanonicalUrl } from "@/lib/utils";
 import { JsonLd } from "@/components/json-ld";
-import { physicianJsonLd } from "@/lib/seo";
+import { physicianJsonLd, breadcrumbJsonLd } from "@/lib/seo";
+import { SITE_URL } from "@/lib/constants";
 import { SpinningText } from "@/components/ui/spinning-text";
+import { DoctorCredentials } from "@/components/public/doctor-credentials";
 
 export const revalidate = 3600;
 
@@ -42,6 +44,13 @@ export default async function DoctorDetailPage({
   return (
     <div className="container-page pt-28 pb-12">
       <JsonLd data={physicianJsonLd(doctor, settings.clinic_name)} />
+      <JsonLd
+        data={breadcrumbJsonLd([
+          { name: "Home", url: SITE_URL },
+          { name: "Doctors", url: `${SITE_URL}/doctors` },
+          { name: doctor.name, url: `${SITE_URL}/doctors/${doctor.slug}` },
+        ])}
+      />
       <div className="mt-8 mb-6 relative z-20">
         <Link href="/doctors" className="inline-flex items-center text-sm font-medium text-brand-600 hover:text-brand-700 bg-brand-50 hover:bg-brand-100 px-3 py-1.5 rounded-md transition-all duration-300 hover:-translate-y-0.5 hover:shadow-sm">
           <svg className="mr-1.5 h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 19l-7-7m0 0l7-7m-7 7h18" /></svg>
@@ -80,16 +89,7 @@ export default async function DoctorDetailPage({
           {doctor.specialization && (
             <p className="mt-3 text-slate-700">{doctor.specialization}</p>
           )}
-          <dl className="mt-5 grid gap-x-8 gap-y-2 text-sm sm:grid-cols-2">
-            {doctor.experience_years != null && (
-              <Detail label="Experience" value={`${doctor.experience_years} years`} />
-            )}
-            {doctor.education && <Detail label="Education" value={doctor.education} />}
-            {doctor.memberships && <Detail label="Memberships" value={doctor.memberships} />}
-            {doctor.registration_no && (
-              <Detail label="Registration" value={doctor.registration_no} />
-            )}
-          </dl>
+          <DoctorCredentials doctor={doctor} />
           {doctor.bio && <p className="mt-5 whitespace-pre-line text-slate-700">{doctor.bio}</p>}
           <Link href="/contact#appointment" className="btn-accent mt-6">
             Book an Appointment
@@ -100,11 +100,3 @@ export default async function DoctorDetailPage({
   );
 }
 
-function Detail({ label, value }: { label: string; value: string }) {
-  return (
-    <div>
-      <dt className="font-semibold text-slate-500">{label}</dt>
-      <dd className="text-slate-800">{value}</dd>
-    </div>
-  );
-}

@@ -2,10 +2,12 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import Image from "next/image";
 import Link from "next/link";
-import { getUpdateBySlug, getUpdates, getResolvedSettings } from "@/lib/queries";
+import { getUpdateBySlug, getUpdates, getResolvedSettings, getDoctors } from "@/lib/queries";
 import { getCanonicalUrl } from "@/lib/utils";
 import { JsonLd } from "@/components/json-ld";
 import { updateJsonLd } from "@/lib/seo";
+import { AuthorByline } from "@/components/public/author-byline";
+import { MedicalReview } from "@/components/public/medical-review";
 
 export const revalidate = 3600;
 
@@ -35,8 +37,21 @@ export default async function UpdateDetailPage({
   params: Promise<{ slug: string }>;
 }) {
   const { slug } = await params;
-  const [update, settings] = await Promise.all([getUpdateBySlug(slug), getResolvedSettings()]);
+  const [update, settings, allDoctors] = await Promise.all([
+    getUpdateBySlug(slug), 
+    getResolvedSettings(),
+    getDoctors()
+  ]);
   if (!update) notFound();
+
+  const updateData = update as typeof update & {
+    author_id?: string | null;
+    reviewed_by?: string | null;
+    reviewed_at?: string | null;
+  };
+
+  const author = allDoctors.find(d => d.id === updateData.author_id);
+  const reviewer = allDoctors.find(d => d.id === updateData.reviewed_by);
 
   return (
     <article className="container-page max-w-3xl pt-28 pb-12">
@@ -45,15 +60,33 @@ export default async function UpdateDetailPage({
         ← All updates
       </Link>
       <h1 className="mt-4 text-3xl font-bold text-slate-900">{update.title}</h1>
-      {update.published_at && (
-        <p className="mt-2 text-sm text-slate-400">
-          {new Date(update.published_at).toLocaleDateString("en-IN", {
-            day: "numeric",
-            month: "long",
-            year: "numeric",
-          })}
-        </p>
-      )}
+      <div className="mt-4 border-b border-slate-200 pb-4">
+        <AuthorByline author={author} />
+        <MedicalReview reviewer={reviewer} reviewedAt={updateData.reviewed_at} />
+        <div className="mt-1 flex items-center gap-2 text-sm text-slate-400 flex-wrap">
+          {updateData.published_at && (
+            <span>
+              Published: {new Date(updateData.published_at).toLocaleDateString("en-US", {
+                day: "numeric",
+                month: "long",
+                year: "numeric",
+              })}
+            </span>
+          )}
+          {updateData.updated_at && (
+            <>
+              {updateData.published_at && <span className="text-slate-300">·</span>}
+              <span>
+                Last updated: {new Date(updateData.updated_at).toLocaleDateString("en-US", {
+                  day: "numeric",
+                  month: "long",
+                  year: "numeric",
+                })}
+              </span>
+            </>
+          )}
+        </div>
+      </div>
       {update.image_url && (
         <div className="relative mt-5 aspect-[16/9] w-full overflow-hidden rounded-xl bg-brand-50">
           <Image src={update.image_url} alt={update.title || "Update"} fill sizes="768px" className="object-cover" priority />

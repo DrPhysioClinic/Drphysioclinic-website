@@ -1,5 +1,5 @@
 import { SITE_URL } from "@/lib/constants";
-import type { Doctor, Service, Update } from "@/types/database";
+import type { Doctor, Service, Update, Condition, Area } from "@/types/database";
 
 type ResolvedSettings = {
   clinic_name: string;
@@ -54,6 +54,17 @@ export function physicianJsonLd(doctor: Doctor, clinicName: string) {
     image: doctor.image_url || undefined,
     url: `${SITE_URL}/doctors/${doctor.slug}`,
     worksFor: { "@type": "MedicalClinic", name: clinicName },
+    ...(doctor.education || doctor.registration_no
+      ? {
+          hasCredential: [
+            ...(doctor.education ? [{ "@type": "EducationalOccupationalCredential", credentialCategory: "degree", name: doctor.education }] : []),
+            ...(doctor.registration_no ? [{ "@type": "EducationalOccupationalCredential", credentialCategory: "registration", name: doctor.registration_no }] : []),
+          ],
+        }
+      : {}),
+    ...(doctor.memberships
+      ? { memberOf: { "@type": "Organization", name: doctor.memberships } }
+      : {}),
   };
 }
 
@@ -92,5 +103,92 @@ export function updateJsonLd(update: Update, clinicName: string) {
     dateModified: update.updated_at,
     url: `${SITE_URL}/updates/${update.slug}`,
     publisher: { "@type": "Organization", name: clinicName },
+  };
+}
+
+/** schema.org MedicalProcedure + Service for condition pages. */
+export function conditionJsonLd(condition: Condition, clinicName: string) {
+  return {
+    "@context": "https://schema.org",
+    "@type": ["MedicalProcedure", "Service"],
+    name: condition.title,
+    description: condition.seo_description || condition.title || undefined,
+    url: `${SITE_URL}/conditions/${condition.slug}`,
+    provider: { "@type": "MedicalClinic", name: clinicName },
+    areaServed: { "@type": "Place", name: "Ahmedabad" },
+  };
+}
+
+/** schema.org FAQPage for condition pages. */
+export function faqPageJsonLd(condition: Condition) {
+  const isValid = (text: string | null) => text && !text.includes("[PLACEHOLDER]");
+  const mainEntity = [];
+
+  if (isValid(condition.symptoms)) {
+    mainEntity.push({
+      "@type": "Question",
+      name: "What are the common symptoms?",
+      acceptedAnswer: {
+        "@type": "Answer",
+        text: condition.symptoms,
+      },
+    });
+  }
+
+  if (isValid(condition.treatment)) {
+    mainEntity.push({
+      "@type": "Question",
+      name: "How do we treat this condition?",
+      acceptedAnswer: {
+        "@type": "Answer",
+        text: condition.treatment,
+      },
+    });
+  }
+
+  if (isValid(condition.when_to_see)) {
+    mainEntity.push({
+      "@type": "Question",
+      name: "When should you see a physiotherapist?",
+      acceptedAnswer: {
+        "@type": "Answer",
+        text: condition.when_to_see,
+      },
+    });
+  }
+
+  if (mainEntity.length === 0) return null;
+
+  return {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    mainEntity,
+  };
+}
+
+/** schema.org Service/LocalBusiness reference for area pages. */
+export function areaJsonLd(area: Area, clinicName: string) {
+  return {
+    "@context": "https://schema.org",
+    "@type": ["Service", "LocalBusiness"],
+    name: `${clinicName} - ${area.title}`,
+    description: area.seo_description || area.title || undefined,
+    url: `${SITE_URL}/areas/${area.slug}`,
+    provider: { "@type": "MedicalClinic", name: clinicName },
+    areaServed: { "@type": "Place", name: area.title },
+  };
+}
+
+/** schema.org BreadcrumbList for nested pages. */
+export function breadcrumbJsonLd(items: { name: string; url: string }[]) {
+  return {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: items.map((item, index) => ({
+      "@type": "ListItem",
+      position: index + 1,
+      name: item.name,
+      item: item.url,
+    })),
   };
 }

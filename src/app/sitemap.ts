@@ -6,8 +6,6 @@ import {
   getUpdates,
   getVideos,
   getInfoPages,
-  getConditions,
-  getAreas,
 } from "@/lib/queries";
 
 export const revalidate = 3600;
@@ -17,14 +15,12 @@ export const revalidate = 3600;
  * appears automatically on the next revalidation.
  */
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  const [services, doctors, updates, videos, infoPages, conditions, areas] = await Promise.all([
+  const [services, doctors, updates, videos, infoPages] = await Promise.all([
     getServices(),
     getDoctors(),
     getUpdates(),
     getVideos(),
     getInfoPages(),
-    getConditions(),
-    getAreas(),
   ]);
 
   const staticRoutes = [
@@ -60,12 +56,6 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     ...infoPages
       .filter((p) => p.slug)
       .map((p) => ({ url: `${SITE_URL}/info/${p.slug}`, lastModified: new Date(p.updated_at || new Date()) })),
-    ...conditions
-      .filter((c) => c.slug)
-      .map((c) => ({ url: `${SITE_URL}/conditions/${c.slug}`, lastModified: new Date(c.updated_at || new Date()) })),
-    ...areas
-      .filter((a) => a.slug)
-      .map((a) => ({ url: `${SITE_URL}/areas/${a.slug}`, lastModified: new Date(a.updated_at || new Date()) })),
   ];
 
   // videos table has no detail route, but is referenced by the /videos page

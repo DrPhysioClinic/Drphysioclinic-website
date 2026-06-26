@@ -5,14 +5,15 @@ import { getAreaBySlug, getAreas, getServices, getResolvedSettings } from "@/lib
 import { getCanonicalUrl } from "@/lib/utils";
 import { ServiceCard } from "@/components/public/cards";
 import { TrackLink } from "@/components/public/track-link";
-import { whatsappHref } from "@/lib/constants";
+import { whatsappHref, SITE_URL } from "@/lib/constants";
+import { JsonLd } from "@/components/json-ld";
+import { areaJsonLd, breadcrumbJsonLd } from "@/lib/seo";
 
 
 export const revalidate = 3600;
 
 export async function generateStaticParams() {
-  const areas = await getAreas();
-  return areas.filter((a) => a.slug).map((a) => ({ slug: a.slug as string }));
+  return []; // Temporarily unpublished
 }
 
 export async function generateMetadata({
@@ -20,14 +21,7 @@ export async function generateMetadata({
 }: {
   params: Promise<{ slug: string }>;
 }): Promise<Metadata> {
-  const { slug } = await params;
-  const area = await getAreaBySlug(slug);
-  if (!area) return { title: "Service Area not found" };
-  return {
-    title: area.seo_title || area.title || "Service Area",
-    description: area.seo_description || undefined,
-    alternates: { canonical: getCanonicalUrl(`/areas/${slug}`) },
-  };
+  notFound(); // Temporarily unpublished
 }
 
 export default async function AreaDetailPage({
@@ -35,12 +29,9 @@ export default async function AreaDetailPage({
 }: {
   params: Promise<{ slug: string }>;
 }) {
-  const { slug } = await params;
-  const [area, settings, allServices] = await Promise.all([
-    getAreaBySlug(slug),
-    getResolvedSettings(),
-    getServices(),
-  ]);
+  notFound(); // Temporarily unpublished
+  
+  /*
   
   if (!area) notFound();
 
@@ -55,6 +46,14 @@ export default async function AreaDetailPage({
 
   return (
     <div className="container-page pt-28 pb-12">
+      <JsonLd data={areaJsonLd(areaData as any, settings.clinic_name)} />
+      <JsonLd
+        data={breadcrumbJsonLd([
+          { name: "Home", url: SITE_URL },
+          { name: "Areas", url: `${SITE_URL}/areas` },
+          { name: areaData.title, url: `${SITE_URL}/areas/${areaData.slug}` },
+        ])}
+      />
       <Link href="/" className="text-sm text-brand-600 hover:text-brand-700">
         ← Back to Home
       </Link>
@@ -123,4 +122,5 @@ export default async function AreaDetailPage({
       )}
     </div>
   );
+  */
 }

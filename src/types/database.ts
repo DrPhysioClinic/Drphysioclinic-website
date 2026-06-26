@@ -216,10 +216,13 @@ export type Database = {
       }
       conditions: {
         Row: {
+          author_id: string | null
           body: string | null
           created_at: string | null
           id: string
           is_published: boolean | null
+          reviewed_at: string | null
+          reviewed_by: string | null
           scheduled_at: string | null
           seo_description: string | null
           seo_title: string | null
@@ -231,10 +234,13 @@ export type Database = {
           when_to_see: string | null
         }
         Insert: {
+          author_id?: string | null
           body?: string | null
           created_at?: string | null
           id?: string
           is_published?: boolean | null
+          reviewed_at?: string | null
+          reviewed_by?: string | null
           scheduled_at?: string | null
           seo_description?: string | null
           seo_title?: string | null
@@ -246,10 +252,13 @@ export type Database = {
           when_to_see?: string | null
         }
         Update: {
+          author_id?: string | null
           body?: string | null
           created_at?: string | null
           id?: string
           is_published?: boolean | null
+          reviewed_at?: string | null
+          reviewed_by?: string | null
           scheduled_at?: string | null
           seo_description?: string | null
           seo_title?: string | null
@@ -758,6 +767,7 @@ export type Database = {
       }
       updates: {
         Row: {
+          author_id: string | null
           content: string | null
           created_at: string | null
           excerpt: string | null
@@ -766,6 +776,8 @@ export type Database = {
           is_featured: boolean | null
           is_published: boolean | null
           published_at: string | null
+          reviewed_at: string | null
+          reviewed_by: string | null
           scheduled_at: string | null
           seo_description: string | null
           seo_title: string | null
@@ -775,6 +787,7 @@ export type Database = {
           updated_at: string | null
         }
         Insert: {
+          author_id?: string | null
           content?: string | null
           created_at?: string | null
           excerpt?: string | null
@@ -783,6 +796,8 @@ export type Database = {
           is_featured?: boolean | null
           is_published?: boolean | null
           published_at?: string | null
+          reviewed_at?: string | null
+          reviewed_by?: string | null
           scheduled_at?: string | null
           seo_description?: string | null
           seo_title?: string | null
@@ -792,6 +807,7 @@ export type Database = {
           updated_at?: string | null
         }
         Update: {
+          author_id?: string | null
           content?: string | null
           created_at?: string | null
           excerpt?: string | null
@@ -800,6 +816,8 @@ export type Database = {
           is_featured?: boolean | null
           is_published?: boolean | null
           published_at?: string | null
+          reviewed_at?: string | null
+          reviewed_by?: string | null
           scheduled_at?: string | null
           seo_description?: string | null
           seo_title?: string | null

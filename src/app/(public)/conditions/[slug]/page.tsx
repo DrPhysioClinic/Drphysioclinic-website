@@ -5,14 +5,18 @@ import { getConditionBySlug, getConditions, getServices, getResolvedSettings } f
 import { getCanonicalUrl } from "@/lib/utils";
 import { ServiceCard } from "@/components/public/cards";
 import { TrackLink } from "@/components/public/track-link";
-import { whatsappHref } from "@/lib/constants";
+import { whatsappHref, SITE_URL } from "@/lib/constants";
+import { JsonLd } from "@/components/json-ld";
+import { conditionJsonLd, faqPageJsonLd, breadcrumbJsonLd } from "@/lib/seo";
+import { AuthorByline } from "@/components/public/author-byline";
+import { MedicalReview } from "@/components/public/medical-review";
+import { getDoctors } from "@/lib/queries";
 
 
 export const revalidate = 3600;
 
 export async function generateStaticParams() {
-  const conditions = await getConditions();
-  return conditions.filter((c) => c.slug).map((c) => ({ slug: c.slug as string }));
+  return []; // Temporarily unpublished
 }
 
 export async function generateMetadata({
@@ -20,14 +24,7 @@ export async function generateMetadata({
 }: {
   params: Promise<{ slug: string }>;
 }): Promise<Metadata> {
-  const { slug } = await params;
-  const condition = await getConditionBySlug(slug);
-  if (!condition) return { title: "Condition not found" };
-  return {
-    title: condition.seo_title || condition.title || "Condition",
-    description: condition.seo_description || undefined,
-    alternates: { canonical: getCanonicalUrl(`/conditions/${slug}`) },
-  };
+  notFound(); // Temporarily unpublished
 }
 
 export default async function ConditionDetailPage({
@@ -35,11 +32,14 @@ export default async function ConditionDetailPage({
 }: {
   params: Promise<{ slug: string }>;
 }) {
+  notFound(); // Temporarily unpublished
+  
   const { slug } = await params;
-  const [condition, settings, allServices] = await Promise.all([
+  const [condition, settings, allServices, allDoctors] = await Promise.all([
     getConditionBySlug(slug),
     getResolvedSettings(),
     getServices(),
+    getDoctors(),
   ]);
   
   if (!condition) notFound();
@@ -51,10 +51,27 @@ export default async function ConditionDetailPage({
     symptoms?: string | null;
     treatment?: string | null;
     when_to_see?: string | null;
+    author_id?: string | null;
+    reviewed_by?: string | null;
+    reviewed_at?: string | null;
   };
+
+  const author = allDoctors.find(d => d.id === conditionData.author_id);
+  const reviewer = allDoctors.find(d => d.id === conditionData.reviewed_by);
+
+  const faqSchema = faqPageJsonLd(conditionData as any);
 
   return (
     <div className="container-page pt-28 pb-12">
+      <JsonLd data={conditionJsonLd(conditionData as any, settings.clinic_name)} />
+      {faqSchema && <JsonLd data={faqSchema} />}
+      <JsonLd
+        data={breadcrumbJsonLd([
+          { name: "Home", url: SITE_URL },
+          { name: "Conditions", url: `${SITE_URL}/conditions` },
+          { name: conditionData.title, url: `${SITE_URL}/conditions/${conditionData.slug}` },
+        ])}
+      />
       <Link href="/" className="text-sm text-brand-600 hover:text-brand-700">
         ← Back to Home
       </Link>
@@ -62,6 +79,20 @@ export default async function ConditionDetailPage({
       <div className="mt-4 grid gap-8 lg:grid-cols-[1fr_320px]">
         <div>
           <h1 className="mt-1 text-2xl font-bold text-slate-900 sm:text-3xl">{conditionData.title}</h1>
+          
+          <div className="mt-4 border-b border-slate-200 pb-4">
+            <AuthorByline author={author} />
+            <MedicalReview reviewer={reviewer} reviewedAt={conditionData.reviewed_at} />
+            {conditionData.updated_at && (
+              <div className="mt-1 text-sm text-slate-500">
+                Last updated: {new Date(conditionData.updated_at).toLocaleDateString("en-US", {
+                  year: "numeric",
+                  month: "long",
+                  day: "numeric"
+                })}
+              </div>
+            )}
+          </div>
 
           <div className="prose prose-slate mt-6 max-w-none whitespace-pre-line text-slate-700">
             {conditionData.body}
