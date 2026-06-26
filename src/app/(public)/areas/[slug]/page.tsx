@@ -57,19 +57,27 @@ export default async function AreaDetailPage({
           <h1 className="mt-1 text-2xl font-bold text-slate-900 sm:text-3xl">{area.title}</h1>
 
           <div className="prose prose-slate mt-6 max-w-none whitespace-pre-line text-slate-700">
-            {area.body || "[PLACEHOLDER — needs physio-written content]"}
+            {area.body}
           </div>
 
           <div className="mt-12 space-y-8">
-            <div>
-              <h2 className="text-xl font-bold text-slate-900">Why choose us in {area.title}?</h2>
-              <p className="mt-3 text-slate-700">[PLACEHOLDER — needs physio-written content]</p>
-            </div>
+            {area.why_choose_us && (
+              <div>
+                <h2 className="text-xl font-bold text-slate-900">Why choose us in {area.title}?</h2>
+                <div className="prose prose-slate mt-3 max-w-none whitespace-pre-line text-slate-700">
+                  {area.why_choose_us}
+                </div>
+              </div>
+            )}
             
-            <div>
-              <h2 className="text-xl font-bold text-slate-900">How to reach our clinic?</h2>
-              <p className="mt-3 text-slate-700">[PLACEHOLDER — needs physio-written content]</p>
-            </div>
+            {area.how_to_reach && (
+              <div>
+                <h2 className="text-xl font-bold text-slate-900">How to reach our clinic?</h2>
+                <div className="prose prose-slate mt-3 max-w-none whitespace-pre-line text-slate-700">
+                  {area.how_to_reach}
+                </div>
+              </div>
+            )}
           </div>
         </div>
 

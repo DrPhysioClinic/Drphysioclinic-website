@@ -57,24 +57,36 @@ export default async function ConditionDetailPage({
           <h1 className="mt-1 text-2xl font-bold text-slate-900 sm:text-3xl">{condition.title}</h1>
 
           <div className="prose prose-slate mt-6 max-w-none whitespace-pre-line text-slate-700">
-            {condition.body || "[PLACEHOLDER — needs physio-written content]"}
+            {condition.body}
           </div>
 
           <div className="mt-12 space-y-8">
-            <div>
-              <h2 className="text-xl font-bold text-slate-900">What are the common symptoms?</h2>
-              <p className="mt-3 text-slate-700">[PLACEHOLDER — needs physio-written content]</p>
-            </div>
+            {condition.symptoms && (
+              <div>
+                <h2 className="text-xl font-bold text-slate-900">What are the common symptoms?</h2>
+                <div className="prose prose-slate mt-3 max-w-none whitespace-pre-line text-slate-700">
+                  {condition.symptoms}
+                </div>
+              </div>
+            )}
             
-            <div>
-              <h2 className="text-xl font-bold text-slate-900">How do we treat this condition?</h2>
-              <p className="mt-3 text-slate-700">[PLACEHOLDER — needs physio-written content]</p>
-            </div>
+            {condition.treatment && (
+              <div>
+                <h2 className="text-xl font-bold text-slate-900">How do we treat this condition?</h2>
+                <div className="prose prose-slate mt-3 max-w-none whitespace-pre-line text-slate-700">
+                  {condition.treatment}
+                </div>
+              </div>
+            )}
 
-            <div>
-              <h2 className="text-xl font-bold text-slate-900">When should you see a physiotherapist?</h2>
-              <p className="mt-3 text-slate-700">[PLACEHOLDER — needs physio-written content]</p>
-            </div>
+            {condition.when_to_see && (
+              <div>
+                <h2 className="text-xl font-bold text-slate-900">When should you see a physiotherapist?</h2>
+                <div className="prose prose-slate mt-3 max-w-none whitespace-pre-line text-slate-700">
+                  {condition.when_to_see}
+                </div>
+              </div>
+            )}
           </div>
         </div>
 
