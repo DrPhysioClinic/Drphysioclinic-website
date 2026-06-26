@@ -7,6 +7,7 @@ import { ServiceCard } from "@/components/public/cards";
 import { TrackLink } from "@/components/public/track-link";
 import { whatsappHref } from "@/lib/constants";
 
+
 export const revalidate = 3600;
 
 export async function generateStaticParams() {
@@ -46,6 +47,12 @@ export default async function AreaDetailPage({
   // Pick up to 3 services to link to as a placeholder for internal linking
   const relatedServices = allServices.slice(0, 3);
 
+  // Extend the area type locally to include missing properties
+  const areaData = area as typeof area & { 
+    why_choose_us?: string | null; 
+    how_to_reach?: string | null; 
+  };
+
   return (
     <div className="container-page pt-28 pb-12">
       <Link href="/" className="text-sm text-brand-600 hover:text-brand-700">
@@ -54,27 +61,27 @@ export default async function AreaDetailPage({
 
       <div className="mt-4 grid gap-8 lg:grid-cols-[1fr_320px]">
         <div>
-          <h1 className="mt-1 text-2xl font-bold text-slate-900 sm:text-3xl">{area.title}</h1>
+          <h1 className="mt-1 text-2xl font-bold text-slate-900 sm:text-3xl">{areaData.title}</h1>
 
           <div className="prose prose-slate mt-6 max-w-none whitespace-pre-line text-slate-700">
-            {area.body}
+            {areaData.body}
           </div>
 
           <div className="mt-12 space-y-8">
-            {area.why_choose_us && (
+            {areaData.why_choose_us && (
               <div>
-                <h2 className="text-xl font-bold text-slate-900">Why choose us in {area.title}?</h2>
+                <h2 className="text-xl font-bold text-slate-900">Why choose us in {areaData.title}?</h2>
                 <div className="prose prose-slate mt-3 max-w-none whitespace-pre-line text-slate-700">
-                  {area.why_choose_us}
+                  {areaData.why_choose_us}
                 </div>
               </div>
             )}
             
-            {area.how_to_reach && (
+            {areaData.how_to_reach && (
               <div>
                 <h2 className="text-xl font-bold text-slate-900">How to reach our clinic?</h2>
                 <div className="prose prose-slate mt-3 max-w-none whitespace-pre-line text-slate-700">
-                  {area.how_to_reach}
+                  {areaData.how_to_reach}
                 </div>
               </div>
             )}
@@ -84,17 +91,17 @@ export default async function AreaDetailPage({
         {/* Sidebar */}
         <aside className="space-y-4">
           <div className="card p-5">
-            <h3 className="mb-3 font-semibold text-slate-900">Looking for a Physio in {area.title}?</h3>
+            <h3 className="mb-3 font-semibold text-slate-900">Looking for a Physio in {areaData.title}?</h3>
             <Link href="/contact#appointment" className="btn-accent w-full">
               Book Appointment
             </Link>
             <TrackLink
               href={whatsappHref(
                 settings.whatsapp_number,
-                `Hi, I'm looking for a physiotherapist in ${area.title}.`
+                `Hi, I'm looking for a physiotherapist in ${areaData.title}.`
               )}
               eventType="whatsapp_click"
-              sourcePage={`/areas/${area.slug}`}
+              sourcePage={`/areas/${areaData.slug}`}
               external
               className="btn-outline mt-2 w-full"
             >

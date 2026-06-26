@@ -224,8 +224,11 @@ export type Database = {
           seo_description: string | null
           seo_title: string | null
           slug: string
+          symptoms: string | null
           title: string
+          treatment: string | null
           updated_at: string | null
+          when_to_see: string | null
         }
         Insert: {
           body?: string | null
@@ -236,8 +239,11 @@ export type Database = {
           seo_description?: string | null
           seo_title?: string | null
           slug: string
+          symptoms?: string | null
           title: string
+          treatment?: string | null
           updated_at?: string | null
+          when_to_see?: string | null
         }
         Update: {
           body?: string | null
@@ -248,8 +254,11 @@ export type Database = {
           seo_description?: string | null
           seo_title?: string | null
           slug?: string
+          symptoms?: string | null
           title?: string
+          treatment?: string | null
           updated_at?: string | null
+          when_to_see?: string | null
         }
         Relationships: []
       }
