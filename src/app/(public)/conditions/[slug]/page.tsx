@@ -64,7 +64,7 @@ export default async function ConditionDetailPage({
   return (
     <div className="container-page pt-28 pb-12">
       <JsonLd data={conditionJsonLd(conditionData as any, settings.clinic_name)} />
-      {faqSchema && <JsonLd data={faqSchema} />}
+      {faqSchema ? <JsonLd data={faqSchema as any} /> : null}
       <JsonLd
         data={breadcrumbJsonLd([
           { name: "Home", url: SITE_URL },
