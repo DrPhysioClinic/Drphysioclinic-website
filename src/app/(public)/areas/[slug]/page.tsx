@@ -87,7 +87,6 @@ export default async function AreaDetailPage({
           </div>
         </div>
 
-        {/* Sidebar */}
         <aside className="space-y-4">
           <div className="card p-5">
             <h3 className="mb-3 font-semibold text-slate-900">Looking for a Physio in {areaData.title}?</h3>
