@@ -215,21 +215,22 @@ export type CutoutCardImageProps = ComponentProps<typeof Image>
 export function CutoutCardImage({
   className,
   alt = "",
-  width = 800,
-  height = 600,
+  fill = true,
+  sizes = "(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw",
   ...props
-}: CutoutCardImageProps & { width?: number; height?: number; fill?: boolean }) {
+}: CutoutCardImageProps) {
   return (
     <Image
       alt={alt}
-      width={width}
-      height={height}
       className={cn(
-        "object-cover h-full w-full transition-transform duration-700 ease-[cubic-bezier(0.23,1,0.32,1)] group-hover/cutout:scale-105",
+        "object-cover transition-transform duration-700 ease-[cubic-bezier(0.23,1,0.32,1)] group-hover/cutout:scale-105",
+        fill && "h-full w-full",
         className
       )}
       data-slot="cutout-card-image"
       {...props}
+      fill={fill}
+      sizes={fill ? sizes : undefined}
     />
   )
 }
