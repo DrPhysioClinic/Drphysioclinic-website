@@ -115,6 +115,22 @@ export async function setLeadStatus(
           }
         }
 
+        try {
+          if (!appt.outlook_event_id) {
+            const { createOutlookEvent } = await import("@/lib/graph");
+            const eventId = await createOutlookEvent({
+              patient_name: appt.patient_name,
+              preferred_date: appt.preferred_date,
+              preferred_time: appt.preferred_time,
+              consultation_type: appt.consultation_type || "clinic",
+              zoom_join_url,
+            });
+            payload.outlook_event_id = eventId;
+          }
+        } catch (err: any) {
+          console.error("Outlook sync failed on confirm:", err);
+        }
+
         const { error: updateError } = await supabase.from("appointments").update(payload).eq("id", id);
         if (updateError) return { error: updateError.message };
         
@@ -137,12 +153,23 @@ export async function setLeadStatus(
       }
 
       // 2. CANCELLATION LOGIC
-      if (status === "cancelled" && appt.email && !appt.cancellation_email_sent) {
-        const { sendCancellationEmail } = await import("@/lib/email");
+      if (status === "cancelled") {
+        if (appt.outlook_event_id) {
+          try {
+            const { deleteOutlookEvent } = await import("@/lib/graph");
+            await deleteOutlookEvent(appt.outlook_event_id);
+          } catch (err: any) {
+            console.error("Outlook sync failed on cancel:", err);
+          }
+        }
+
+        if (appt.email && !appt.cancellation_email_sent) {
+          const { sendCancellationEmail } = await import("@/lib/email");
         const { data: settings } = await supabase.from("settings").select("email").single();
         const replyTo = settings?.email || "appointments@drphysioclinic.com";
         await sendCancellationEmail(appt.email, appt.patient_name, replyTo);
-        await supabase.from("appointments").update({ cancellation_email_sent: true }).eq("id", id);
+          await supabase.from("appointments").update({ cancellation_email_sent: true }).eq("id", id);
+        }
       }
 
       // 3. COMPLETED LOGIC (Review Request)
@@ -515,6 +542,30 @@ export async function saveAppointment(state: any, fd: FormData) {
       console.error("Zoom creation failed:", err);
       return { error: "Failed to create Zoom meeting. Ensure Zoom credentials are correct." } as any;
     }
+  }
+
+  try {
+    const isReschedule = appt.status === "confirmed" && (appt.preferred_date !== preferred_date || appt.preferred_time !== preferred_time);
+    
+    if (appt.outlook_event_id && isReschedule) {
+      const { updateOutlookEvent } = await import("@/lib/graph");
+      await updateOutlookEvent(appt.outlook_event_id, {
+        preferred_date,
+        preferred_time,
+      });
+    } else if (!appt.outlook_event_id && appt.status !== "confirmed") {
+      const { createOutlookEvent } = await import("@/lib/graph");
+      const eventId = await createOutlookEvent({
+        patient_name: appt.patient_name,
+        preferred_date,
+        preferred_time,
+        consultation_type: appt.consultation_type || "clinic",
+        zoom_join_url,
+      });
+      payload.outlook_event_id = eventId;
+    }
+  } catch (err: any) {
+    console.error("Outlook sync failed on edit:", err);
   }
 
   const { error } = await supabase.from("appointments").update(payload).eq("id", id);

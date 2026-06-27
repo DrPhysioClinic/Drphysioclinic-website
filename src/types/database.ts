@@ -105,6 +105,7 @@ export type Database = {
           email: string | null
           id: string
           notes: string | null
+          outlook_event_id: string | null
           patient_name: string
           phone: string
           preferred_date: string | null
@@ -128,6 +129,7 @@ export type Database = {
           email?: string | null
           id?: string
           notes?: string | null
+          outlook_event_id?: string | null
           patient_name: string
           phone: string
           preferred_date?: string | null
@@ -151,6 +153,7 @@ export type Database = {
           email?: string | null
           id?: string
           notes?: string | null
+          outlook_event_id?: string | null
           patient_name?: string
           phone?: string
           preferred_date?: string | null
