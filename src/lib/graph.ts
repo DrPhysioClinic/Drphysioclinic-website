@@ -31,21 +31,28 @@ async function getGraphToken() {
   return data.access_token as string;
 }
 
-function getEndTimeString(dateStr: string, timeStr: string, durationMinutes = 30) {
-  // Use UTC math to avoid server timezone offset issues
+function getUtcTimeStrings(dateStr: string, timeStr: string, durationMinutes = 30) {
   const [year, month, day] = dateStr.split("-").map(Number);
   const [hours, minutes] = timeStr.split(":").map(Number);
   
+  // Treat input as UTC, then subtract 5 hours 30 mins (330 mins) to convert IST -> UTC
   const d = new Date(Date.UTC(year, month - 1, day, hours, minutes));
+  d.setUTCMinutes(d.getUTCMinutes() - 330);
+  
+  const formatUtc = (date: Date) => {
+    const y = date.getUTCFullYear();
+    const m = String(date.getUTCMonth() + 1).padStart(2, "0");
+    const dStr = String(date.getUTCDate()).padStart(2, "0");
+    const h = String(date.getUTCHours()).padStart(2, "0");
+    const min = String(date.getUTCMinutes()).padStart(2, "0");
+    return `${y}-${m}-${dStr}T${h}:${min}:00`;
+  };
+
+  const startIso = formatUtc(d);
   d.setUTCMinutes(d.getUTCMinutes() + durationMinutes);
+  const endIso = formatUtc(d);
   
-  const endYear = d.getUTCFullYear();
-  const endMonth = String(d.getUTCMonth() + 1).padStart(2, "0");
-  const endDay = String(d.getUTCDate()).padStart(2, "0");
-  const endHours = String(d.getUTCHours()).padStart(2, "0");
-  const endMins = String(d.getUTCMinutes()).padStart(2, "0");
-  
-  return `${endYear}-${endMonth}-${endDay}T${endHours}:${endMins}:00`;
+  return { startIso, endIso };
 }
 
 export async function createOutlookEvent(appt: {
@@ -57,8 +64,7 @@ export async function createOutlookEvent(appt: {
 }) {
   const token = await getGraphToken();
 
-  const startIso = `${appt.preferred_date}T${appt.preferred_time}:00`;
-  const endIso = getEndTimeString(appt.preferred_date, appt.preferred_time, 30);
+  const { startIso, endIso } = getUtcTimeStrings(appt.preferred_date, appt.preferred_time, 30);
 
   let bodyContent = `Consultation for ${appt.patient_name}.`;
   if (appt.consultation_type === "online" && appt.zoom_join_url) {
@@ -81,11 +87,11 @@ export async function createOutlookEvent(appt: {
       },
       start: {
         dateTime: startIso,
-        timeZone: "Asia/Kolkata",
+        timeZone: "UTC",
       },
       end: {
         dateTime: endIso,
-        timeZone: "Asia/Kolkata",
+        timeZone: "UTC",
       },
       location: {
         displayName: appt.consultation_type === "online" ? "Zoom" : "Dr. Physio Clinic",
@@ -111,8 +117,7 @@ export async function updateOutlookEvent(
 ) {
   const token = await getGraphToken();
 
-  const startIso = `${appt.preferred_date}T${appt.preferred_time}:00`;
-  const endIso = getEndTimeString(appt.preferred_date, appt.preferred_time, 30);
+  const { startIso, endIso } = getUtcTimeStrings(appt.preferred_date, appt.preferred_time, 30);
 
   const url = `https://graph.microsoft.com/v1.0/users/${TARGET_USER}/events/${eventId}`;
 
@@ -125,11 +130,11 @@ export async function updateOutlookEvent(
     body: JSON.stringify({
       start: {
         dateTime: startIso,
-        timeZone: "Asia/Kolkata",
+        timeZone: "UTC",
       },
       end: {
         dateTime: endIso,
-        timeZone: "Asia/Kolkata",
+        timeZone: "UTC",
       },
     }),
   });
