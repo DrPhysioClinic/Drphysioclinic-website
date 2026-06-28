@@ -162,3 +162,48 @@ export async function deleteOutlookEvent(eventId: string) {
     throw new Error(`Failed to delete Outlook event: ${err}`);
   }
 }
+
+export async function markOutlookEventCompleted(eventId: string, patientName: string) {
+  const token = await getGraphToken();
+  const url = `https://graph.microsoft.com/v1.0/users/${TARGET_USER}/events/${eventId}`;
+
+  const response = await fetch(url, {
+    method: "PATCH",
+    headers: {
+      Authorization: `Bearer ${token}`,
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      subject: `[COMPLETED] Consultation: ${patientName}`,
+      showAs: "free",
+    }),
+  });
+
+  if (!response.ok) {
+    const err = await response.text();
+    throw new Error(`Failed to mark Outlook event as completed: ${err}`);
+  }
+}
+
+export async function getOutlookCalendarView(startIso: string, endIso: string) {
+  const token = await getGraphToken();
+  const url = `https://graph.microsoft.com/v1.0/users/${TARGET_USER}/calendarView?startDateTime=${startIso}&endDateTime=${endIso}&$orderby=start/dateTime`;
+
+  const response = await fetch(url, {
+    method: "GET",
+    headers: {
+      Authorization: `Bearer ${token}`,
+      Prefer: 'outlook.timezone="Asia/Kolkata"',
+    },
+    // Prevent Next.js from aggressively caching this fetch so the calendar stays fresh
+    next: { revalidate: 0 },
+  });
+
+  if (!response.ok) {
+    const err = await response.text();
+    throw new Error(`Failed to fetch Outlook calendar: ${err}`);
+  }
+
+  const data = await response.json();
+  return data.value;
+}

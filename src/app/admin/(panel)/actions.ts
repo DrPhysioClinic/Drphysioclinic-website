@@ -172,13 +172,24 @@ export async function setLeadStatus(
         }
       }
 
-      // 3. COMPLETED LOGIC (Review Request)
-      if (status === "completed" && appt.email && !appt.review_email_sent) {
-        const { sendReviewRequestEmail } = await import("@/lib/email");
-        const { data: settings } = await supabase.from("settings").select("email").single();
-        const replyTo = settings?.email || "appointments@drphysioclinic.com";
-        await sendReviewRequestEmail(appt.email, appt.patient_name, replyTo);
-        await supabase.from("appointments").update({ review_email_sent: true }).eq("id", id);
+      // 3. COMPLETED LOGIC (Review Request & Calendar Sync)
+      if (status === "completed") {
+        if (appt.outlook_event_id) {
+          try {
+            const { markOutlookEventCompleted } = await import("@/lib/graph");
+            await markOutlookEventCompleted(appt.outlook_event_id, appt.patient_name);
+          } catch (err: any) {
+            console.error("Outlook sync failed on complete:", err);
+          }
+        }
+
+        if (appt.email && !appt.review_email_sent) {
+          const { sendReviewRequestEmail } = await import("@/lib/email");
+          const { data: settings } = await supabase.from("settings").select("email").single();
+          const replyTo = settings?.email || "appointments@drphysioclinic.com";
+          await sendReviewRequestEmail(appt.email, appt.patient_name, replyTo);
+          await supabase.from("appointments").update({ review_email_sent: true }).eq("id", id);
+        }
       }
     }
   }
