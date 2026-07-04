@@ -51,6 +51,11 @@ const nextConfig: NextConfig = {
         destination: '/treatments',
         permanent: true,
       },
+      {
+        source: '/all-treatment/:path*',
+        destination: '/treatments',
+        permanent: true,
+      },
     ];
   },
 };
