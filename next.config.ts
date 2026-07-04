@@ -27,14 +27,28 @@ const nextConfig: NextConfig = {
   },
   async redirects() {
     return [
+      // --- INTERIM LEGACY REDIRECTS (BOOST360) ---
+      // These catch all sub-slugs and route them to the main index pages.
+      // E.g., /treatment/xyz -> /treatments
+      // Full URL-to-URL mapping can be implemented here later.
       {
-        source: '/all-treatment',
+        source: '/treatment/:slug*',
         destination: '/treatments',
         permanent: true,
       },
       {
-        source: '/treatment/:slug',
-        destination: '/treatments/:slug',
+        source: '/latest-update/:slug*',
+        destination: '/updates',
+        permanent: true,
+      },
+      {
+        source: '/page/:slug*',
+        destination: '/',
+        permanent: true,
+      },
+      {
+        source: '/all-treatment',
+        destination: '/treatments',
         permanent: true,
       },
     ];
