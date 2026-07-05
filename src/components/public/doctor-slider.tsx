@@ -94,6 +94,7 @@ export function DoctorSlider({ doctors }: { doctors: Doctor[] }) {
               height={600}
               className="relative z-10 w-full h-full max-h-[700px] max-w-[340px] object-contain object-bottom drop-shadow-[0_20px_20px_rgba(0,0,0,0.4)]"
               style={{ marginBottom: "-1px" }}
+              priority
             />
           </div>
 

@@ -73,6 +73,7 @@ export function SiteHeader({
                 isSolid ? "opacity-100" : "opacity-0"
               }`} 
               priority 
+              unoptimized
             />
           </div>
           <div className="relative flex items-center h-16 w-32 sm:h-20 sm:w-40 ml-1">
@@ -85,6 +86,7 @@ export function SiteHeader({
                 isSolid ? "opacity-0" : "opacity-100"
               }`} 
               priority 
+              unoptimized
             />
             {/* Deep Purple Text Logo (logo-08) */}
             <Image 
@@ -95,6 +97,7 @@ export function SiteHeader({
                 isSolid ? "opacity-100" : "opacity-0"
               }`} 
               priority 
+              unoptimized
             />
           </div>
         </Link>
