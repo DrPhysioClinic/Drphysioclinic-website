@@ -29,6 +29,12 @@ const nextConfig: NextConfig = {
     return [
       // --- TIER 1: SPECIFIC HIGH-VALUE MAPPINGS ---
       // These map to specific new pages for maximum authority transfer.
+      { source: '/updates/say-goodbye-to-hi', destination: '/updates/say-goodbye-to-hip-pain', permanent: true },
+      { source: '/updates/physiotherapy-is-ess', destination: '/updates/physiotherapy-is-essential', permanent: true },
+      { source: '/updates/transform-your-fi', destination: '/updates/transform-your-fitness-story', permanent: true },
+      { source: '/updates/dushyant-bhai-rec', destination: '/updates/dushyant-bhai-recovered', permanent: true },
+      
+      // Old Boost360 specific mappings
       { source: '/treatment/best-knee-pain-physiotherapy-doctors/14', destination: '/treatments/knee-pain-treatment', permanent: true },
       { source: '/latest-update/best-knee-pain-physiotherapy-doctors-in-ahmedabad/28', destination: '/treatments/knee-pain-treatment', permanent: true },
       { source: '/latest-update/best-way-to-try-knee-physiotherapy-in-ahmedabad-w/26', destination: '/treatments/knee-pain-treatment', permanent: true },
