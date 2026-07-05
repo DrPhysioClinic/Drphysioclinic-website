@@ -31,6 +31,11 @@ export async function generateMetadata(): Promise<Metadata> {
       siteName: s.clinic_name,
     },
     robots: { index: true, follow: true },
+    icons: {
+      icon: [
+        { url: '/icon.svg', type: 'image/svg+xml' },
+      ],
+    },
   };
 }
 
