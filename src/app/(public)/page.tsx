@@ -62,11 +62,14 @@ export default async function HomePage() {
 
         <div className="container-page grid w-full gap-8 lg:grid-cols-2 relative z-10 pointer-events-none">
           <div className="flex flex-col justify-center">
-            <AnimatedTitle 
-              text={settings.clinic_name} 
-              as="h1" 
-              className="text-3xl font-bold leading-tight sm:text-4xl lg:text-5xl" 
-            />
+            <h1 className="flex flex-col gap-2">
+              <span className="text-sm font-semibold tracking-wider text-brand-300 uppercase">Top-Rated Physiotherapy Clinic in Ahmedabad</span>
+              <AnimatedTitle 
+                text={settings.clinic_name} 
+                as="span" 
+                className="text-3xl font-bold leading-tight sm:text-4xl lg:text-5xl" 
+              />
+            </h1>
             <div className="mt-6 sm:mt-8 w-full max-w-2xl">
               <div className="flex flex-wrap items-center text-2xl sm:text-3xl lg:text-4xl font-bold tracking-tight">
                 <RotatingText
