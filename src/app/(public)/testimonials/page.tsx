@@ -6,8 +6,8 @@ import { TestimonialCard } from "@/components/public/cards";
 export const revalidate = 3600;
 
 export const metadata: Metadata = {
-  title: "Patient Testimonials",
-  description: "Read what our patients say about their recovery at Dr Physio, Ahmedabad.",
+  title: "Patient Reviews & Recovery Stories",
+  description: "Read why 590+ patients rate Dr Physio 5-stars. Real recovery stories for back pain, sports injuries, and post-surgery rehab in Bopal, Ahmedabad.",
   alternates: { canonical: getCanonicalUrl("/testimonials") },
 };
 

@@ -19,9 +19,9 @@ import {
 export const revalidate = 3600;
 
 export const metadata: Metadata = {
-  title: "Latest Updates & Articles",
+  title: "Physiotherapy Blog & Health Updates",
   description:
-    "Read the latest health tips, clinic updates, and physiotherapy articles from Dr Physio, Bopal.",
+    "Read expert physiotherapy articles, health tips, and clinic updates from Dr Jeetendra Brahmbhatt at Dr Physio in Bopal, Ahmedabad.",
   alternates: { canonical: getCanonicalUrl("/updates") },
 };
 

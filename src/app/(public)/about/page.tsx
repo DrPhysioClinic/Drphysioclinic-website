@@ -8,9 +8,9 @@ export const revalidate = 3600;
 import { getCanonicalUrl } from "@/lib/utils";
 
 export const metadata: Metadata = {
-  title: "About Us | Dr Physio Clinic in Ahmedabad",
+  title: "About Our Physiotherapy Clinic in Bopal, Ahmedabad",
   description:
-    "Learn about Dr Physio Clinic, our expert physiotherapists, and our mission to provide the best physiotherapy care in Bopal, Ahmedabad.",
+    "Learn why Dr Physio is Bopal's highest-rated physiotherapy clinic. Meet Dr Jeetendra Brahmbhatt and discover our expert care for sports injuries and pain relief.",
   alternates: { canonical: getCanonicalUrl("/about") },
 };
 

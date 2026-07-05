@@ -8,9 +8,9 @@ import { telHref, whatsappHref } from "@/lib/constants";
 export const revalidate = 3600;
 
 export const metadata: Metadata = {
-  title: "Contact Us | Dr Physio in Ahmedabad",
+  title: "Contact Our Bopal Physiotherapy Clinic",
   description:
-    "Book an appointment or send an enquiry to Dr Physio, Bopal, Ahmedabad. Address, phone and directions.",
+    "Book your appointment at Dr Physio in Bopal, Ahmedabad. Get directions to our Amrapali Axiom Complex clinic, call us, or request a home visit today.",
   alternates: { canonical: getCanonicalUrl("/contact") },
 };
 

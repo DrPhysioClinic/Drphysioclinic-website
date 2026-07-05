@@ -6,8 +6,8 @@ import { DoctorCard } from "@/components/public/cards";
 export const revalidate = 3600;
 
 export const metadata: Metadata = {
-  title: "Our Doctors",
-  description: "Meet our experienced physiotherapists at Dr Physio, Bopal, Ahmedabad.",
+  title: "Our Expert Physiotherapists in Ahmedabad",
+  description: "Meet Dr Jeetendra Brahmbhatt and our expert team of physiotherapists in Bopal, Ahmedabad. Over 13 years of experience in ortho, neuro, and sports rehab.",
   alternates: { canonical: getCanonicalUrl("/doctors") },
 };
 

@@ -7,8 +7,8 @@ import { JsonLd } from "@/components/json-ld";
 export const revalidate = 3600;
 
 export const metadata: Metadata = {
-  title: "Videos",
-  description: "Exercise demos and patient stories from Dr Physio, Ahmedabad.",
+  title: "Physiotherapy Exercise Videos & Guides",
+  description: "Watch expert physiotherapy exercise demonstrations, sports injury rehab guides, and patient recovery stories from Dr Physio in Bopal.",
   alternates: { canonical: getCanonicalUrl("/videos") },
 };
 

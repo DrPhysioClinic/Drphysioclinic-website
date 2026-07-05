@@ -6,8 +6,8 @@ import { GalleryBrowser } from "@/components/public/gallery-browser";
 export const revalidate = 3600;
 
 export const metadata: Metadata = {
-  title: "Gallery",
-  description: "Photos of our clinic, equipment and treatments at Dr Physio, Ahmedabad.",
+  title: "Clinic Gallery & Facilities in Bopal",
+  description: "Take a virtual tour of our state-of-the-art physiotherapy clinic, fitness studio, and child development center located in Bopal, Ahmedabad.",
   alternates: { canonical: getCanonicalUrl("/gallery") },
 };
 
