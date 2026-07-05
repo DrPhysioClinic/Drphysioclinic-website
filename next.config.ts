@@ -27,35 +27,36 @@ const nextConfig: NextConfig = {
   },
   async redirects() {
     return [
-      // --- INTERIM LEGACY REDIRECTS (BOOST360) ---
-      // These catch all sub-slugs and route them to the main index pages.
-      // E.g., /treatment/xyz -> /treatments
-      // Full URL-to-URL mapping can be implemented here later.
-      {
-        source: '/treatment/:slug*',
-        destination: '/treatments',
-        permanent: true,
-      },
-      {
-        source: '/latest-update/:slug*',
-        destination: '/updates',
-        permanent: true,
-      },
-      {
-        source: '/page/:slug*',
-        destination: '/',
-        permanent: true,
-      },
-      {
-        source: '/all-treatment',
-        destination: '/treatments',
-        permanent: true,
-      },
-      {
-        source: '/all-treatment/:path*',
-        destination: '/treatments',
-        permanent: true,
-      },
+      // --- TIER 1: SPECIFIC HIGH-VALUE MAPPINGS ---
+      // These map to specific new pages for maximum authority transfer.
+      { source: '/treatment/best-knee-pain-physiotherapy-doctors/14', destination: '/treatments/knee-pain-treatment', permanent: true },
+      { source: '/latest-update/best-knee-pain-physiotherapy-doctors-in-ahmedabad/28', destination: '/treatments/knee-pain-treatment', permanent: true },
+      { source: '/latest-update/best-way-to-try-knee-physiotherapy-in-ahmedabad-w/26', destination: '/treatments/knee-pain-treatment', permanent: true },
+      { source: '/latest-update/try-knee-physiotherapy-who-want-to-avoid-knee-su/6', destination: '/treatments/knee-pain-treatment', permanent: true },
+      { source: '/treatment/cupping-therapy/2', destination: '/treatments/cupping-therapy', permanent: true },
+      { source: '/treatment/top-old-age-physiotherapy-senior-citizens/5', destination: '/treatments/old-age-physiotherapy', permanent: true },
+      { source: '/treatment/special-offer-for-senior-citizen/11', destination: '/treatments/old-age-physiotherapy', permanent: true },
+      { source: '/treatment/ahmedabad-top-sports-physiotherapy-clinic/7', destination: '/treatments/ortho-sports-injury-physiotherapy', permanent: true },
+      { source: '/treatment/dr-physio-ahmedabad-s-best-ortho-and-sports-inju/20', destination: '/treatments/ortho-sports-injury-physiotherapy', permanent: true },
+      { source: '/treatment/ahmedabad-s-top-ortho-and-sports-physiotherapist-d/10', destination: '/treatments/ortho-sports-injury-physiotherapy', permanent: true },
+      { source: '/treatment/ortho-physio/8', destination: '/treatments/ortho-sports-injury-physiotherapy', permanent: true },
+      { source: '/latest-update/best-doctors-for-sports-injury-treatment-in-ahmeda/40', destination: '/treatments/ortho-sports-injury-physiotherapy', permanent: true },
+      { source: '/latest-update/best-sports-physiotherapy-doctors-in-ahmedabad-d/42', destination: '/treatments/ortho-sports-injury-physiotherapy', permanent: true },
+      { source: '/all-treatment/7', destination: '/treatments', permanent: true },
+
+      // --- TIER 2: WILDCARD FAMILY CATCH-ALLS ---
+      // These catch any remaining URLs not matched by Tier 1.
+      { source: '/treatment/tag/:slug*', destination: '/treatments', permanent: true },
+      { source: '/treatment/category/:slug*', destination: '/treatments', permanent: true },
+      { source: '/treatment/:slug*', destination: '/treatments', permanent: true },
+      { source: '/latest-update/:slug*', destination: '/updates', permanent: true },
+      { source: '/latest-updates/:slug*', destination: '/updates', permanent: true },
+      { source: '/all-treatment/:slug*', destination: '/treatments', permanent: true },
+      { source: '/page/:slug*', destination: '/', permanent: true },
+      { source: '/pages/:slug*', destination: '/', permanent: true },
+      { source: '/image-gallery/:slug*', destination: '/gallery', permanent: true },
+      { source: '/our-doctors', destination: '/doctors', permanent: true },
+      { source: '/mapview/:slug*', destination: '/contact', permanent: true },
     ];
   },
 };
