@@ -3,7 +3,7 @@ export const SITE_URL =
 
 /** Fallbacks used only if the settings row can't be read (free tier paused, etc.). */
 export const CLINIC_FALLBACK = {
-  clinic_name: "Dr Physio – Ortho & Sports Injury Clinic",
+  clinic_name: "Dr Physio – Physiotherapy, Sports Injury Clinic, Fitness Studio & Child Development Center",
   tagline:
     "Physiotherapy, Sports Injury Clinic, Fitness Studio & Child Development Center",
   phone_primary: "+91 7874837101",

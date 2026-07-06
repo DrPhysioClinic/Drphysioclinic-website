@@ -16,7 +16,7 @@ export default async function PublicLayout({ children }: { children: React.React
   return (
     <ClickSpark sparkColor="#ffffff" sparkSize={10} sparkRadius={20} sparkCount={8} duration={400} extraScale={0.8}>
       <div className="flex min-h-screen flex-col">
-        <SiteHeader clinicName={settings.clinic_name} phone={settings.phone_primary} />
+        <SiteHeader clinicName="Dr Physio" phone={settings.phone_primary} />
         <main className="flex-1 pb-16 md:pb-0">{children}</main>
         <SiteFooter
           settings={{

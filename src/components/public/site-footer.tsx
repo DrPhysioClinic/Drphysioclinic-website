@@ -57,7 +57,7 @@ export function SiteFooter({
             <div className="relative h-45 w-72 mb-2 -mt-4 ml-4">
               <Image 
                 src="/dr-physio-logo-03.png" 
-                alt={settings.clinic_name} 
+                alt="Dr Physio"
                 fill 
                 className="object-contain object-left"
               />
@@ -179,7 +179,7 @@ export function SiteFooter({
         <div className="border-t border-slate-800 py-4 mt-auto">
           <div className="w-full px-4 sm:px-8 flex flex-col sm:flex-row justify-between items-center gap-2 text-sm text-slate-500">
             <p>
-              © {new Date().getFullYear()} {settings.clinic_name}. All rights reserved.
+              © {new Date().getFullYear()} Dr Physio. All rights reserved.
             </p>
             <p>
               Designed by <a href="https://raahildesai.vercel.app/#" target="_blank" rel="noopener noreferrer" className="text-slate-400 hover:text-brand-300 transition-colors font-medium">Raahil Desai</a>

@@ -1,4 +1,4 @@
-# Dr Physio – Ortho & Sports Injury Clinic
+# Dr Physio – Physiotherapy, Sports Injury Clinic, Fitness Studio & Child Development Center
 
 Clinic website + admin portal. **Next.js 15 (App Router) · TypeScript · Tailwind v4 · Supabase**.
 

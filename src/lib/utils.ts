@@ -12,8 +12,10 @@ export function parseTime(timeStr: string | null) { if (!timeStr) return null; r
  * Drops query params and trailing slashes.
  */
 export function getCanonicalUrl(path: string) {
-  // Strip query params if they somehow got passed (usually we just pass pathname)
-  let cleanPath = path.split("?")[0];
+  // Split path from query string
+  const [pathname, search] = path.split("?");
+  let cleanPath = pathname;
+  
   // Strip trailing slash unless it's just "/"
   if (cleanPath !== "/" && cleanPath.endsWith("/")) {
     cleanPath = cleanPath.slice(0, -1);
@@ -27,6 +29,17 @@ export function getCanonicalUrl(path: string) {
   // Ensure path starts with /
   if (!cleanPath.startsWith("/")) cleanPath = "/" + cleanPath;
   
+  // Preserve only the 'page' query parameter
+  let queryString = "";
+  if (search) {
+    const params = new URLSearchParams(search);
+    const page = params.get("page");
+    // Ensure we don't duplicate ?page=1
+    if (page && page !== "1") {
+      queryString = `?page=${page}`;
+    }
+  }
+  
   // Return absolute URL
-  return `${cleanSiteUrl}${cleanPath === "/" ? "" : cleanPath}`;
+  return `${cleanSiteUrl}${cleanPath === "/" ? "" : cleanPath}${queryString}`;
 }

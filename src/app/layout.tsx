@@ -20,7 +20,7 @@ export async function generateMetadata(): Promise<Metadata> {
     metadataBase: new URL(SITE_URL),
     title: {
       default: title,
-      template: `%s | ${s.clinic_name}`,
+      template: `%s | Dr Physio`,
     },
     description,
     openGraph: {

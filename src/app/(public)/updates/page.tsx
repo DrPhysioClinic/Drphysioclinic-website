@@ -18,12 +18,20 @@ import {
 
 export const revalidate = 3600;
 
-export const metadata: Metadata = {
-  title: "Physiotherapy Blog & Health Updates",
-  description:
-    "Read expert physiotherapy articles, health tips, and clinic updates from Dr Jeetendra Brahmbhatt at Dr Physio in Bopal, Ahmedabad.",
-  alternates: { canonical: getCanonicalUrl("/updates") },
-};
+export async function generateMetadata(props: {
+  searchParams: Promise<{ [key: string]: string | string[] | undefined }>
+}): Promise<Metadata> {
+  const searchParams = await props.searchParams;
+  const page = typeof searchParams.page === 'string' ? searchParams.page : undefined;
+  const canonicalPath = page && page !== "1" ? `/updates?page=${page}` : "/updates";
+
+  return {
+    title: "Physiotherapy Blog & Health Updates",
+    description:
+      "Read expert physiotherapy articles, health tips, and clinic updates from Dr Jeetendra Brahmbhatt at Dr Physio in Bopal, Ahmedabad.",
+    alternates: { canonical: getCanonicalUrl(canonicalPath) },
+  };
+}
 
 // Helper for complex pagination logic like MUI
 function generatePagination(currentPage: number, totalPages: number) {

@@ -20,6 +20,9 @@ export default async function TreatmentsPage() {
       <p className="mb-8 mt-2 max-w-2xl text-slate-600">
         We provide evidence-based physiotherapy and rehabilitation in Bopal, Ahmedabad, tailored to your specific recovery needs.
       </p>
+      
+      <h2 className="text-xl font-bold text-slate-900 mb-4">Comprehensive Physiotherapy Services in Ahmedabad</h2>
+      
       <TreatmentsBrowser services={services} categories={categories} />
     </div>
   );

@@ -33,6 +33,14 @@ const nextConfig: NextConfig = {
       { source: '/updates/physiotherapy-is-ess', destination: '/updates/physiotherapy-is-essential', permanent: true },
       { source: '/updates/transform-your-fi', destination: '/updates/transform-your-fitness-story', permanent: true },
       { source: '/updates/dushyant-bhai-rec', destination: '/updates/dushyant-bhai-recovered', permanent: true },
+      { source: '/updates/say-goodbye-to-hip-pain-welcome-to-dr-physio-p', destination: '/updates/say-goodbye-to-hip-pain', permanent: true },
+      { source: '/updates/dr-physio-affordable-home-visit-physiotherap', destination: '/updates/dr-physio-affordable-home-visit-physiotherapy', permanent: true },
+      { source: '/updates/dr-physio-best-physiotherapy-rehab-center-i', destination: '/updates/dr-physio-best-physiotherapy-rehab-center', permanent: true },
+      { source: '/updates/say-goodbye-to-back-pain-get-back-to-living-yo', destination: '/updates/say-goodbye-to-back-pain-get-back-to-living-you', permanent: true },
+      { source: '/updates/battling-chronic-neck-pain-it-s-time-to-take-a', destination: '/updates/battling-chronic-neck-pain-it-s-time-to-take-ac', permanent: true },
+      { source: '/updates/you-re-in-your-40s-and-it-s-the-perfect-time-t', destination: '/updates/never-too-late-to-start-in-your-40s', permanent: true },
+      { source: '/updates/s-never-too-late-to-start-ready-to-feel-bett', destination: '/updates/never-too-late-to-start-in-your-40s', permanent: true },
+      { source: '/updates/dushyant-bhai-recovered-from-severe-neck-pain', destination: '/updates/dushyant-bhai-recovered', permanent: true },
       
       // Old Boost360 specific mappings
       { source: '/treatment/best-knee-pain-physiotherapy-doctors/14', destination: '/treatments/knee-pain-treatment', permanent: true },
@@ -63,6 +71,19 @@ const nextConfig: NextConfig = {
       { source: '/image-gallery/:slug*', destination: '/gallery', permanent: true },
       { source: '/our-doctors', destination: '/doctors', permanent: true },
       { source: '/mapview/:slug*', destination: '/contact', permanent: true },
+    ];
+  },
+  async headers() {
+    return [
+      {
+        source: "/(.*)",
+        headers: [
+          { key: "X-Frame-Options", value: "SAMEORIGIN" },
+          { key: "X-Content-Type-Options", value: "nosniff" },
+          { key: "Referrer-Policy", value: "strict-origin-when-cross-origin" },
+          { key: "Content-Security-Policy-Report-Only", value: "default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://www.youtube.com https://vercel.live; frame-src 'self' https://www.youtube.com; img-src 'self' data: https:; connect-src 'self' https:;" }
+        ]
+      }
     ];
   },
 };

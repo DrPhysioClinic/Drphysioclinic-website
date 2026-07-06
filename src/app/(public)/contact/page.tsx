@@ -31,7 +31,7 @@ export default async function ContactPage() {
         {/* Contact info + map */}
         <div className="space-y-5">
           <div className="card p-5">
-            <h2 className="font-semibold text-slate-900">Clinic Details</h2>
+            <h2 className="font-semibold text-slate-900 text-lg">How to Reach Our Bopal Clinic</h2>
             <p className="mt-2 text-sm text-slate-600">{settings.address}</p>
             <div className="mt-3 flex flex-wrap gap-2">
               <TrackLink

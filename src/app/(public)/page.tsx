@@ -65,7 +65,7 @@ export default async function HomePage() {
             <h1 className="flex flex-col gap-2">
               <span className="text-sm font-semibold tracking-wider text-brand-300 uppercase">Top-Rated Physiotherapy Clinic in Ahmedabad</span>
               <AnimatedTitle 
-                text={settings.clinic_name} 
+                text="Dr Physio" 
                 as="span" 
                 className="text-3xl font-bold leading-tight sm:text-4xl lg:text-5xl" 
               />
@@ -119,6 +119,27 @@ export default async function HomePage() {
               <div className="mt-1 text-sm text-slate-500">{stat.label}</div>
             </div>
           ))}
+        </div>
+      </section>
+
+      {/* AEO Why Choose Us */}
+      <section className="bg-slate-50 py-12">
+        <div className="container-page">
+          <h2 className="section-title text-center mb-8">Why Choose Dr Physio in Bopal?</h2>
+          <div className="grid gap-6 md:grid-cols-3">
+            <div className="bg-white p-6 rounded-xl shadow-sm border border-slate-100 text-center">
+              <h3 className="font-bold text-lg text-brand-700 mb-2">Expert Care</h3>
+              <p className="text-slate-600">Led by Dr. Jeetendra Brahmbhatt with 13+ years of experience in advanced physiotherapy.</p>
+            </div>
+            <div className="bg-white p-6 rounded-xl shadow-sm border border-slate-100 text-center">
+              <h3 className="font-bold text-lg text-brand-700 mb-2">Advanced Facilities</h3>
+              <p className="text-slate-600">State-of-the-art rehab center equipped for sports injuries, neuro, and ortho conditions.</p>
+            </div>
+            <div className="bg-white p-6 rounded-xl shadow-sm border border-slate-100 text-center">
+              <h3 className="font-bold text-lg text-brand-700 mb-2">Highest Rated</h3>
+              <p className="text-slate-600">Trusted by thousands with 590+ 5-star Google reviews from happy patients.</p>
+            </div>
+          </div>
         </div>
       </section>
 
