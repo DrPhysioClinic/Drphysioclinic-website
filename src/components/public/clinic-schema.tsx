@@ -15,8 +15,8 @@ export async function ClinicSchema() {
     "@type": ["MedicalClinic", "Physiotherapy"],
     name: settings.clinic_name,
     url: SITE_URL,
-    logo: settings.logo_url || `${SITE_URL}/favicon.svg`,
-    image: settings.logo_url || `${SITE_URL}/favicon.svg`,
+    logo: settings.logo_url || `${SITE_URL}/dr-physio-logo-03.png`,
+    image: `${SITE_URL}/dr-jeetendra.png`,
     telephone: settings.phone_primary,
     address: {
       "@type": "PostalAddress",
@@ -33,7 +33,6 @@ export async function ClinicSchema() {
     },
     hasMap: "ChIJwSvybs-bXjkRNWGvJbAjZ4g",
     areaServed: ["Bopal", "South Bopal", "Ghuma", "Shela", "Ambli", "Ahmedabad"],
-    medicalSpecialty: "PhysicalTherapy",
     aggregateRating: {
       "@type": "AggregateRating",
       ratingValue: "5.0",
