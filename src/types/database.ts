@@ -182,6 +182,7 @@ export type Database = {
         Row: {
           body: string | null
           created_at: string | null
+          how_to_reach: string | null
           id: string
           is_published: boolean | null
           scheduled_at: string | null
@@ -190,10 +191,12 @@ export type Database = {
           slug: string
           title: string
           updated_at: string | null
+          why_choose_us: string | null
         }
         Insert: {
           body?: string | null
           created_at?: string | null
+          how_to_reach?: string | null
           id?: string
           is_published?: boolean | null
           scheduled_at?: string | null
@@ -202,10 +205,12 @@ export type Database = {
           slug: string
           title: string
           updated_at?: string | null
+          why_choose_us?: string | null
         }
         Update: {
           body?: string | null
           created_at?: string | null
+          how_to_reach?: string | null
           id?: string
           is_published?: boolean | null
           scheduled_at?: string | null
@@ -214,6 +219,7 @@ export type Database = {
           slug?: string
           title?: string
           updated_at?: string | null
+          why_choose_us?: string | null
         }
         Relationships: []
       }
@@ -272,7 +278,22 @@ export type Database = {
           updated_at?: string | null
           when_to_see?: string | null
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: "conditions_author_id_fkey"
+            columns: ["author_id"]
+            isOneToOne: false
+            referencedRelation: "doctors"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "conditions_reviewed_by_fkey"
+            columns: ["reviewed_by"]
+            isOneToOne: false
+            referencedRelation: "doctors"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       doctors: {
         Row: {
@@ -726,13 +747,17 @@ export type Database = {
       testimonials: {
         Row: {
           created_at: string | null
+          google_review_id: string | null
           id: string
           image_url: string | null
           is_featured: boolean | null
           is_published: boolean | null
           patient_name: string
           rating: number | null
+          review_created_at: string | null
+          review_updated_at: string | null
           sort_order: number | null
+          source: string | null
           testimonial: string
           treatment_category: string | null
           updated_at: string | null
@@ -740,13 +765,17 @@ export type Database = {
         }
         Insert: {
           created_at?: string | null
+          google_review_id?: string | null
           id?: string
           image_url?: string | null
           is_featured?: boolean | null
           is_published?: boolean | null
           patient_name: string
           rating?: number | null
+          review_created_at?: string | null
+          review_updated_at?: string | null
           sort_order?: number | null
+          source?: string | null
           testimonial: string
           treatment_category?: string | null
           updated_at?: string | null
@@ -754,13 +783,17 @@ export type Database = {
         }
         Update: {
           created_at?: string | null
+          google_review_id?: string | null
           id?: string
           image_url?: string | null
           is_featured?: boolean | null
           is_published?: boolean | null
           patient_name?: string
           rating?: number | null
+          review_created_at?: string | null
+          review_updated_at?: string | null
           sort_order?: number | null
+          source?: string | null
           testimonial?: string
           treatment_category?: string | null
           updated_at?: string | null
@@ -829,7 +862,22 @@ export type Database = {
           title?: string
           updated_at?: string | null
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: "updates_author_id_fkey"
+            columns: ["author_id"]
+            isOneToOne: false
+            referencedRelation: "doctors"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "updates_reviewed_by_fkey"
+            columns: ["reviewed_by"]
+            isOneToOne: false
+            referencedRelation: "doctors"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       videos: {
         Row: {
@@ -1032,15 +1080,15 @@ export const Constants = {
   },
 } as const
 
-export type Doctor = Database["public"]["Tables"]["doctors"]["Row"];
-export type Service = Database["public"]["Tables"]["services"]["Row"];
-export type Testimonial = Database["public"]["Tables"]["testimonials"]["Row"];
-export type GalleryItem = Database["public"]["Tables"]["gallery"]["Row"];
-export type Update = Database["public"]["Tables"]["updates"]["Row"];
-export type Video = Database["public"]["Tables"]["videos"]["Row"];
-export type InfoPage = Database["public"]["Tables"]["info_pages"]["Row"];
-export type Settings = Database["public"]["Tables"]["settings"]["Row"];
-export type SocialLink = Database["public"]["Tables"]["social_links"]["Row"];
-export type Condition = Database["public"]["Tables"]["conditions"]["Row"];
-export type Area = Database["public"]["Tables"]["areas"]["Row"];
-export type Appointment = Database["public"]["Tables"]["appointments"]["Row"];
+// Helper Types
+export type Doctor = Tables<"doctors">;
+export type Service = Tables<"services">;
+export type Testimonial = Tables<"testimonials">;
+export type GalleryItem = Tables<"gallery">;
+export type Update = Tables<"clinic_updates">;
+export type Video = Tables<"videos">;
+export type InfoPage = Tables<"info_pages">;
+export type Settings = Tables<"settings">;
+export type SocialLink = Tables<"social_links">;
+export type Condition = Tables<"conditions">;
+export type Area = Tables<"areas">;

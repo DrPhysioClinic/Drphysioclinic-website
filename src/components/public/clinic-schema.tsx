@@ -1,9 +1,13 @@
 import { getResolvedSettings, getSocialLinks } from "@/lib/queries";
 import { SITE_URL } from "@/lib/constants";
+import { getAggregateGoogleRating } from "@/lib/reviews/aggregate";
 
 export async function ClinicSchema() {
   const settings = await getResolvedSettings();
   const socialLinks = await getSocialLinks();
+  const googleRating = process.env.REVIEW_SOURCE === 'google' 
+    ? await getAggregateGoogleRating() 
+    : null;
 
   const sameAs = [
     settings.google_maps_url,
@@ -35,8 +39,8 @@ export async function ClinicSchema() {
     areaServed: ["Bopal", "South Bopal", "Ghuma", "Shela", "Ambli", "Ahmedabad"],
     aggregateRating: {
       "@type": "AggregateRating",
-      ratingValue: "5.0",
-      reviewCount: "593",
+      ratingValue: googleRating ? googleRating.ratingValue : "5.0",
+      reviewCount: googleRating ? googleRating.reviewCount : "593",
     },
     priceRange: "₹₹",
     sameAs,

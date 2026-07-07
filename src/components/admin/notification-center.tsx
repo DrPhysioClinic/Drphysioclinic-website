@@ -1,9 +1,9 @@
 "use client";
 
 import { useState, useEffect, useRef } from "react";
-import { IconBell, IconCheck } from "@tabler/icons-react";
+import { IconBell, IconCheck, IconTrash } from "@tabler/icons-react";
 import { createBrowserSupabase } from "@/lib/supabase/client";
-import { markNotificationRead, markAllNotificationsRead } from "@/app/admin/(panel)/notifications-actions";
+import { markNotificationRead, markAllNotificationsRead, clearAllNotifications } from "@/app/admin/(panel)/notifications-actions";
 import { useRouter } from "next/navigation";
 
 export function NotificationCenter() {
@@ -87,6 +87,12 @@ export function NotificationCenter() {
     await markAllNotificationsRead();
   };
 
+  const handleClearAll = async () => {
+    setNotifications([]);
+    setUnreadCount(0);
+    await clearAllNotifications();
+  };
+
   return (
     <div className="relative" ref={ref}>
       <button
@@ -105,14 +111,24 @@ export function NotificationCenter() {
         <div className="absolute right-0 mt-2 w-80 sm:w-96 rounded-xl border border-slate-200 bg-white shadow-xl z-50 overflow-hidden origin-top-right animate-in fade-in zoom-in-95 duration-200">
           <div className="flex items-center justify-between border-b border-slate-100 bg-slate-50/80 px-4 py-3 backdrop-blur-sm">
             <h3 className="font-semibold text-slate-800">Notifications</h3>
-            {unreadCount > 0 && (
-              <button
-                onClick={handleMarkAllRead}
-                className="text-xs font-medium text-brand-600 hover:text-brand-700 flex items-center gap-1 transition-colors"
-              >
-                <IconCheck className="w-3 h-3" /> Mark all read
-              </button>
-            )}
+            <div className="flex items-center gap-3">
+              {unreadCount > 0 && (
+                <button
+                  onClick={handleMarkAllRead}
+                  className="text-xs font-medium text-brand-600 hover:text-brand-700 flex items-center gap-1 transition-colors"
+                >
+                  <IconCheck className="w-3 h-3" /> Mark all read
+                </button>
+              )}
+              {notifications.length > 0 && (
+                <button
+                  onClick={handleClearAll}
+                  className="text-xs font-medium text-red-600 hover:text-red-700 flex items-center gap-1 transition-colors"
+                >
+                  <IconTrash className="w-3 h-3" /> Clear all
+                </button>
+              )}
+            </div>
           </div>
           <div className="max-h-[24rem] overflow-y-auto">
             {notifications.length === 0 ? (

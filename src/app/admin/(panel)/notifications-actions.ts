@@ -29,3 +29,17 @@ export async function markAllNotificationsRead() {
   }
   return { success: true };
 }
+
+export async function clearAllNotifications() {
+  const supabase = await createServerSupabase();
+  const { error } = await supabase
+    .from("notifications")
+    .delete()
+    .neq("id", "00000000-0000-0000-0000-000000000000"); // Deletes all rows
+
+  if (error) {
+    console.error("Failed to clear notifications:", error);
+    return { error: error.message };
+  }
+  return { success: true };
+}
