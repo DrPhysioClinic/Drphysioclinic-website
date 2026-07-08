@@ -8,7 +8,7 @@ import {
   getUpdates,
   getGallery,
 } from "@/lib/queries";
-import { ServiceCard, DoctorCard, TestimonialCard, UpdateCard } from "@/components/public/cards";
+import { ServiceCard, DoctorCard, UpdateCard } from "@/components/public/cards";
 import { NewsletterForm } from "@/components/public/forms";
 import { TrackLink } from "@/components/public/track-link";
 import { JsonLd } from "@/components/json-ld";
@@ -156,16 +156,7 @@ export default async function HomePage() {
       {/* Doctors preview */}
       <DoctorSlider doctors={doctors} />
 
-      {/* Testimonials preview */}
-      {testimonials.length > 0 && (
-        <Section title="What do patients say about our physiotherapy?" href="/testimonials" linkLabel="More reviews">
-          <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
-            {testimonials.slice(0, 3).map((t) => (
-              <TestimonialCard key={t.id} testimonial={t} />
-            ))}
-          </div>
-        </Section>
-      )}
+
 
       {/* Updates preview */}
       {updates.length > 0 && (
@@ -201,7 +192,7 @@ export default async function HomePage() {
       )}
 
       {/* Testimonials Component */}
-      <TestimonialsSection />
+      <TestimonialsSection testimonials={testimonials} />
 
       {/* Contact / location + newsletter */}
       <section className="bg-slate-50">

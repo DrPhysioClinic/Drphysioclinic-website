@@ -2,6 +2,7 @@
 
 import React from "react";
 import Image from "next/image";
+import Link from "next/link";
 import { motion } from "motion/react";
 
 export type Testimonial = {
@@ -34,22 +35,22 @@ export const TestimonialsColumn = (props: {
           ...new Array(2).fill(0).map((_, index) => (
             <React.Fragment key={index}>
               {props.testimonials.map(({ text, image, name, role }, i) => (
-                <div className="p-8 rounded-3xl border border-slate-200 shadow-lg shadow-brand-600/5 bg-white max-w-xs w-full" key={i}>
-                  <div className="text-slate-700 leading-relaxed text-sm">{text}</div>
+                <Link href="/testimonials" className="p-8 rounded-3xl border border-slate-200 shadow-lg shadow-brand-600/5 bg-white max-w-xs w-full block transition-all hover:border-brand-300 hover:shadow-xl group" key={i}>
+                  <div className="text-slate-700 leading-relaxed text-sm line-clamp-5 group-hover:text-slate-900 transition-colors">{text}</div>
                   <div className="flex items-center gap-3 mt-6">
                     <Image
                       width={40}
                       height={40}
                       src={image}
                       alt={name}
-                      className="h-10 w-10 rounded-full object-cover ring-2 ring-brand-50"
+                      className="h-10 w-10 rounded-full object-cover ring-2 ring-slate-100 bg-slate-50"
                     />
                     <div className="flex flex-col">
                       <div className="font-semibold text-slate-900 tracking-tight leading-5">{name}</div>
                       <div className="text-sm text-slate-500 leading-5 tracking-tight">{role}</div>
                     </div>
                   </div>
-                </div>
+                </Link>
               ))}
             </React.Fragment>
           )),

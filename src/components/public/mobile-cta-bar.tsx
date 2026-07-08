@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { telHref, whatsappHref } from "@/lib/constants";
 import { TrackLink } from "@/components/public/track-link";
+import { Phone, MessageCircle, Calendar } from "lucide-react";
 
 /** Sticky bottom bar on mobile: Call · WhatsApp · Book Appointment. */
 export function MobileCtaBar({
@@ -19,7 +20,7 @@ export function MobileCtaBar({
         ariaLabel="Call the clinic"
         className="flex flex-col items-center justify-center gap-0.5 py-2.5 text-xs font-semibold text-brand-700"
       >
-        <span aria-hidden>📞</span>
+        <Phone className="h-4 w-4" />
         Call
       </TrackLink>
       <TrackLink
@@ -30,14 +31,14 @@ export function MobileCtaBar({
         external
         className="flex flex-col items-center justify-center gap-0.5 border-x border-slate-200 py-2.5 text-xs font-semibold text-[#1ba14f]"
       >
-        <span aria-hidden>💬</span>
+        <MessageCircle className="h-4 w-4" />
         WhatsApp
       </TrackLink>
       <Link
         href="/contact#appointment"
         className="flex flex-col items-center justify-center gap-0.5 bg-accent-500 py-2.5 text-xs font-semibold text-white"
       >
-        <span aria-hidden>📅</span>
+        <Calendar className="h-4 w-4" />
         Book
       </Link>
     </div>

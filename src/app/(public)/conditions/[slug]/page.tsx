@@ -11,6 +11,7 @@ import { conditionJsonLd, faqPageJsonLd, breadcrumbJsonLd } from "@/lib/seo";
 import { AuthorByline } from "@/components/public/author-byline";
 import { MedicalReview } from "@/components/public/medical-review";
 import { getDoctors } from "@/lib/queries";
+import { MessageCircle } from "lucide-react";
 
 
 export const revalidate = 3600;
@@ -143,9 +144,9 @@ export default async function ConditionDetailPage({
               eventType="whatsapp_click"
               sourcePage={`/conditions/${conditionData.slug}`}
               external
-              className="btn-outline mt-2 w-full"
+              className="btn-outline mt-2 w-full flex items-center justify-center gap-1.5"
             >
-              💬 Ask on WhatsApp
+              <MessageCircle className="h-4 w-4" /> Ask on WhatsApp
             </TrackLink>
           </div>
         </aside>

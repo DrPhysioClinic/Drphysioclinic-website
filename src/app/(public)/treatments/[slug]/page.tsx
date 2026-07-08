@@ -11,6 +11,7 @@ import { ExpandableImage } from "@/components/ui/expandable-image";
 import { JsonLd } from "@/components/json-ld";
 import { treatmentJsonLd, serviceFaqPageJsonLd } from "@/lib/seo";
 import { whatsappHref } from "@/lib/constants";
+import { MessageCircle } from "lucide-react";
 import type { Doctor } from "@/types/database";
 
 export const revalidate = 3600;
@@ -166,9 +167,9 @@ export default async function TreatmentDetailPage({
               eventType="whatsapp_click"
               sourcePage={`/treatments/${service.slug}`}
               external
-              className="btn-outline mt-2 w-full"
+              className="btn-outline mt-2 w-full flex items-center justify-center gap-1.5"
             >
-              💬 Ask on WhatsApp
+              <MessageCircle className="h-4 w-4" /> Ask on WhatsApp
             </TrackLink>
           </div>
 

@@ -8,6 +8,7 @@ import { TrackLink } from "@/components/public/track-link";
 import { whatsappHref, SITE_URL } from "@/lib/constants";
 import { JsonLd } from "@/components/json-ld";
 import { areaJsonLd, breadcrumbJsonLd } from "@/lib/seo";
+import { MessageCircle } from "lucide-react";
 
 
 export const revalidate = 3600;
@@ -101,9 +102,9 @@ export default async function AreaDetailPage({
               eventType="whatsapp_click"
               sourcePage={`/areas/${areaData.slug}`}
               external
-              className="btn-outline mt-2 w-full"
+              className="btn-outline mt-2 w-full flex items-center justify-center gap-1.5"
             >
-              💬 Ask on WhatsApp
+              <MessageCircle className="h-4 w-4" /> Ask on WhatsApp
             </TrackLink>
           </div>
         </aside>

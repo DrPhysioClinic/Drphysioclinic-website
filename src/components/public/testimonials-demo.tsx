@@ -3,68 +3,31 @@
 import { TestimonialsColumn } from "@/components/ui/testimonials-columns-1";
 import { motion } from "motion/react";
 
-const testimonials = [
-  {
-    text: "The physiotherapy sessions completely healed my chronic back pain. The staff is professional, caring, and truly listens to your body's needs.",
-    image: "https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=100&h=100&fit=crop&crop=faces",
-    name: "Priya Sharma",
-    role: "Patient",
-  },
-  {
-    text: "Recovering from my sports injury was tough, but the expert guidance here got me back on the field much faster than expected.",
-    image: "https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=100&h=100&fit=crop&crop=faces",
-    name: "Rahul Verma",
-    role: "Athlete",
-  },
-  {
-    text: "Exceptional care! They use the latest techniques and the clinic environment is incredibly soothing and clean.",
-    image: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=100&h=100&fit=crop&crop=faces",
-    name: "Anjali Gupta",
-    role: "Patient",
-  },
-  {
-    text: "My posture has improved dramatically. The tailored exercise plans and consistent check-ins made all the difference.",
-    image: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100&h=100&fit=crop&crop=faces",
-    name: "Karan Patel",
-    role: "IT Professional",
-  },
-  {
-    text: "I was struggling with knee pain for years. Just a few sessions in, and I already feel a massive reduction in pain.",
-    image: "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=100&h=100&fit=crop&crop=faces",
-    name: "Neha Singh",
-    role: "Patient",
-  },
-  {
-    text: "They don't just treat the symptoms; they find the root cause. I finally have a pain-free life thanks to their dedicated team.",
-    image: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=100&h=100&fit=crop&crop=faces",
-    name: "Vikram Malhotra",
-    role: "Patient",
-  },
-  {
-    text: "The post-surgery rehabilitation was perfectly paced. I regained my mobility safely and with complete confidence in my body.",
-    image: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=100&h=100&fit=crop&crop=faces",
-    name: "Simran Kaur",
-    role: "Patient",
-  },
-  {
-    text: "Highly recommended! The therapists are very knowledgeable and took the time to explain every step of my recovery.",
-    image: "https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?w=100&h=100&fit=crop&crop=faces",
-    name: "Arjun Reddy",
-    role: "Patient",
-  },
-  {
-    text: "A truly holistic approach to wellness. The combination of manual therapy and exercise has changed my life.",
-    image: "https://images.unsplash.com/photo-1531746020798-e6953c6e8e04?w=100&h=100&fit=crop&crop=faces",
-    name: "Meera Desai",
-    role: "Patient",
-  },
-];
+import type { Testimonial as DBTestimonial } from "@/types/database";
 
-const firstColumn = testimonials.slice(0, 3);
-const secondColumn = testimonials.slice(3, 6);
-const thirdColumn = testimonials.slice(6, 9);
+export const TestimonialsSection = ({ testimonials = [] }: { testimonials?: DBTestimonial[] }) => {
+  const mappedTestimonials = testimonials.map(t => ({
+    text: t.testimonial,
+    image: t.image_url || "data:image/svg+xml;utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23cbd5e1'%3E%3Cpath d='M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z'/%3E%3C/svg%3E", // Fallback image
+    name: t.patient_name,
+    role: t.treatment_category || "Patient",
+  }));
 
-export const TestimonialsSection = () => {
+  // Duplicate testimonials if we don't have enough to fill the scrolling columns
+  const displayTestimonials = mappedTestimonials.length >= 9 
+    ? mappedTestimonials 
+    : [...mappedTestimonials, ...mappedTestimonials, ...mappedTestimonials].slice(0, Math.max(9, mappedTestimonials.length * 3));
+
+  // If there are no testimonials at all, fallback to a single empty item or handle gracefully
+  if (displayTestimonials.length === 0) {
+    return null; // Or return a fallback UI
+  }
+
+  const itemsPerColumn = Math.ceil(displayTestimonials.length / 3);
+  const firstColumn = displayTestimonials.slice(0, itemsPerColumn);
+  const secondColumn = displayTestimonials.slice(itemsPerColumn, itemsPerColumn * 2);
+  const thirdColumn = displayTestimonials.slice(itemsPerColumn * 2);
+
   return (
     <section className="bg-slate-50 py-20 relative overflow-hidden border-t border-slate-200">
       <div className="container-page relative z-10">

@@ -4,6 +4,7 @@ import { getResolvedSettings, getServices } from "@/lib/queries";
 import { AppointmentForm, EnquiryForm } from "@/components/public/forms";
 import { TrackLink } from "@/components/public/track-link";
 import { telHref, whatsappHref } from "@/lib/constants";
+import { Phone, MessageCircle } from "lucide-react";
 
 export const revalidate = 3600;
 
@@ -40,7 +41,8 @@ export default async function ContactPage() {
                 sourcePage="/contact"
                 className="btn-primary"
               >
-                📞 {settings.phone_primary}
+                <Phone className="h-4 w-4" />
+                {settings.phone_primary}
               </TrackLink>
               <TrackLink
                 href={whatsappHref(settings.whatsapp_number, "Hi, I'd like to book an appointment.")}
@@ -49,7 +51,8 @@ export default async function ContactPage() {
                 external
                 className="btn-outline"
               >
-                💬 WhatsApp
+                <MessageCircle className="h-4 w-4" />
+                WhatsApp
               </TrackLink>
             </div>
             <a
