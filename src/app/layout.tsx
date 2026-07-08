@@ -1,14 +1,24 @@
 import type { Metadata } from "next";
-import { Outfit, Playfair_Display, Geist } from "next/font/google";
+import { Outfit, Playfair_Display, Bitter, Instrument_Serif } from "next/font/google";
 import "./globals.css";
 import { getResolvedSettings } from "@/lib/queries";
 import { SITE_URL } from "@/lib/constants";
 import { cn } from "@/lib/utils";
 
-const geist = Geist({subsets:['latin'],variable:'--font-sans'});
+const bitter = Bitter({
+  subsets: ['latin'],
+  style: ['normal', 'italic'],
+  variable: '--font-sans',
+});
 
 const playfair = Playfair_Display({
   variable: "--font-playfair",
+  subsets: ["latin"],
+});
+
+const instrumentSerif = Instrument_Serif({
+  weight: "400",
+  variable: "--font-instrument",
   subsets: ["latin"],
 });
 
@@ -43,8 +53,8 @@ import { LogoLoader } from "@/components/ui/logo-loader";
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html lang="en" className={cn("font-sans", geist.variable)}>
-      <body className={`${geist.variable} ${playfair.variable} antialiased`}>
+    <html lang="en" className={cn("font-sans", bitter.variable)}>
+      <body className={`${bitter.variable} ${playfair.variable} ${instrumentSerif.variable} antialiased`}>
         {children}
         <LogoLoader />
       </body>

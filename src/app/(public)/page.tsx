@@ -85,13 +85,13 @@ export default async function HomePage() {
                   ]}
                   mainClassName="px-5 sm:px-6 bg-brand-400 text-white overflow-hidden py-2 sm:py-3 rounded-2xl shadow-2xl shadow-brand-400/40 border border-brand-300/20"
                   staggerFrom="first"
-                  initial={{ y: "100%" }}
-                  animate={{ y: 0 }}
-                  exit={{ y: "-120%" }}
+                  initial={{ y: "150%", opacity: 0 }}
+                  animate={{ y: 0, opacity: 1 }}
+                  exit={{ y: "-150%", opacity: 0 }}
                   staggerDuration={0.025}
                   splitLevelClassName="overflow-hidden pb-1 sm:pb-2"
                   transition={{ type: "spring", damping: 30, stiffness: 400 }}
-                  rotationInterval={2000}
+                  rotationInterval={2500}
                   animatePresenceMode="popLayout"
                 />
               </div>
