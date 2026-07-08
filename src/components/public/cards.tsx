@@ -50,7 +50,7 @@ export function ServiceCard({ service, hidePrice, redirectToList }: { service: S
             <p className="mt-2 line-clamp-2 text-sm text-slate-600 flex-1">{service.short_description}</p>
           )}
           <div className="mt-6 flex justify-end transition-transform duration-300 group-hover:-translate-y-1">
-            <span className="inline-flex items-center gap-1 rounded-full bg-brand-600 px-4 py-2 text-xs font-semibold text-white shadow-[0_0_15px_rgba(43,39,117,0.6)] transition-all group-hover:bg-brand-700 group-hover:shadow-[0_0_25px_rgba(43,39,117,0.8)]">
+            <span className="inline-flex items-center gap-1 rounded-full bg-brand-600 px-4 py-2 text-xs font-semibold text-white transition-all group-hover:bg-brand-700 group-hover:shadow-[0_0_25px_rgba(43,39,117,0.8)]">
               Read More <span aria-hidden="true">&rarr;</span>
             </span>
           </div>
@@ -135,7 +135,7 @@ export function UpdateCard({ update, redirectToList }: { update: Update, redirec
             <p className="mt-2 line-clamp-2 text-sm text-slate-600 flex-1">{update.excerpt}</p>
           )}
           <div className="mt-6 flex justify-end transition-transform duration-300 group-hover:-translate-y-1">
-            <span className="inline-flex items-center gap-1 rounded-full bg-brand-600 px-4 py-2 text-xs font-semibold text-white shadow-[0_0_15px_rgba(43,39,117,0.6)] transition-all group-hover:bg-brand-700 group-hover:shadow-[0_0_25px_rgba(43,39,117,0.8)]">
+            <span className="inline-flex items-center gap-1 rounded-full bg-brand-600 px-4 py-2 text-xs font-semibold text-white transition-all group-hover:bg-brand-700 group-hover:shadow-[0_0_25px_rgba(43,39,117,0.8)]">
               Read More <span aria-hidden="true">&rarr;</span>
             </span>
           </div>

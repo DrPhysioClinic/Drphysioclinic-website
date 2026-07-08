@@ -52,8 +52,8 @@ export function SiteHeader({
       }`}
     >
       <div className="w-full px-4 md:px-8 relative flex h-16 items-center">
-        <Link href="/" className="flex items-center z-10">
-          <div className="relative flex items-center h-10 w-10 sm:h-12 sm:w-12">
+        <Link href="/" className="flex items-center z-10 h-full max-h-16">
+          <div className="relative flex items-center h-10 w-10 sm:h-12 sm:w-12 shrink-0">
             {/* White Icon (logo-13) */}
             <Image 
               src="/icon-white-v2.svg" 
@@ -76,7 +76,7 @@ export function SiteHeader({
               unoptimized
             />
           </div>
-          <div className="relative flex items-center h-16 w-32 sm:h-20 sm:w-40 ml-1">
+          <div className="relative flex items-center h-16 w-32 sm:h-20 sm:w-40 ml-1 pointer-events-none">
             {/* White Text Logo (logo-10) */}
             <Image 
               src="/logo-white-v2.svg" 

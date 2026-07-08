@@ -17,13 +17,17 @@ export function DoctorSlider({ doctors }: { doctors: Doctor[] }) {
   const showNav = doctors.length > 1;
 
   const handleNext = () => {
-    setDirection(1);
-    setCurrentIndex((prev) => (prev + 1) % doctors.length);
+    if (currentIndex < doctors.length - 1) {
+      setDirection(1);
+      setCurrentIndex((prev) => prev + 1);
+    }
   };
 
   const handlePrev = () => {
-    setDirection(-1);
-    setCurrentIndex((prev) => (prev - 1 + doctors.length) % doctors.length);
+    if (currentIndex > 0) {
+      setDirection(-1);
+      setCurrentIndex((prev) => prev - 1);
+    }
   };
 
   const currentDoctor = doctors[currentIndex];
@@ -49,24 +53,28 @@ export function DoctorSlider({ doctors }: { doctors: Doctor[] }) {
     <section className="w-full relative overflow-hidden bg-brand-600">
       {showNav && (
         <>
-          <div className="absolute inset-y-0 left-0 z-20 flex items-center px-4">
-            <button
-              onClick={handlePrev}
-              className="rounded-full bg-black/20 p-3 text-white backdrop-blur-md transition-colors hover:bg-black/40"
-              aria-label="Previous Doctor"
-            >
-              <IconChevronLeft size={28} />
-            </button>
-          </div>
-          <div className="absolute inset-y-0 right-0 z-20 flex items-center px-4">
-            <button
-              onClick={handleNext}
-              className="rounded-full bg-black/20 p-3 text-white backdrop-blur-md transition-colors hover:bg-black/40"
-              aria-label="Next Doctor"
-            >
-              <IconChevronRight size={28} />
-            </button>
-          </div>
+          {currentIndex > 0 && (
+            <div className="absolute inset-y-0 left-0 z-20 flex items-center px-4">
+              <button
+                onClick={handlePrev}
+                className="rounded-full bg-black/20 p-3 text-white backdrop-blur-md transition-colors hover:bg-black/40"
+                aria-label="Previous Doctor"
+              >
+                <IconChevronLeft size={28} />
+              </button>
+            </div>
+          )}
+          {currentIndex < doctors.length - 1 && (
+            <div className="absolute inset-y-0 right-0 z-20 flex items-center px-4">
+              <button
+                onClick={handleNext}
+                className="rounded-full bg-black/20 p-3 text-white backdrop-blur-md transition-colors hover:bg-black/40"
+                aria-label="Next Doctor"
+              >
+                <IconChevronRight size={28} />
+              </button>
+            </div>
+          )}
         </>
       )}
 
@@ -121,7 +129,7 @@ export function DoctorSlider({ doctors }: { doctors: Doctor[] }) {
             
             <Link 
               href={`/doctors/${currentDoctor.slug}`} 
-              className="inline-flex w-fit items-center font-bold text-teal-500 hover:text-teal-400 transition-colors uppercase tracking-widest text-sm"
+              className="inline-flex w-fit items-center font-bold text-brand-600 hover:text-brand-400 transition-colors uppercase tracking-widest text-sm"
             >
               More about {currentDoctor.name || "Doctor"} <span className="ml-2">→</span>
             </Link>

@@ -59,7 +59,7 @@ export default async function ContactPage() {
               href={directionsUrl}
               target="_blank"
               rel="noopener noreferrer"
-              className="mt-3 inline-block text-sm font-semibold text-brand-600 hover:text-brand-700"
+              className="mt-3 inline-block text-sm font-semibold text-brand-600 hover:text-brand-400 transition-colors"
             >
               Get Directions →
             </a>

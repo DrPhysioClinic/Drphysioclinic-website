@@ -56,10 +56,10 @@ export default async function UpdateDetailPage({
   return (
     <article className="container-page max-w-3xl pt-28 pb-12">
       <JsonLd data={updateJsonLd(update, settings.clinic_name)} />
-      <Link href="/updates" className="text-sm text-brand-600 hover:text-brand-700">
+      <Link href="/updates" className="text-sm font-semibold text-brand-600 hover:text-brand-400 transition-colors mb-4 inline-block">
         ← All updates
       </Link>
-      <h1 className="mt-4 text-3xl font-bold text-slate-900">{update.title}</h1>
+      <h1 className="text-3xl font-bold text-slate-900">{update.title}</h1>
       <div className="mt-4 border-b border-slate-200 pb-4">
         <AuthorByline author={author} />
         <MedicalReview reviewer={reviewer} reviewedAt={updateData.reviewed_at} />

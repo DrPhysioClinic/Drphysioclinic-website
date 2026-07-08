@@ -40,12 +40,15 @@ function Honeypot() {
   );
 }
 
-function SubmitButton({ label }: { label: string }) {
+import { Button as StatefulButton } from "@/components/ui/stateful-button";
+
+function SubmitButton({ label, state }: { label: string; state?: FormState }) {
   const { pending } = useFormStatus();
+  const hasError = state ? !state.ok && !!state.message : false;
   return (
-    <button type="submit" formNoValidate disabled={pending} className="btn-primary w-full">
-      {pending ? "Submitting…" : label}
-    </button>
+    <StatefulButton type="submit" formNoValidate disabled={pending} className="w-full" error={hasError}>
+      {label}
+    </StatefulButton>
   );
 }
 
@@ -169,7 +172,7 @@ export function AppointmentForm({
       </label>
       <TurnstileWidget />
       <Notice state={state} />
-      <SubmitButton label="Request Appointment" />
+      <SubmitButton label="Request Appointment" state={state} />
     </form>
   );
 }
@@ -213,7 +216,7 @@ export function EnquiryForm({ sourcePage = "/contact" }: { sourcePage?: string }
       </div>
       <TurnstileWidget />
       <Notice state={state} />
-      <SubmitButton label="Send Message" />
+      <SubmitButton label="Send Message" state={state} />
     </form>
   );
 }

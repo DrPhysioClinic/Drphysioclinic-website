@@ -187,8 +187,8 @@ body {
   }
 }
 @keyframes pulse-glow-whatsapp {
-  0%, 100% { box-shadow: 0 0 15px rgba(37,211,102,0.4); }
-  50% { box-shadow: 0 0 30px rgba(37,211,102,0.9); }
+  0%, 100% { box-shadow: 0 0 10px rgba(37,211,102,0.2); }
+  50% { box-shadow: 0 0 20px rgba(37,211,102,0.5); }
 }
 .animate-pulse-glow-whatsapp {
   animation: pulse-glow-whatsapp 1.5s ease-in-out infinite;

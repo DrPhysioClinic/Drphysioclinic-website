@@ -19,8 +19,8 @@ import Image from "next/image";
 import { AnimatedCounter } from "@/components/ui/animated-counter";
 import { TestimonialsSection } from "@/components/public/testimonials-demo";
 import { AnimatedTitle } from "@/components/ui/animated-title";
-import { Hero3DModel } from "@/components/public/hero-3d-model";
 import RotatingText from "@/components/ui/RotatingText";
+import Threads from "@/components/ui/Threads";
 import { HeroVisibilityTracker } from "@/components/public/hero-visibility-tracker";
 import { HeroBookAppointmentButton } from "@/components/public/hero-book-appointment-button";
 import { getCanonicalUrl } from "@/lib/utils";
@@ -55,9 +55,13 @@ export default async function HomePage() {
       {/* Hero */}
       <section className="relative flex min-h-[100dvh] items-center bg-[#17153f] pt-16 text-white pb-12 overflow-hidden">
         
-        {/* 3D Background Spanning Entire Section */}
-        <div className="absolute inset-0 z-0">
-          <Hero3DModel />
+        {/* Threads Background Spanning Entire Section */}
+        <div className="absolute inset-0 z-0 opacity-50">
+          <Threads
+            amplitude={2}
+            distance={0.3}
+            enableMouseInteraction={false}
+          />
         </div>
 
         <div className="container-page grid w-full gap-8 lg:grid-cols-2 relative z-10 pointer-events-none">
@@ -79,12 +83,12 @@ export default async function HomePage() {
                     "Fitness studio",
                     "Child development centre"
                   ]}
-                  mainClassName="px-5 sm:px-6 bg-brand-500 text-white overflow-hidden py-2 sm:py-3 rounded-2xl shadow-2xl shadow-brand-500/40 border border-brand-400/20"
+                  mainClassName="px-5 sm:px-6 bg-brand-400 text-white overflow-hidden py-2 sm:py-3 rounded-2xl shadow-2xl shadow-brand-400/40 border border-brand-300/20"
                   staggerFrom="first"
                   initial={{ y: "100%" }}
                   animate={{ y: 0 }}
                   exit={{ y: "-120%" }}
-                  staggerDuration={0.03}
+                  staggerDuration={0.025}
                   splitLevelClassName="overflow-hidden pb-1 sm:pb-2"
                   transition={{ type: "spring", damping: 30, stiffness: 400 }}
                   rotationInterval={2000}
@@ -256,7 +260,7 @@ function Section({
       <div className="container-page py-14">
         <div className="mb-6 flex items-end justify-between">
           <AnimatedTitle text={title} className="section-title" />
-          <Link href={href} className="text-sm font-semibold text-brand-600 hover:text-brand-700">
+          <Link href={href} className="text-sm font-semibold text-brand-600 hover:text-brand-400 transition-colors">
             {linkLabel} →
           </Link>
         </div>
