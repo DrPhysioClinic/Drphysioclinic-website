@@ -1092,3 +1092,4 @@ export type Settings = Tables<"settings">;
 export type SocialLink = Tables<"social_links">;
 export type Condition = Tables<"conditions">;
 export type Area = Tables<"areas">;
+export type Appointment = Tables<"appointments">;
