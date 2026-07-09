@@ -16,12 +16,14 @@ export function clinicJsonLd(s: ResolvedSettings, logoUrl?: string | null) {
   return {
     "@context": "https://schema.org",
     "@type": ["MedicalClinic", "Physiotherapy"],
+    "@id": `${SITE_URL}/#clinic`,
     name: s.clinic_name,
     description: s.tagline,
     url: SITE_URL,
     telephone: s.phone_primary,
     email: s.email,
     image: logoUrl || undefined,
+    logo: logoUrl ? { "@type": "ImageObject", url: logoUrl } : undefined,
     address: {
       "@type": "PostalAddress",
       streetAddress: s.address,
@@ -102,11 +104,11 @@ export function updateJsonLd(update: Update, clinicName: string, author?: Doctor
     datePublished: update.published_at || update.created_at,
     dateModified: update.updated_at,
     url: `${SITE_URL}/updates/${update.slug}`,
-    publisher: { 
-      "@type": "MedicalClinic", 
-      name: clinicName,
-      url: SITE_URL
+    mainEntityOfPage: {
+      "@type": "WebPage",
+      "@id": `${SITE_URL}/updates/${update.slug}`
     },
+    publisher: { "@id": `${SITE_URL}/#clinic` },
     ...(author && {
       author: {
         "@type": "Physician",

@@ -4,6 +4,7 @@ import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { createServerSupabase } from "@/lib/supabase/server";
 import type { SaveState } from "@/app/admin/(panel)/form-state";
+import { sanitizeHtml } from "@/lib/sanitize";
 
 // ---------- parse helpers ----------
 const str = (fd: FormData, k: string) => {
@@ -352,7 +353,7 @@ export async function saveUpdate(_prev: SaveState, fd: FormData): Promise<SaveSt
     title,
     slug: new_slug,
     excerpt: str(fd, "excerpt"),
-    content: str(fd, "content"),
+    content: str(fd, "content") ? sanitizeHtml(str(fd, "content") as string) : null,
     image_url: str(fd, "image_url"),
     tags: list(fd, "tags"),
     category: str(fd, "category"),

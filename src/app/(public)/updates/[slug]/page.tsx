@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { notFound, redirect } from "next/navigation";
+import { notFound, permanentRedirect } from "next/navigation";
 import Image from "next/image";
 import Link from "next/link";
 import { getUpdateBySlug, getUpdates, getResolvedSettings, getDoctors } from "@/lib/queries";
@@ -10,6 +10,7 @@ import { updateJsonLd } from "@/lib/seo";
 import { AuthorByline } from "@/components/public/author-byline";
 import { MedicalReview } from "@/components/public/medical-review";
 import { UpdateCard } from "@/components/public/cards";
+import { sanitizeHtml } from "@/lib/sanitize";
 
 export const revalidate = 3600;
 
@@ -76,7 +77,7 @@ export default async function UpdateDetailPage({
     const { data: redir } = await supabase.from("slug_redirects")
       .select("new_slug").eq("entity_type", "update").eq("old_slug", slug).maybeSingle();
     if (redir && redir.new_slug) {
-      redirect(`/updates/${redir.new_slug}`);
+      permanentRedirect(`/updates/${redir.new_slug}`);
     }
     notFound();
   }
@@ -132,7 +133,7 @@ export default async function UpdateDetailPage({
       {update.content && (
         <div 
           className="prose prose-slate mt-6 max-w-none text-slate-700"
-          dangerouslySetInnerHTML={{ __html: update.content || "" }}
+          dangerouslySetInnerHTML={{ __html: sanitizeHtml(update.content) || "" }}
         />
       )}
       {update.tags && update.tags.length > 0 && (
