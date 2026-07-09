@@ -105,7 +105,7 @@ export function TestimonialCard({ testimonial }: { testimonial: Testimonial }) {
   );
 }
 
-export function UpdateCard({ update, redirectToList }: { update: Update, redirectToList?: boolean }) {
+export function UpdateCard({ update, redirectToList, author }: { update: Update, redirectToList?: boolean, author?: Doctor }) {
   return (
     <Link href={redirectToList ? "/updates" : `/updates/${update.slug}`} className="group block h-full outline-none focus-visible:ring-2 focus-visible:ring-brand-500 rounded-[28px] border border-slate-200 overflow-hidden shadow-sm hover:shadow-md">
       <CutoutCard className={`${cutoutCardSurfaceClassName} h-full flex flex-col isolate bg-white`}>
@@ -129,12 +129,20 @@ export function UpdateCard({ update, redirectToList }: { update: Update, redirec
             </CutoutCardPin>
           )}
         </CutoutCardMedia>
-        <CutoutCardContent className="flex flex-col isolate flex-1 pb-6">
+        <CutoutCardContent className="flex flex-col isolate flex-1 pb-6 pt-2">
+          {update.category && (
+            <span className="text-[10px] font-bold uppercase tracking-wider text-brand-600 mb-2">
+              {update.category}
+            </span>
+          )}
           <h3 className="font-semibold text-slate-900 line-clamp-2">{update.title}</h3>
           {update.excerpt && (
             <p className="mt-2 line-clamp-2 text-sm text-slate-600 flex-1">{update.excerpt}</p>
           )}
-          <div className="mt-6 flex justify-end transition-transform duration-300 group-hover:-translate-y-1">
+          <div className="mt-6 flex items-center justify-between transition-transform duration-300 group-hover:-translate-y-1">
+            <span className="text-[11px] font-medium text-slate-500">
+              {author ? `By ${author.name}` : ""}
+            </span>
             <span className="inline-flex items-center gap-1 rounded-full bg-brand-600 px-4 py-2 text-xs font-semibold text-white transition-all group-hover:bg-brand-700 group-hover:shadow-[0_0_25px_rgba(43,39,117,0.8)]">
               Read More <span aria-hidden="true">&rarr;</span>
             </span>

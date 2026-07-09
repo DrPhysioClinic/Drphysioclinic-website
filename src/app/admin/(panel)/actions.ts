@@ -344,14 +344,21 @@ export async function saveUpdate(_prev: SaveState, fd: FormData): Promise<SaveSt
   const id = str(fd, "id");
   const title = str(fd, "title");
   if (!title) return { error: "Title is required." };
+  
+  const original_slug = str(fd, "original_slug");
+  const new_slug = str(fd, "slug") || slugify(title);
 
   const payload = {
     title,
-    slug: str(fd, "slug") || slugify(title),
+    slug: new_slug,
     excerpt: str(fd, "excerpt"),
     content: str(fd, "content"),
     image_url: str(fd, "image_url"),
     tags: list(fd, "tags"),
+    category: str(fd, "category"),
+    author_id: str(fd, "author_id"),
+    reviewed_by: str(fd, "reviewed_by"),
+    reviewed_at: str(fd, "reviewed_at"),
     seo_title: str(fd, "seo_title"),
     seo_description: str(fd, "seo_description"),
     published_at: str(fd, "published_at"),
@@ -361,10 +368,22 @@ export async function saveUpdate(_prev: SaveState, fd: FormData): Promise<SaveSt
   };
 
   const supabase = await createServerSupabase();
-  const { error } = id
-    ? await supabase.from("updates").update(payload).eq("id", id)
-    : await supabase.from("updates").insert(payload);
-  if (error) return { error: error.message };
+
+  if (id) {
+    // If updating, and slug changed, and it was previously published (or is currently published), log redirect
+    if (original_slug && original_slug !== new_slug) {
+      await supabase.from("slug_redirects").insert({
+        entity_type: "update",
+        old_slug: original_slug,
+        new_slug: new_slug
+      });
+    }
+    const { error } = await supabase.from("updates").update(payload).eq("id", id);
+    if (error) return { error: error.message };
+  } else {
+    const { error } = await supabase.from("updates").insert(payload);
+    if (error) return { error: error.message };
+  }
 
   revalidatePublic();
   redirect("/admin/updates");

@@ -65,7 +65,7 @@ export default async function AreaDetailPage({
 
           <div 
             className="prose prose-slate mt-6 max-w-none text-slate-700"
-            dangerouslySetInnerHTML={{ __html: areaData.body }}
+            dangerouslySetInnerHTML={{ __html: areaData.body || "" }}
           />
 
           <div className="mt-12 space-y-8">
@@ -74,7 +74,7 @@ export default async function AreaDetailPage({
                 <h2 className="text-xl font-bold text-slate-900">Why choose us in {areaData.title}?</h2>
                 <div 
                   className="prose prose-slate mt-3 max-w-none text-slate-700"
-                  dangerouslySetInnerHTML={{ __html: areaData.why_choose_us }}
+                  dangerouslySetInnerHTML={{ __html: areaData.why_choose_us || "" }}
                 />
               </div>
             )}
@@ -84,7 +84,7 @@ export default async function AreaDetailPage({
                 <h2 className="text-xl font-bold text-slate-900">How to reach our clinic?</h2>
                 <div 
                   className="prose prose-slate mt-3 max-w-none text-slate-700"
-                  dangerouslySetInnerHTML={{ __html: areaData.how_to_reach }}
+                  dangerouslySetInnerHTML={{ __html: areaData.how_to_reach || "" }}
                 />
               </div>
             )}

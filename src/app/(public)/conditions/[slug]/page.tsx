@@ -106,7 +106,7 @@ export default async function ConditionDetailPage({
                 <h2 className="text-xl font-bold text-slate-900">What are the common symptoms?</h2>
                 <div 
                   className="prose prose-slate mt-3 max-w-none text-slate-700"
-                  dangerouslySetInnerHTML={{ __html: conditionData.symptoms }}
+                  dangerouslySetInnerHTML={{ __html: conditionData.symptoms || "" }}
                 />
               </div>
             )}
@@ -116,7 +116,7 @@ export default async function ConditionDetailPage({
                 <h2 className="text-xl font-bold text-slate-900">How do we treat this condition?</h2>
                 <div 
                   className="prose prose-slate mt-3 max-w-none text-slate-700"
-                  dangerouslySetInnerHTML={{ __html: conditionData.treatment }}
+                  dangerouslySetInnerHTML={{ __html: conditionData.treatment || "" }}
                 />
               </div>
             )}
@@ -126,7 +126,7 @@ export default async function ConditionDetailPage({
                 <h2 className="text-xl font-bold text-slate-900">When should you see a physiotherapist?</h2>
                 <div 
                   className="prose prose-slate mt-3 max-w-none text-slate-700"
-                  dangerouslySetInnerHTML={{ __html: conditionData.when_to_see }}
+                  dangerouslySetInnerHTML={{ __html: conditionData.when_to_see || "" }}
                 />
               </div>
             )}

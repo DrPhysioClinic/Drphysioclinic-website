@@ -93,7 +93,7 @@ export default async function DoctorDetailPage({
           {doctor.bio && (
             <div 
               className="prose prose-slate mt-5 max-w-none text-slate-700" 
-              dangerouslySetInnerHTML={{ __html: doctor.bio }} 
+              dangerouslySetInnerHTML={{ __html: doctor.bio || "" }} 
             />
           )}
           <Link href="/contact#appointment" className="btn-accent mt-6">

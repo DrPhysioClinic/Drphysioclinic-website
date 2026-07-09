@@ -801,9 +801,35 @@ export type Database = {
         }
         Relationships: []
       }
+      slug_redirects: {
+        Row: {
+          id: string
+          entity_type: string
+          old_slug: string
+          new_slug: string
+          created_at: string
+        }
+        Insert: {
+          id?: string
+          entity_type: string
+          old_slug: string
+          new_slug: string
+          created_at?: string
+        }
+        Update: {
+          id?: string
+          entity_type?: string
+          old_slug?: string
+          new_slug?: string
+          created_at?: string
+        }
+        Relationships: []
+      }
+
       updates: {
         Row: {
           author_id: string | null
+          category: string | null
           content: string | null
           created_at: string | null
           excerpt: string | null
@@ -824,6 +850,7 @@ export type Database = {
         }
         Insert: {
           author_id?: string | null
+          category?: string | null
           content?: string | null
           created_at?: string | null
           excerpt?: string | null
@@ -844,6 +871,7 @@ export type Database = {
         }
         Update: {
           author_id?: string | null
+          category?: string | null
           content?: string | null
           created_at?: string | null
           excerpt?: string | null

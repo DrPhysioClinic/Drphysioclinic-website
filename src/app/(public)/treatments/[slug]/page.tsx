@@ -105,7 +105,7 @@ export default async function TreatmentDetailPage({
           {service.full_description && (
             <div 
               className="prose prose-slate mt-6 max-w-none text-slate-700"
-              dangerouslySetInnerHTML={{ __html: service.full_description }}
+              dangerouslySetInnerHTML={{ __html: service.full_description || "" }}
             />
           )}
 

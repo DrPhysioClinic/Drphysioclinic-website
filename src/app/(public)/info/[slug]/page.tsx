@@ -36,7 +36,7 @@ export default async function InfoPage({ params }: { params: Promise<{ slug: str
       {page.content && (
         <div 
           className="prose prose-slate mt-6 max-w-none text-slate-700"
-          dangerouslySetInnerHTML={{ __html: page.content }}
+          dangerouslySetInnerHTML={{ __html: page.content || "" }}
         />
       )}
     </article>

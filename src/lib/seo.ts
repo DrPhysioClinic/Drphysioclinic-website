@@ -92,17 +92,35 @@ export function treatmentJsonLd(service: Service, clinicName: string) {
 }
 
 /** schema.org BlogPosting for updates. */
-export function updateJsonLd(update: Update, clinicName: string) {
+export function updateJsonLd(update: Update, clinicName: string, author?: Doctor, reviewer?: Doctor) {
   return {
     "@context": "https://schema.org",
-    "@type": "BlogPosting",
-    headline: update.title,
-    description: update.excerpt || undefined,
+    "@type": "Article",
+    headline: update.seo_title || update.title,
+    description: update.seo_description || update.excerpt || undefined,
     image: update.image_url || undefined,
     datePublished: update.published_at || update.created_at,
     dateModified: update.updated_at,
     url: `${SITE_URL}/updates/${update.slug}`,
-    publisher: { "@type": "Organization", name: clinicName },
+    publisher: { 
+      "@type": "MedicalClinic", 
+      name: clinicName,
+      url: SITE_URL
+    },
+    ...(author && {
+      author: {
+        "@type": "Physician",
+        name: author.name,
+        url: `${SITE_URL}/doctors/${author.slug}`
+      }
+    }),
+    ...(reviewer && {
+      reviewedBy: {
+        "@type": "Physician",
+        name: reviewer.name,
+        url: `${SITE_URL}/doctors/${reviewer.slug}`
+      }
+    }),
   };
 }
 

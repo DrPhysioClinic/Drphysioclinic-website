@@ -51,7 +51,14 @@ export default async function UpdatesPage(props: {
   searchParams: Promise<{ [key: string]: string | string[] | undefined }>
 }) {
   const searchParams = await props.searchParams;
-  const updates = await getUpdates();
+  let updates = await getUpdates();
+  const doctors = await import("@/lib/queries").then(m => m.getDoctors());
+  
+  const categoryParam = typeof searchParams.category === 'string' ? searchParams.category : undefined;
+  
+  if (categoryParam) {
+    updates = updates.filter(u => u.category === categoryParam);
+  }
 
   const pageParam = typeof searchParams.page === 'string' ? parseInt(searchParams.page) : 1;
   const currentPage = isNaN(pageParam) || pageParam < 1 ? 1 : pageParam;
@@ -60,23 +67,45 @@ export default async function UpdatesPage(props: {
   const totalPages = Math.ceil(updates.length / ITEMS_PER_PAGE);
   
   if (currentPage > totalPages && totalPages > 0) {
-    redirect("/updates");
+    redirect("/updates" + (categoryParam ? `?category=${categoryParam}` : ""));
   }
 
   const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
   const currentUpdates = updates.slice(startIndex, startIndex + ITEMS_PER_PAGE);
 
   const paginationRange = generatePagination(currentPage, totalPages);
+  
+  const CATEGORIES = ["Conditions & Recovery", "Exercise & Prevention", "Clinic News"];
 
   return (
     <div className="container-page pt-28 pb-12">
       <h1 className="section-title">Updates &amp; Health Tips</h1>
+      
+      <div className="mt-8 flex flex-wrap gap-2 items-center">
+        <span className="text-sm font-medium text-slate-500 mr-2">Filter:</span>
+        <Link 
+          href="/updates" 
+          className={`px-4 py-2 rounded-full text-sm font-medium transition-colors ${!categoryParam ? 'bg-brand-600 text-white' : 'bg-slate-100 text-slate-600 hover:bg-slate-200'}`}
+        >
+          All
+        </Link>
+        {CATEGORIES.map(c => (
+          <Link 
+            key={c}
+            href={`/updates?category=${encodeURIComponent(c)}`} 
+            className={`px-4 py-2 rounded-full text-sm font-medium transition-colors ${categoryParam === c ? 'bg-brand-600 text-white' : 'bg-slate-100 text-slate-600 hover:bg-slate-200'}`}
+          >
+            {c}
+          </Link>
+        ))}
+      </div>
+
       <div className="mt-8 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
         {currentUpdates.map((u) => (
-          <UpdateCard key={u.id} update={u} />
+          <UpdateCard key={u.id} update={u} author={doctors.find(d => d.id === u.author_id)} />
         ))}
         {currentUpdates.length === 0 && (
-          <p className="col-span-full text-slate-500">No updates published yet.</p>
+          <p className="col-span-full text-slate-500">No updates found for this category.</p>
         )}
       </div>
 
