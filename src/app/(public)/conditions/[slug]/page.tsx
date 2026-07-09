@@ -95,35 +95,39 @@ export default async function ConditionDetailPage({
             )}
           </div>
 
-          <div className="prose prose-slate mt-6 max-w-none whitespace-pre-line text-slate-700">
-            {conditionData.body}
-          </div>
+          <div 
+            className="prose prose-slate mt-6 max-w-none text-slate-700"
+            dangerouslySetInnerHTML={{ __html: conditionData.body || "" }}
+          />
 
           <div className="mt-12 space-y-8">
             {conditionData.symptoms && (
               <div>
                 <h2 className="text-xl font-bold text-slate-900">What are the common symptoms?</h2>
-                <div className="prose prose-slate mt-3 max-w-none whitespace-pre-line text-slate-700">
-                  {conditionData.symptoms}
-                </div>
+                <div 
+                  className="prose prose-slate mt-3 max-w-none text-slate-700"
+                  dangerouslySetInnerHTML={{ __html: conditionData.symptoms }}
+                />
               </div>
             )}
             
             {conditionData.treatment && (
               <div>
                 <h2 className="text-xl font-bold text-slate-900">How do we treat this condition?</h2>
-                <div className="prose prose-slate mt-3 max-w-none whitespace-pre-line text-slate-700">
-                  {conditionData.treatment}
-                </div>
+                <div 
+                  className="prose prose-slate mt-3 max-w-none text-slate-700"
+                  dangerouslySetInnerHTML={{ __html: conditionData.treatment }}
+                />
               </div>
             )}
 
             {conditionData.when_to_see && (
               <div>
                 <h2 className="text-xl font-bold text-slate-900">When should you see a physiotherapist?</h2>
-                <div className="prose prose-slate mt-3 max-w-none whitespace-pre-line text-slate-700">
-                  {conditionData.when_to_see}
-                </div>
+                <div 
+                  className="prose prose-slate mt-3 max-w-none text-slate-700"
+                  dangerouslySetInnerHTML={{ __html: conditionData.when_to_see }}
+                />
               </div>
             )}
           </div>

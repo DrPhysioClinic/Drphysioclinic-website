@@ -90,7 +90,12 @@ export default async function DoctorDetailPage({
             <p className="mt-3 text-slate-700">{doctor.specialization}</p>
           )}
           <DoctorCredentials doctor={doctor} />
-          {doctor.bio && <p className="mt-5 whitespace-pre-line text-slate-700">{doctor.bio}</p>}
+          {doctor.bio && (
+            <div 
+              className="prose prose-slate mt-5 max-w-none text-slate-700" 
+              dangerouslySetInnerHTML={{ __html: doctor.bio }} 
+            />
+          )}
           <Link href="/contact#appointment" className="btn-accent mt-6">
             Book an Appointment
           </Link>

@@ -93,9 +93,10 @@ export default async function UpdateDetailPage({
         </div>
       )}
       {update.content && (
-        <div className="prose prose-slate mt-6 max-w-none whitespace-pre-line text-slate-700">
-          {update.content}
-        </div>
+        <div 
+          className="prose prose-slate mt-6 max-w-none text-slate-700"
+          dangerouslySetInnerHTML={{ __html: update.content }}
+        />
       )}
       {update.tags && update.tags.length > 0 && (
         <div className="mt-6 flex flex-wrap gap-2">

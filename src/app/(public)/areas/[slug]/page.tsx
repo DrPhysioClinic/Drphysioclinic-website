@@ -63,26 +63,29 @@ export default async function AreaDetailPage({
         <div>
           <h1 className="mt-1 text-2xl font-bold text-slate-900 sm:text-3xl">{areaData.title}</h1>
 
-          <div className="prose prose-slate mt-6 max-w-none whitespace-pre-line text-slate-700">
-            {areaData.body}
-          </div>
+          <div 
+            className="prose prose-slate mt-6 max-w-none text-slate-700"
+            dangerouslySetInnerHTML={{ __html: areaData.body }}
+          />
 
           <div className="mt-12 space-y-8">
             {areaData.why_choose_us && (
               <div>
                 <h2 className="text-xl font-bold text-slate-900">Why choose us in {areaData.title}?</h2>
-                <div className="prose prose-slate mt-3 max-w-none whitespace-pre-line text-slate-700">
-                  {areaData.why_choose_us}
-                </div>
+                <div 
+                  className="prose prose-slate mt-3 max-w-none text-slate-700"
+                  dangerouslySetInnerHTML={{ __html: areaData.why_choose_us }}
+                />
               </div>
             )}
             
             {areaData.how_to_reach && (
               <div>
                 <h2 className="text-xl font-bold text-slate-900">How to reach our clinic?</h2>
-                <div className="prose prose-slate mt-3 max-w-none whitespace-pre-line text-slate-700">
-                  {areaData.how_to_reach}
-                </div>
+                <div 
+                  className="prose prose-slate mt-3 max-w-none text-slate-700"
+                  dangerouslySetInnerHTML={{ __html: areaData.how_to_reach }}
+                />
               </div>
             )}
           </div>

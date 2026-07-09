@@ -103,9 +103,10 @@ export default async function TreatmentDetailPage({
           </div>
 
           {service.full_description && (
-            <div className="prose prose-slate mt-6 max-w-none whitespace-pre-line text-slate-700">
-              {service.full_description}
-            </div>
+            <div 
+              className="prose prose-slate mt-6 max-w-none text-slate-700"
+              dangerouslySetInnerHTML={{ __html: service.full_description }}
+            />
           )}
 
           {(service.gallery_urls?.length ?? 0) > 0 && (
