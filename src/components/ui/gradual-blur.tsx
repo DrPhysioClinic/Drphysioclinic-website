@@ -40,31 +40,31 @@ const PRESETS = {
 };
 
 const CURVE_FUNCTIONS = {
-  linear: p => p,
-  bezier: p => p * p * (3 - 2 * p),
-  'ease-in': p => p * p,
-  'ease-out': p => 1 - Math.pow(1 - p, 2),
-  'ease-in-out': p => (p < 0.5 ? 2 * p * p : 1 - Math.pow(-2 * p + 2, 2) / 2)
+  linear: (p: number) => p,
+  bezier: (p: number) => p * p * (3 - 2 * p),
+  'ease-in': (p: number) => p * p,
+  'ease-out': (p: number) => 1 - Math.pow(1 - p, 2),
+  'ease-in-out': (p: number) => (p < 0.5 ? 2 * p * p : 1 - Math.pow(-2 * p + 2, 2) / 2)
 };
 
-const mergeConfigs = (...configs) => configs.reduce((acc, c) => ({ ...acc, ...c }), {});
-const getGradientDirection = position =>
+const mergeConfigs = (...configs: any[]) => configs.reduce((acc, c) => ({ ...acc, ...c }), {});
+const getGradientDirection = (position: string) =>
   ({
     top: 'to top',
     bottom: 'to bottom',
     left: 'to left',
     right: 'to right'
-  })[position] || 'to bottom';
+  })[position as keyof typeof getGradientDirection] || 'to bottom';
 
-const debounce = (fn, wait) => {
-  let t;
-  return (...a) => {
+const debounce = (fn: Function, wait: number) => {
+  let t: ReturnType<typeof setTimeout>;
+  return (...args: any[]) => {
     clearTimeout(t);
-    t = setTimeout(() => fn(...a), wait);
+    t = setTimeout(() => fn(...args), wait);
   };
 };
 
-const useResponsiveDimension = (responsive, config, key) => {
+const useResponsiveDimension = (responsive: boolean, config: any, key: string) => {
   const [value, setValue] = useState(config[key]);
   useEffect(() => {
     if (!responsive) return;
@@ -87,7 +87,7 @@ const useResponsiveDimension = (responsive, config, key) => {
   return responsive ? value : config[key];
 };
 
-const useIntersectionObserver = (ref, shouldObserve = false) => {
+const useIntersectionObserver = (ref: any, shouldObserve = false) => {
   const [isVisible, setIsVisible] = useState(!shouldObserve);
 
   useEffect(() => {
@@ -102,12 +102,12 @@ const useIntersectionObserver = (ref, shouldObserve = false) => {
   return isVisible;
 };
 
-export function GradualBlur(props) {
+export function GradualBlur(props: any) {
   const containerRef = useRef(null);
   const [isHovered, setIsHovered] = useState(false);
 
   const config = useMemo(() => {
-    const presetConfig = props.preset && PRESETS[props.preset] ? PRESETS[props.preset] : {};
+    const presetConfig = props.preset && PRESETS[props.preset as keyof typeof PRESETS] ? PRESETS[props.preset as keyof typeof PRESETS] : {};
     return mergeConfigs(DEFAULT_CONFIG, presetConfig, props);
   }, [props]);
 
@@ -122,7 +122,7 @@ export function GradualBlur(props) {
     const currentStrength =
       isHovered && config.hoverIntensity ? config.strength * config.hoverIntensity : config.strength;
 
-    const curveFunc = CURVE_FUNCTIONS[config.curve] || CURVE_FUNCTIONS.linear;
+    const curveFunc = CURVE_FUNCTIONS[config.curve as keyof typeof CURVE_FUNCTIONS] || CURVE_FUNCTIONS.linear;
 
     for (let i = 1; i <= config.divCount; i++) {
       let progress = i / config.divCount;
