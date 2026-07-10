@@ -82,7 +82,7 @@ export function SiteHeader({
               src="/logo-white-v2.svg" 
               alt={clinicName} 
               fill
-              className={`object-contain object-left transition-all duration-300 scale-[2] sm:scale-[2.5] origin-[left_center] drop-shadow-md ${
+              className={`object-contain object-left transition-all duration-300 scale-[2.5] sm:scale-[2.5] origin-[left_center] drop-shadow-md ${
                 isSolid ? "opacity-0" : "opacity-100"
               }`} 
               priority 
@@ -93,7 +93,7 @@ export function SiteHeader({
               src="/logo-primary-v2.svg" 
               alt={clinicName} 
               fill
-              className={`object-contain object-left transition-all duration-300 scale-[2] sm:scale-[2.5] origin-[left_center] ${
+              className={`object-contain object-left transition-all duration-300 scale-[2.5] sm:scale-[2.5] origin-[left_center] ${
                 isSolid ? "opacity-100" : "opacity-0"
               }`} 
               priority 

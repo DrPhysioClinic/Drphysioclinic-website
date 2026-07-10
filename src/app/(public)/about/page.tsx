@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { getResolvedSettings, getDoctors } from "@/lib/queries";
 import { DoctorCard } from "@/components/public/cards";
+import GradualBlur from "@/components/ui/gradual-blur";
 
 export const revalidate = 3600;
 
@@ -17,7 +18,7 @@ export const metadata: Metadata = {
 export default async function AboutPage() {
   const [settings, doctors] = await Promise.all([getResolvedSettings(), getDoctors()]);
   return (
-    <div className="container-page pt-28 pb-12">
+    <div className="container-page pt-28 pb-12 relative">
       <h1 className="section-title">Why choose Dr Physio for your recovery?</h1>
       <p className="mt-4 max-w-3xl text-slate-700">{settings.tagline}</p>
       <p className="mt-4 max-w-3xl text-slate-600">
@@ -56,12 +57,24 @@ export default async function AboutPage() {
         </div>
       </div>
 
-      <div className="mt-12 rounded-xl bg-brand-50 p-8 text-center">
+      <div className="mt-12 rounded-xl bg-brand-50 p-8 text-center mb-12">
         <h2 className="text-xl font-bold text-brand-800">Ready to start your recovery?</h2>
         <Link href="/contact#appointment" className="btn-accent mt-4">
           Book an Appointment
         </Link>
       </div>
+
+      <GradualBlur
+        target="page"
+        position="bottom"
+        height="4rem"
+        strength={2}
+        divCount={5}
+        curve="bezier"
+        exponential={true}
+        opacity={1}
+        zIndex={-100}
+      />
     </div>
   );
 }

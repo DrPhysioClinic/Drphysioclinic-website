@@ -40,7 +40,7 @@ export function SiteFooter({
   socialLinks: SocialLink[];
 }) {
   return (
-    <footer className="mt-16 border-t border-slate-200 bg-[#17153f] text-slate-300 relative w-full min-h-[40vh] flex flex-col">
+    <footer className="mt-16 border-t border-slate-200 bg-[#17153f] text-slate-300 relative w-full min-h-[40vh] flex flex-col z-50">
       {/* Watermark Background */}
       <div className="absolute inset-0 z-0 flex sm:items-center sm:justify-center pointer-events-none select-none overflow-hidden">
         <span 

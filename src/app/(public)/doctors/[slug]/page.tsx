@@ -77,10 +77,10 @@ export default async function DoctorDetailPage({
 
         </div>
         <div>
-          <div className="flex items-center justify-between w-full">
+          <div className="flex items-start sm:items-center justify-between w-full">
             <h1 className="text-2xl font-bold text-slate-900 sm:text-3xl">{doctor.name}</h1>
-            <div className="text-brand-700 w-16 h-16 flex-shrink-0 relative flex items-center justify-center pointer-events-none mt-1 mr-4">
-              <SpinningText radius={7.5} duration={12} className="text-[12px] uppercase font-bold tracking-widest opacity-80">
+            <div className="text-brand-700 w-16 h-16 flex-shrink-0 relative flex items-center justify-center pointer-events-none mr-10 sm:mr-0 -mt-16  sm:mt-1">
+              <SpinningText radius={5} duration={12} className="text-[12px] uppercase font-bold tracking-widest opacity-80">
                 grow more • heal more • care more • 
               </SpinningText>
             </div>
@@ -91,10 +91,34 @@ export default async function DoctorDetailPage({
           )}
           <DoctorCredentials doctor={doctor} />
           {doctor.bio && (
-            <div 
-              className="prose prose-slate mt-5 max-w-none text-slate-700" 
-              dangerouslySetInnerHTML={{ __html: doctor.bio || "" }} 
-            />
+            <div className="mt-5 text-slate-700 space-y-4">
+              {(() => {
+                if (doctor.bio.includes('<') && doctor.bio.includes('>')) {
+                  return <div dangerouslySetInnerHTML={{ __html: doctor.bio }} className="space-y-4" />;
+                }
+                
+                // Normalize any accidental line breaks from copy-pasting
+                let normalizedBio = doctor.bio.replace(/\n+/g, ' ');
+                
+                // Manual overrides for specific text breaks
+                normalizedBio = normalizedBio.replace(/She had aslo worked/i, '\n\nShe had aslo worked');
+
+                // If the bio has actual line breaks now, split by them
+                if (normalizedBio.includes('\n')) {
+                  return normalizedBio.split(/\n+/).map((para, i) => para.trim() ? <p key={i}>{para}</p> : null);
+                }
+
+                // Otherwise, intelligently chunk it into paragraphs of ~3 sentences each
+                const sentences = normalizedBio.split(/(?<!Dr|Mr|Mrs|Ms|Prof|Sr|Jr)\.\s+/);
+                const paragraphs = [];
+                for (let i = 0; i < sentences.length; i += 3) {
+                  let chunk = sentences.slice(i, i + 3).join('. ');
+                  if (!chunk.endsWith('.')) chunk += '.';
+                  paragraphs.push(chunk);
+                }
+                return paragraphs.map((para, i) => para.trim() !== '.' ? <p key={i}>{para}</p> : null);
+              })()}
+            </div>
           )}
           <Link href="/contact#appointment" className="btn-accent mt-6">
             Book an Appointment

@@ -16,9 +16,9 @@ import {
   cutoutCardSurfaceClassName,
 } from "@/components/ui/cutout-card";
 
-export function ServiceCard({ service, hidePrice, redirectToList }: { service: Service, hidePrice?: boolean, redirectToList?: boolean }) {
+export function ServiceCard({ service, hidePrice, redirectToList, className }: { service: Service, hidePrice?: boolean, redirectToList?: boolean, className?: string }) {
   return (
-    <Link href={redirectToList ? "/treatments" : `/treatments/${service.slug}`} className="group block h-full outline-none focus-visible:ring-2 focus-visible:ring-brand-500 rounded-[28px] border border-slate-200 overflow-hidden shadow-sm hover:shadow-md">
+    <Link href={redirectToList ? "/treatments" : `/treatments/${service.slug}`} className={`group block h-full outline-none focus-visible:ring-2 focus-visible:ring-brand-500 rounded-[28px] border border-slate-200 overflow-hidden shadow-sm hover:shadow-md ${className || ''}`}>
       <CutoutCard className={`${cutoutCardSurfaceClassName} h-full flex flex-col isolate bg-white`}>
         <CutoutCardMedia className="relative h-48 w-full shrink-0">
           <CutoutCardImage

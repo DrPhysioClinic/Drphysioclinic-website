@@ -148,10 +148,10 @@ export default async function HomePage() {
       </section>
 
       {/* Services preview */}
-      <Section title="What conditions do we treat?" href="/treatments" linkLabel="View all treatments">
+      <Section title="What conditions do we treat?" href="/treatments" linkLabel="View all">
         <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
-          {services.map((s) => (
-            <ServiceCard key={s.id} service={s} hidePrice={true} redirectToList={true} />
+          {services.map((s, idx) => (
+            <ServiceCard key={s.id} service={s} hidePrice={true} redirectToList={true} className={idx >= 4 ? "hidden sm:block" : ""} />
           ))}
           {services.length === 0 && <EmptyNote label="treatments" />}
         </div>
@@ -258,9 +258,9 @@ function Section({
   return (
     <section className={muted ? "bg-slate-50" : "bg-white"}>
       <div className="container-page py-14">
-        <div className="mb-6 flex items-end justify-between">
+        <div className="mb-6 flex items-end justify-between gap-4">
           <AnimatedTitle text={title} className="section-title" />
-          <Link href={href} className="text-sm font-semibold text-brand-600 hover:text-brand-400 transition-colors">
+          <Link href={href} className="shrink-0 mb-1 text-sm font-semibold text-brand-600 hover:text-brand-400 transition-colors">
             {linkLabel} →
           </Link>
         </div>
