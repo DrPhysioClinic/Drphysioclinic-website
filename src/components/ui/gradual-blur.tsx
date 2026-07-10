@@ -146,7 +146,7 @@ export function GradualBlur(props: any) {
 
       const direction = getGradientDirection(config.position);
 
-      const divStyle = {
+      const divStyle: React.CSSProperties = {
         position: 'absolute',
         inset: '0',
         maskImage: `linear-gradient(${direction}, ${gradient})`,
@@ -171,7 +171,7 @@ export function GradualBlur(props: any) {
     const isHorizontal = ['left', 'right'].includes(config.position);
     const isPageTarget = config.target === 'page';
 
-    const baseStyle = {
+    const baseStyle: React.CSSProperties = {
       position: isPageTarget ? 'fixed' : 'absolute',
       pointerEvents: config.hoverIntensity ? 'auto' : 'none',
       opacity: isVisible ? 1 : 0,
@@ -183,13 +183,13 @@ export function GradualBlur(props: any) {
     if (isVertical) {
       baseStyle.height = responsiveHeight;
       baseStyle.width = responsiveWidth || '100%';
-      baseStyle[config.position] = 0;
+      (baseStyle as any)[config.position] = 0;
       baseStyle.left = 0;
       baseStyle.right = 0;
     } else if (isHorizontal) {
       baseStyle.width = responsiveWidth || responsiveHeight;
       baseStyle.height = '100%';
-      baseStyle[config.position] = 0;
+      (baseStyle as any)[config.position] = 0;
       baseStyle.top = 0;
       baseStyle.bottom = 0;
     }
@@ -229,7 +229,7 @@ export function GradualBlur(props: any) {
   );
 }
 
-const GradualBlurMemo = React.memo(GradualBlur);
+const GradualBlurMemo = React.memo(GradualBlur) as any;
 GradualBlurMemo.displayName = 'GradualBlur';
 GradualBlurMemo.PRESETS = PRESETS;
 GradualBlurMemo.CURVE_FUNCTIONS = CURVE_FUNCTIONS;
