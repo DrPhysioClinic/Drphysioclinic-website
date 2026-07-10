@@ -23,7 +23,7 @@ export default async function ContactPage() {
 
   return (
     <div className="container-page pt-28 pb-12">
-      <h1 className="section-title">Contact Us</h1>
+      <h1 className="section-title">Let's Map Your Next Move</h1>
       <p className="mt-2 max-w-2xl text-slate-600">
         Book an appointment, send an enquiry, or visit us in Bopal, Ahmedabad.
       </p>
@@ -59,9 +59,12 @@ export default async function ContactPage() {
               href={directionsUrl}
               target="_blank"
               rel="noopener noreferrer"
-              className="mt-3 inline-block text-sm font-semibold text-brand-600 hover:text-brand-400 transition-colors"
+              className="group mt-3 inline-flex items-center text-sm font-semibold text-brand-600 hover:text-brand-400 transition-colors"
             >
-              Get Directions →
+              Get Directions
+              <span className="ml-1 transition-transform duration-300 group-hover:rotate-90">
+                →
+              </span>
             </a>
           </div>
 

@@ -1,6 +1,5 @@
 import { SiteHeader } from "@/components/public/site-header";
 import { SiteFooter } from "@/components/public/site-footer";
-import { MobileCtaBar } from "@/components/public/mobile-cta-bar";
 import { WhatsAppButton } from "@/components/public/whatsapp-button";
 import { getResolvedSettings, getSocialLinks } from "@/lib/queries";
 import { PageTracker } from "@/components/public/page-tracker";
@@ -17,7 +16,7 @@ export default async function PublicLayout({ children }: { children: React.React
     <ClickSpark sparkColor="#ffffff" sparkSize={10} sparkRadius={20} sparkCount={8} duration={400} extraScale={0.8}>
       <div className="flex min-h-screen flex-col">
         <SiteHeader clinicName="Dr Physio" phone={settings.phone_primary} />
-        <main className="flex-1 pb-16 md:pb-0">{children}</main>
+        <main className="flex-1">{children}</main>
         <SiteFooter
           settings={{
             clinic_name: settings.clinic_name,
@@ -29,7 +28,7 @@ export default async function PublicLayout({ children }: { children: React.React
           }}
           socialLinks={socialLinks}
         />
-        <MobileCtaBar phone={settings.phone_primary} whatsappNumber={settings.whatsapp_number} />
+
         <WhatsAppButton whatsappNumber={settings.whatsapp_number} />
         <PageTracker />
         <ClinicSchema />

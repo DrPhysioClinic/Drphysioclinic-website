@@ -42,10 +42,10 @@ export function SiteFooter({
   return (
     <footer className="mt-16 border-t border-slate-200 bg-[#17153f] text-slate-300 relative w-full min-h-[40vh] flex flex-col">
       {/* Watermark Background */}
-      <div className="absolute inset-0 z-0 flex items-center justify-center pointer-events-none select-none overflow-hidden">
+      <div className="absolute inset-0 z-0 flex sm:items-center sm:justify-center pointer-events-none select-none overflow-hidden">
         <span 
           style={{ fontFamily: "var(--font-playfair), serif" }}
-          className="text-[18.5vw] font-bold tracking-normal whitespace-nowrap text-white/5"
+          className="font-bold tracking-[-0.1em] sm:tracking-normal whitespace-nowrap text-white/5 [writing-mode:vertical-rl] [text-orientation:upright] sm:[writing-mode:horizontal-tb] sm:[text-orientation:mixed] text-[23.5vw] absolute right-0 top-[320px] sm:relative sm:top-auto sm:right-auto"
         >
           DR PHYSIO
         </span>
@@ -53,13 +53,13 @@ export function SiteFooter({
 
       <div className="relative z-10 flex flex-1 flex-col justify-between">
         <div className="container-page flex flex-col sm:grid sm:grid-cols-2 lg:flex lg:flex-row lg:flex-nowrap lg:justify-between gap-12 lg:gap-8 xl:gap-20 py-12">
-          <div>
-            <div className="relative h-45 w-72 mb-2 -mt-4 ml-4">
+          <div className="flex flex-col items-center sm:block text-center sm:text-left">
+            <div className="relative h-45 w-72 mb-2 -mt-4 sm:ml-4">
               <Image 
                 src="/dr-physio-logo-03.png" 
                 alt="Dr Physio"
                 fill 
-                className="object-contain object-left"
+                className="object-contain object-center sm:object-left"
               />
             </div>
             <p className="mt-2 text-base text-slate-400">
@@ -164,8 +164,8 @@ export function SiteFooter({
                     <div className="shrink-0 relative z-10 bg-[#17153f] rounded-md">
                       {getSocialIcon(s.platform)}
                     </div>
-                    <div className="absolute left-full top-1/2 -translate-y-1/2 ml-2 pointer-events-none flex items-center">
-                      <div className="overflow-hidden whitespace-nowrap max-w-0 opacity-0 group-hover:max-w-[200px] group-hover:opacity-100 transition-all duration-300 ease-in-out">
+                    <div className="ml-3 sm:absolute sm:left-full sm:top-1/2 sm:-translate-y-1/2 sm:ml-2 pointer-events-none flex items-center">
+                      <div className="whitespace-nowrap sm:overflow-hidden max-w-[200px] sm:max-w-0 opacity-100 sm:opacity-0 sm:group-hover:max-w-[200px] sm:group-hover:opacity-100 transition-all duration-300 ease-in-out">
                         {s.label || s.platform}
                       </div>
                     </div>
