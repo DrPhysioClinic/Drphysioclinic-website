@@ -81,10 +81,10 @@ export interface GooeyInputProps {
   placeholder?: string;
   className?: string;
   classNames?: GooeyInputClassNames;
-  /** Collapsed control width in px */
-  collapsedWidth?: number;
-  /** Expanded control width in px */
-  expandedWidth?: number;
+  /** Collapsed control width in px or css string */
+  collapsedWidth?: number | string;
+  /** Expanded control width in px or css string */
+  expandedWidth?: number | string;
   /** Horizontal offset when expanded (px), aligns detached bubble */
   expandedOffset?: number;
   /** Gaussian blur amount for the gooey SVG filter */

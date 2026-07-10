@@ -1,10 +1,8 @@
 "use client";
 
 import { useState } from "react";
-import { ServiceCard } from "@/components/public/cards";
-import type { Service } from "@/types/database";
-import { GooeyInput } from "@/components/ui/gooey-input";
-import { IconChevronLeft, IconChevronRight } from "@tabler/icons-react";
+import { UpdateCard } from "@/components/public/cards";
+import type { Update, Doctor } from "@/types/database";
 import { useIsMobile } from "@/lib/use-mobile";
 
 import {
@@ -17,7 +15,6 @@ import {
   PaginationPrevious,
 } from "@/components/ui/pagination";
 
-// Helper for complex pagination logic
 function generatePagination(currentPage: number, totalPages: number) {
   if (totalPages <= 7) {
     return Array.from({ length: totalPages }, (_, i) => i + 1);
@@ -31,15 +28,16 @@ function generatePagination(currentPage: number, totalPages: number) {
   return [1, "ellipsis", currentPage - 1, currentPage, currentPage + 1, "ellipsis", totalPages];
 }
 
-export function TreatmentsBrowser({
-  services,
+export function UpdatesBrowser({
+  updates,
+  doctors,
   categories,
 }: {
-  services: Service[];
+  updates: Update[];
+  doctors: Doctor[];
   categories: string[];
 }) {
   const [active, setActive] = useState<string>("All");
-  const [searchQuery, setSearchQuery] = useState("");
   const [page, setPage] = useState(1);
   const isMobile = useIsMobile();
   const itemsPerPage = isMobile ? 4 : 9;
@@ -49,18 +47,8 @@ export function TreatmentsBrowser({
     setPage(1);
   };
 
-  const handleSearchChange = (query: string) => {
-    setSearchQuery(query);
-    setPage(1);
-  };
-
-  const filtered = services.filter((s) => {
-    const matchesCategory = active === "All" || s.category === active;
-    const searchLower = searchQuery.toLowerCase();
-    const matchesSearch =
-      (s.title || "").toLowerCase().includes(searchLower) ||
-      (s.short_description || "").toLowerCase().includes(searchLower);
-    return matchesCategory && matchesSearch;
+  const filtered = updates.filter((u) => {
+    return active === "All" || u.category === active;
   });
 
   const totalPages = Math.ceil(filtered.length / itemsPerPage);
@@ -70,41 +58,30 @@ export function TreatmentsBrowser({
 
   return (
     <div>
-      <div className="mb-8 flex flex-row gap-4 items-center justify-between w-full">
-        <div className="flex flex-wrap gap-2 flex-1 min-w-0">
+      <div className="mt-8 flex flex-wrap gap-2 items-center">
+        <span className="text-sm font-medium text-slate-500 mr-2">Filter:</span>
         {["All", ...categories].map((cat) => (
           <button
             key={cat}
             type="button"
             onClick={() => handleCategoryClick(cat)}
-            className={`rounded-full px-4 py-1.5 text-sm font-medium transition-colors ${
+            className={`px-4 py-2 rounded-full text-sm font-medium transition-colors ${
               active === cat
                 ? "bg-brand-600 text-white"
-                : "border border-slate-300 text-slate-600 hover:border-brand-400"
+                : "bg-slate-100 text-slate-600 hover:bg-slate-200"
             }`}
           >
-            {cat.replace(/#/g, "").trim()}
+            {cat}
           </button>
         ))}
-        </div>
-        <div className="flex justify-end [--gooey-width:180px] sm:[--gooey-width:260px] [--gooey-collapsed:125px] sm:[--gooey-collapsed:120px]">
-          <GooeyInput
-            value={searchQuery}
-            onValueChange={handleSearchChange}
-            placeholder="Search..."
-            collapsedWidth="var(--gooey-collapsed)"
-            expandedWidth="var(--gooey-width)"
-            className="w-full sm:w-auto"
-          />
-        </div>
       </div>
 
       <div className="mt-8 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
-        {paginated.map((s) => (
-          <ServiceCard key={s.id} service={s} />
+        {paginated.map((u) => (
+          <UpdateCard key={u.id} update={u} author={doctors.find(d => d.id === u.author_id)} />
         ))}
         {filtered.length === 0 && (
-          <p className="col-span-full text-slate-500">No treatments found matching your criteria.</p>
+          <p className="col-span-full text-slate-500">No updates found for this category.</p>
         )}
       </div>
 

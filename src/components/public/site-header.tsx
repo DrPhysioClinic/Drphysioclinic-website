@@ -225,45 +225,76 @@ export function SiteHeader({
         </div>
       </div>
 
-      {open && (
-        <nav className="absolute top-full left-0 w-full h-[calc(100vh-64px)] overflow-y-auto bg-white lg:hidden border-t border-slate-200">
-          <div className="container-page flex flex-col py-6 gap-2">
-            {NAV_LINKS.map((link) => (
-              <div key={link.href} className="flex flex-col">
-                {link.href === "#" ? (
-                  <span className="rounded-md px-3 py-3 text-lg font-medium text-slate-800 cursor-default">
-                    {link.label}
-                  </span>
-                ) : (
-                  <Link
-                    href={link.href}
-                    onClick={() => { setOpen(false); document.body.style.overflow = ""; }}
-                    className="rounded-md px-3 py-3 text-lg font-medium text-slate-800 hover:bg-brand-50"
-                  >
-                    {link.label}
-                  </Link>
-                )}
-                {link.sublinks && (
-                  <div className="ml-4 flex flex-col border-l-2 border-slate-100 pl-4 mb-4 mt-2 gap-2">
-                    {link.sublinks.map((sub) => (
-                      <Link
-                        key={sub.href}
-                        href={sub.href}
-                        onClick={() => { setOpen(false); document.body.style.overflow = ""; }}
-                        className={`rounded-md px-3 py-2 text-base transition-colors ${
-                          pathname === sub.href ? "text-brand-700 font-medium bg-brand-50" : "text-slate-600 hover:bg-brand-50 hover:text-brand-700"
-                        }`}
-                      >
-                        {sub.label}
-                      </Link>
-                    ))}
-                  </div>
-                )}
+      <AnimatePresence>
+        {open && (
+          <>
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.2 }}
+              className="fixed inset-0 bg-slate-900/40 z-[45] lg:hidden"
+              onClick={() => { setOpen(false); document.body.style.overflow = ""; }}
+            />
+            <motion.nav 
+              initial={{ x: "100%" }}
+              animate={{ x: 0 }}
+              exit={{ x: "100%" }}
+              transition={{ type: "spring", damping: 25, stiffness: 200 }}
+              className="fixed top-0 right-0 w-[85vw] max-w-sm h-[100dvh] overflow-y-auto bg-white z-[50] lg:hidden shadow-2xl flex flex-col"
+            >
+              <div className="flex items-center justify-between p-4 border-b border-slate-100">
+                <span className="font-bold text-lg text-slate-800">Menu</span>
+                <button
+                  type="button"
+                  aria-label="Close menu"
+                  className="rounded-md p-2 text-slate-500 hover:bg-slate-100 transition-colors"
+                  onClick={() => { setOpen(false); document.body.style.overflow = ""; }}
+                >
+                  <svg className="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                  </svg>
+                </button>
               </div>
-            ))}
-          </div>
-        </nav>
-      )}
+              <div className="flex flex-col py-4 px-2 gap-1">
+                {NAV_LINKS.map((link) => (
+                  <div key={link.href} className="flex flex-col">
+                    {link.href === "#" ? (
+                      <span className="rounded-md px-3 py-3 text-lg font-medium text-slate-800 cursor-default">
+                        {link.label}
+                      </span>
+                    ) : (
+                      <Link
+                        href={link.href}
+                        onClick={() => { setOpen(false); document.body.style.overflow = ""; }}
+                        className="rounded-md px-3 py-3 text-lg font-medium text-slate-800 hover:bg-brand-50"
+                      >
+                        {link.label}
+                      </Link>
+                    )}
+                    {link.sublinks && (
+                      <div className="ml-4 flex flex-col border-l-2 border-slate-100 pl-4 mb-2 mt-1 gap-1">
+                        {link.sublinks.map((sub) => (
+                          <Link
+                            key={sub.href}
+                            href={sub.href}
+                            onClick={() => { setOpen(false); document.body.style.overflow = ""; }}
+                            className={`rounded-md px-3 py-2 text-base transition-colors ${
+                              pathname === sub.href ? "text-brand-700 font-medium bg-brand-50" : "text-slate-600 hover:bg-brand-50 hover:text-brand-700"
+                            }`}
+                          >
+                            {sub.label}
+                          </Link>
+                        ))}
+                      </div>
+                    )}
+                  </div>
+                ))}
+              </div>
+            </motion.nav>
+          </>
+        )}
+      </AnimatePresence>
     </header>
   );
 }
