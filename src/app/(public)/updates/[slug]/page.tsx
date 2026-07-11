@@ -132,7 +132,7 @@ export default async function UpdateDetailPage({
       )}
       {update.content && (
         <div 
-          className="prose prose-slate mt-6 max-w-none text-slate-700"
+          className="prose prose-slate mt-6 max-w-none text-slate-700 prose-h2:text-brand-700 prose-h2:font-extrabold prose-h2:text-2xl sm:prose-h2:text-[1.75rem] prose-h2:mt-10 prose-h2:mb-5 prose-h2:border-b prose-h2:border-brand-100 prose-h2:pb-3 prose-blockquote:border-l-4 prose-blockquote:border-brand-600 prose-blockquote:bg-brand-50 prose-blockquote:py-2 prose-blockquote:px-5 prose-blockquote:not-italic prose-blockquote:text-slate-800 prose-blockquote:font-medium prose-blockquote:rounded-r-lg prose-li:marker:text-brand-600"
           dangerouslySetInnerHTML={{ __html: sanitizeHtml(update.content) || "" }}
         />
       )}

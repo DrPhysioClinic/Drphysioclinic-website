@@ -45,7 +45,7 @@ export function SiteFooter({
       <div className="absolute inset-0 z-0 flex sm:items-center sm:justify-center pointer-events-none select-none overflow-hidden">
         <span 
           style={{ fontFamily: "var(--font-playfair), serif" }}
-          className="font-bold tracking-[-0.1em] sm:tracking-normal whitespace-nowrap text-white/5 [writing-mode:vertical-rl] [text-orientation:upright] sm:[writing-mode:horizontal-tb] sm:[text-orientation:mixed] text-[23.5vw] absolute right-0 top-[320px] sm:relative sm:top-auto sm:right-auto"
+          className="font-bold tracking-[-0.1em] sm:tracking-normal whitespace-nowrap text-white/5 [writing-mode:vertical-rl] [text-orientation:upright] sm:[writing-mode:horizontal-tb] sm:[text-orientation:mixed] text-[23.5vw] sm:text-[18.5vw] absolute right-0 top-[320px] sm:relative sm:top-auto sm:right-auto"
         >
           DR PHYSIO
         </span>

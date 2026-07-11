@@ -12,7 +12,7 @@ export function MobileCtaBar({
   whatsappNumber?: string | null;
 }) {
   return (
-    <div className="fixed inset-x-0 bottom-0 z-40 grid grid-cols-3 border-t border-slate-200 bg-white shadow-[0_-2px_10px_rgba(0,0,0,0.06)] md:hidden">
+    <div className="fixed inset-x-0 bottom-0 z-[60] grid grid-cols-3 border-t border-slate-200 bg-white shadow-[0_-2px_10px_rgba(0,0,0,0.06)] md:hidden">
       <TrackLink
         href={telHref(phone)}
         eventType="call_click"

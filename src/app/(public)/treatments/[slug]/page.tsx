@@ -11,10 +11,11 @@ import { ExpandableImage } from "@/components/ui/expandable-image";
 import { JsonLd } from "@/components/json-ld";
 import { treatmentJsonLd, serviceFaqPageJsonLd } from "@/lib/seo";
 import { whatsappHref } from "@/lib/constants";
-import { MessageCircle } from "lucide-react";
+import { MessageCircle, ArrowRight } from "lucide-react";
 import type { Doctor } from "@/types/database";
+import { OtherTreatmentsSidebar } from "@/components/public/other-treatments-sidebar";
 
-export const revalidate = 3600;
+export const revalidate = 0;
 
 export async function generateStaticParams() {
   const services = await getServices();
@@ -104,7 +105,7 @@ export default async function TreatmentDetailPage({
 
           {service.full_description && (
             <div 
-              className="prose prose-slate mt-6 max-w-none text-slate-700"
+              className="prose prose-slate mt-6 max-w-none text-slate-700 prose-h2:text-brand-700 prose-h2:font-extrabold prose-h2:text-2xl sm:prose-h2:text-[1.75rem] prose-h2:mt-10 prose-h2:mb-5 prose-h2:border-b prose-h2:border-brand-100 prose-h2:pb-3 prose-blockquote:border-l-4 prose-blockquote:border-brand-600 prose-blockquote:bg-brand-50 prose-blockquote:py-2 prose-blockquote:px-5 prose-blockquote:not-italic prose-blockquote:text-slate-800 prose-blockquote:font-medium prose-blockquote:rounded-r-lg prose-li:marker:text-brand-600"
               dangerouslySetInnerHTML={{ __html: service.full_description || "" }}
             />
           )}
@@ -157,8 +158,12 @@ export default async function TreatmentDetailPage({
                 )}
               </div>
             )}
-            <Link href="/contact#appointment" className="btn-accent w-full">
+            <Link 
+              href="/contact#appointment" 
+              className="btn-accent w-full group transition-transform hover:-translate-y-1 flex items-center justify-center gap-2"
+            >
               Book Appointment
+              <ArrowRight className="h-4 w-4 transition-transform duration-300 group-hover:-rotate-45 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
             </Link>
             <TrackLink
               href={whatsappHref(
@@ -168,9 +173,9 @@ export default async function TreatmentDetailPage({
               eventType="whatsapp_click"
               sourcePage={`/treatments/${service.slug}`}
               external
-              className="btn-outline mt-2 w-full flex items-center justify-center gap-1.5"
+              className="btn-outline mt-2 w-full flex items-center justify-center gap-1.5 group transition-transform hover:-translate-y-1"
             >
-              <MessageCircle className="h-4 w-4" /> Ask on WhatsApp
+              <MessageCircle className="h-4 w-4 transition-colors duration-300 group-hover:text-[#25D366] group-hover:fill-[#25D366]" /> Ask on WhatsApp
             </TrackLink>
           </div>
 
@@ -192,6 +197,10 @@ export default async function TreatmentDetailPage({
               </div>
             </Link>
           )}
+
+          <OtherTreatmentsSidebar 
+            treatments={allServices.filter((s) => s.id !== service.id).map(s => ({ id: s.id, title: s.title, slug: s.slug as string }))} 
+          />
         </aside>
       </div>
 
