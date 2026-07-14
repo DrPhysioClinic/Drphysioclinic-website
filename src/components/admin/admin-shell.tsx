@@ -117,6 +117,7 @@ const Logo = ({ open }: { open: boolean }) => {
           src="/icon-white-v2.svg" 
           alt="Dr Physio" 
           fill 
+          unoptimized
           className="object-contain scale-[1.1]" 
         />
       </div>
