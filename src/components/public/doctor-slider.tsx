@@ -129,9 +129,14 @@ export function DoctorSlider({ doctors }: { doctors: Doctor[] }) {
               {currentDoctor.education || currentDoctor.specialization || "Physiotherapist"}
             </p>
             
-            <p className="mb-10 text-brand-100 leading-relaxed max-w-2xl">
-              {currentDoctor.hero_bio || currentDoctor.bio || "Clinical Specialist Physiotherapist."}
-            </p>
+            <div className="mb-10 text-brand-100 leading-relaxed max-w-2xl space-y-4">
+              {(currentDoctor.hero_bio || currentDoctor.bio || "Clinical Specialist Physiotherapist.")
+                .split('\n')
+                .filter(line => line.trim() !== '')
+                .map((paragraph, idx) => (
+                  <p key={idx}>{paragraph}</p>
+              ))}
+            </div>
             
             <Link 
               href={`/doctors/${currentDoctor.slug}`} 

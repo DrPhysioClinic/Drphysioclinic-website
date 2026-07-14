@@ -13,6 +13,7 @@ import { NewsletterForm } from "@/components/public/forms";
 import { TrackLink } from "@/components/public/track-link";
 import { JsonLd } from "@/components/json-ld";
 import { DoctorSlider } from "@/components/public/doctor-slider";
+import { LazyMap } from "@/components/public/lazy-map";
 
 import { telHref, whatsappHref } from "@/lib/constants";
 import Image from "next/image";
@@ -228,13 +229,7 @@ export default async function HomePage() {
             </div>
           </div>
           <div className="relative min-h-[320px] overflow-hidden rounded-xl">
-            <iframe
-              title="Clinic location"
-              className="absolute inset-0 h-full w-full"
-              loading="lazy"
-              referrerPolicy="no-referrer-when-downgrade"
-              src={`https://maps.google.com/maps?q=${settings.latitude},${settings.longitude}&z=15&output=embed`}
-            />
+            <LazyMap latitude={settings.latitude} longitude={settings.longitude} />
           </div>
         </div>
       </section>

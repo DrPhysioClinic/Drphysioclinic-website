@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { getCanonicalUrl } from "@/lib/utils";
 import { getResolvedSettings, getServices } from "@/lib/queries";
+import { LazyMap } from "@/components/public/lazy-map";
 import { AppointmentForm, EnquiryForm } from "@/components/public/forms";
 import { TrackLink } from "@/components/public/track-link";
 import { telHref, whatsappHref } from "@/lib/constants";
@@ -69,13 +70,7 @@ export default async function ContactPage() {
           </div>
 
           <div className="relative h-72 overflow-hidden rounded-xl">
-            <iframe
-              title="Clinic location"
-              className="absolute inset-0 h-full w-full"
-              loading="lazy"
-              referrerPolicy="no-referrer-when-downgrade"
-              src={`https://maps.google.com/maps?q=${settings.latitude},${settings.longitude}&z=15&output=embed`}
-            />
+            <LazyMap latitude={settings.latitude} longitude={settings.longitude} />
           </div>
 
           <div className="card p-5">

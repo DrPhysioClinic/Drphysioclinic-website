@@ -80,9 +80,16 @@ export default async function DoctorDetailPage({
           <div className="flex items-start sm:items-center justify-between w-full">
             <h1 className="text-2xl font-bold text-slate-900 sm:text-3xl">{doctor.name}</h1>
             <div className="text-brand-700 w-16 h-16 flex-shrink-0 relative flex items-center justify-center pointer-events-none mr-10 sm:mr-0 -mt-16  sm:mt-1">
-              <SpinningText radius={5} duration={12} className="text-[12px] uppercase font-bold tracking-widest opacity-80">
-                grow more • heal more • care more • 
-              </SpinningText>
+              <div className="sm:hidden block">
+                <SpinningText radius={5} duration={12} className="text-[12px] uppercase font-bold tracking-widest opacity-80">
+                  grow more • heal more • care more • 
+                </SpinningText>
+              </div>
+              <div className="hidden sm:block">
+                <SpinningText radius={6.5} duration={12} className="text-[12px] uppercase font-bold tracking-widest opacity-80">
+                  grow more • heal more • care more • 
+                </SpinningText>
+              </div>
             </div>
           </div>
           <p className="mt-1 font-medium text-brand-600">{doctor.title}</p>
