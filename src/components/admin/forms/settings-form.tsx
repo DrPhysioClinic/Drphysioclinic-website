@@ -29,8 +29,8 @@ export function SettingsForm({ settings }: { settings?: Settings }) {
       <TextArea name="address" label="Address" rows={2} defaultValue={settings?.address} />
       <TextArea name="opening_hours" label="Opening Hours" rows={2} defaultValue={settings?.opening_hours} />
       <div className="grid gap-4 sm:grid-cols-2">
-        <ImageUploader name="logo_url" label="Logo" folder="branding" defaultValue={settings?.logo_url} />
-        <ImageUploader name="favicon_url" label="Favicon" folder="branding" defaultValue={settings?.favicon_url} />
+        <ImageUploader name="logo_url" label="Logo" folder="branding" defaultValue={settings?.logo_url || "/icon-white-v2.svg"} />
+        <ImageUploader name="favicon_url" label="Favicon" folder="branding" defaultValue={settings?.favicon_url || "/favicon.svg"} />
       </div>
       <div className="grid gap-4 sm:grid-cols-2">
         <Text name="seo_title" label="Default SEO Title" defaultValue={settings?.seo_title} />
