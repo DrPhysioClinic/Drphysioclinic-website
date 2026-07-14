@@ -1,14 +1,14 @@
-import DOMPurify from 'isomorphic-dompurify';
+import sanitize from 'sanitize-html';
 
 export function sanitizeHtml(html: string): string {
   if (!html) return "";
-  return DOMPurify.sanitize(html, {
-    ALLOWED_TAGS: [
+  return sanitize(html, {
+    allowedTags: [
       'p', 'h2', 'h3', 'strong', 'em', 'ul', 'ol', 'li', 
       'blockquote', 'a', 'img', 'br', 'code', 'pre'
     ],
-    ALLOWED_ATTR: [
-      'href', 'src', 'alt', 'title', 'target', 'rel'
-    ],
+    allowedAttributes: {
+      '*': ['href', 'src', 'alt', 'title', 'target', 'rel']
+    },
   });
 }
