@@ -69,8 +69,9 @@ export function ImageUploader({
       const file = new File([blob], originalFile?.name || "cropped.png", { type: blob.type || "image/png" });
       const compressed = await Promise.race([
         imageCompression(file, {
-          maxWidthOrHeight: 1600,
-          maxSizeMB: 0.8,
+          maxWidthOrHeight: 1200,
+          maxSizeMB: 0.25, // 250KB max
+          initialQuality: 0.8, // 80% quality (great for WebP)
           fileType: "image/webp",
           useWebWorker: true,
         }),
