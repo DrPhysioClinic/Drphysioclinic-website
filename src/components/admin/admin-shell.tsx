@@ -41,11 +41,13 @@ const links = [
 ];
 
 export function AdminShell({
-  userEmail,
   children,
+  userEmail,
+  logoUrl,
 }: {
-  userEmail: string;
   children: React.ReactNode;
+  userEmail: string;
+  logoUrl?: string | null;
 }) {
   const pathname = usePathname();
   const [open, setOpen] = useState(false);
@@ -55,7 +57,7 @@ export function AdminShell({
       <Sidebar open={open} setOpen={setOpen}>
         <SidebarBody className="justify-between gap-10 border-r border-brand-800 bg-brand-900">
           <div className="flex flex-1 flex-col overflow-x-hidden overflow-y-auto">
-            <Logo open={open} />
+            <Logo open={open} logoUrl={logoUrl} />
             <div className="mt-8 flex flex-col gap-1">
               {links.map((link) => {
                 const active = link.href === "/admin" ? pathname === "/admin" : pathname.startsWith(link.href);
@@ -109,12 +111,12 @@ export function AdminShell({
   );
 }
 
-const Logo = ({ open }: { open: boolean }) => {
+const Logo = ({ open, logoUrl }: { open: boolean, logoUrl?: string | null }) => {
   return (
     <Link href="/admin" className="relative z-20 flex items-center py-1 text-sm font-normal whitespace-nowrap">
       <div className={`relative shrink-0 transition-all duration-300 ${open ? "h-12 w-12" : "h-9 w-9 ml-0.5"}`}>
         <Image 
-          src="/icon-white-v2.svg" 
+          src={logoUrl || "/icon-white-v2.svg"}
           alt="Dr Physio" 
           fill 
           unoptimized

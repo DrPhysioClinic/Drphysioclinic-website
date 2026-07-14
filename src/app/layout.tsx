@@ -43,7 +43,7 @@ export async function generateMetadata(): Promise<Metadata> {
     robots: { index: true, follow: true },
     icons: {
       icon: [
-        { url: '/icon.svg', type: 'image/svg+xml' },
+        { url: s.favicon_url || '/favicon.svg' },
       ],
     },
   };

@@ -23,9 +23,11 @@ export default async function PanelLayout({ children }: { children: React.ReactN
     redirect("/admin/login");
   }
 
+  const { data: settings } = await supabase.from("settings").select("logo_url").limit(1).maybeSingle();
+
   return (
     <>
-      <AdminShell userEmail={user.email ?? ""}>{children}</AdminShell>
+      <AdminShell userEmail={user.email ?? ""} logoUrl={settings?.logo_url}>{children}</AdminShell>
       <Toaster position="bottom-right" richColors />
     </>
   );

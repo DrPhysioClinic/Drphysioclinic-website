@@ -46,6 +46,7 @@ export async function getResolvedSettings() {
     longitude: settings?.longitude ?? CLINIC_FALLBACK.longitude,
     opening_hours: settings?.opening_hours ?? null,
     logo_url: settings?.logo_url ?? null,
+    favicon_url: settings?.favicon_url ?? null,
     seo_title: settings?.seo_title ?? null,
     seo_description: settings?.seo_description ?? null,
   };
