@@ -22,7 +22,7 @@ export default async function AdminGalleryPage() {
         {(data ?? []).map((g) => (
           <div key={g.id} className="card overflow-hidden">
             <div className="relative aspect-video bg-slate-100">
-              <Image src={g.image_url} alt={g.title || "Photo"} fill sizes="33vw" className="object-cover" />
+              <Image src={g.image_url} alt={g.title || "Photo"} fill sizes="33vw" className="object-cover" unoptimized />
             </div>
             <div className="p-3">
               <p className="truncate font-medium text-slate-800">{g.title || "Untitled"}</p>

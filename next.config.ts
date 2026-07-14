@@ -17,8 +17,9 @@ const nextConfig: NextConfig = {
     contentSecurityPolicy: "default-src 'self'; script-src 'none'; sandbox;",
     remotePatterns: [
       // Supabase Storage public bucket URLs
-      { protocol: "https", hostname: supabaseHost, pathname: "/storage/v1/object/public/**" },
-      { protocol: "https", hostname: "*.supabase.co", pathname: "/storage/v1/object/public/**" },
+      { protocol: "https", hostname: supabaseHost },
+      { protocol: "https", hostname: "*.supabase.co" },
+      { protocol: "https", hostname: "*.supabase.in" },
       // Placeholder images used during the skeleton phase
       { protocol: "https", hostname: "images.unsplash.com" },
       { protocol: "https", hostname: "placehold.co" },
