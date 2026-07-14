@@ -33,10 +33,7 @@ export default async function ReferenceTreePage() {
   return (
     <div className="flex h-[calc(100vh-theme(spacing.14)-theme(spacing.16))] w-full flex-col space-y-4">
       <div>
-        <h1 className="text-2xl font-semibold text-slate-800">Reference Tree</h1>
-        <p className="text-sm text-slate-500">
-          Drag and drop nodes to build a map of referrals between doctors, patients, and others.
-        </p>
+        <h1 className="text-2xl font-semibold text-slate-800">Reference Tree - Dr Physio</h1>
       </div>
 
       <div className="relative flex-1 rounded-xl border border-slate-200 bg-white shadow-sm overflow-hidden">
