@@ -12,6 +12,7 @@ const nextConfig: NextConfig = {
   // picking up an unrelated lockfile in a parent directory.
   outputFileTracingRoot: __dirname,
   images: {
+    unoptimized: true,
     dangerouslyAllowSVG: true,
     contentDispositionType: 'attachment',
     contentSecurityPolicy: "default-src 'self'; script-src 'none'; sandbox;",
