@@ -51,11 +51,13 @@ export function physicianJsonLd(doctor: Doctor, clinicName: string) {
     "@context": "https://schema.org",
     "@type": "Physician",
     name: doctor.name,
+    alternateName: doctor.slug?.includes("jeetendra") ? "Best Physiotherapist in Ahmedabad" : undefined,
     description: doctor.bio || doctor.specialization || undefined,
     medicalSpecialty: doctor.specialization || "Physiotherapy",
     image: doctor.image_url || undefined,
     url: `${SITE_URL}/doctors/${doctor.slug}`,
     worksFor: { "@type": "MedicalClinic", name: clinicName },
+    knowsAbout: ["Physiotherapy", "Sports Injury Rehabilitation", "Orthopedic Rehabilitation"],
     ...(doctor.education || doctor.registration_no
       ? {
           hasCredential: [

@@ -18,6 +18,7 @@ export async function ClinicSchema() {
     "@context": "https://schema.org",
     "@type": ["MedicalClinic", "Physiotherapy"],
     name: settings.clinic_name,
+    alternateName: "Best Physiotherapist in Ahmedabad",
     url: SITE_URL,
     logo: settings.logo_url || `${SITE_URL}/dr-physio-logo-03.png`,
     image: `${SITE_URL}/dr-jeetendra.png`,
