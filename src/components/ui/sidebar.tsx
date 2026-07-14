@@ -179,7 +179,7 @@ export const SidebarLink = ({
         animate={{
           opacity: animate ? (open ? 1 : 0) : 1,
         }}
-        className="text-brand-100 text-sm group-hover/sidebar:translate-x-1 transition-transform duration-150 whitespace-pre inline-block !p-0 !m-0"
+        className="text-sm font-medium group-hover/sidebar:translate-x-1 transition-transform duration-150 whitespace-pre inline-block !p-0 !m-0"
       >
         {link.label}
       </motion.span>

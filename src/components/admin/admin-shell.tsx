@@ -25,19 +25,19 @@ import { motion } from "motion/react";
 import Image from "next/image";
 
 const links = [
-  { href: "/admin", label: "Dashboard", icon: <IconLayoutDashboard className="h-5 w-5 shrink-0 text-brand-200" /> },
-  { href: "/admin/services", label: "Services", icon: <IconStethoscope className="h-5 w-5 shrink-0 text-brand-200" /> },
-  { href: "/admin/doctors", label: "Doctors", icon: <IconUserStar className="h-5 w-5 shrink-0 text-brand-200" /> },
-  { href: "/admin/testimonials", label: "Testimonials", icon: <IconMessageStar className="h-5 w-5 shrink-0 text-brand-200" /> },
-  { href: "/admin/gallery", label: "Gallery", icon: <IconPhoto className="h-5 w-5 shrink-0 text-brand-200" /> },
-  { href: "/admin/updates", label: "Updates", icon: <IconNews className="h-5 w-5 shrink-0 text-brand-200" /> },
-  { href: "/admin/videos", label: "Videos", icon: <IconVideo className="h-5 w-5 shrink-0 text-brand-200" /> },
-  { href: "/admin/info-pages", label: "Info Pages", icon: <IconFileText className="h-5 w-5 shrink-0 text-brand-200" /> },
-  { href: "/admin/appointments", label: "Appointments", icon: <IconCalendarEvent className="h-5 w-5 shrink-0 text-brand-200" /> },
-  { href: "/admin/calendar", label: "Outlook Calendar", icon: <IconCalendarTime className="h-5 w-5 shrink-0 text-brand-200" /> },
-  { href: "/admin/enquiries", label: "Enquiries", icon: <IconMail className="h-5 w-5 shrink-0 text-brand-200" /> },
-  { href: "/admin/reference-tree", label: "Reference Tree", icon: <IconSitemap className="h-5 w-5 shrink-0 text-brand-200" /> },
-  { href: "/admin/settings", label: "Settings", icon: <IconSettings className="h-5 w-5 shrink-0 text-brand-200" /> },
+  { href: "/admin", label: "Dashboard", icon: <IconLayoutDashboard className="h-5 w-5 shrink-0" /> },
+  { href: "/admin/services", label: "Services", icon: <IconStethoscope className="h-5 w-5 shrink-0" /> },
+  { href: "/admin/doctors", label: "Doctors", icon: <IconUserStar className="h-5 w-5 shrink-0" /> },
+  { href: "/admin/testimonials", label: "Testimonials", icon: <IconMessageStar className="h-5 w-5 shrink-0" /> },
+  { href: "/admin/gallery", label: "Gallery", icon: <IconPhoto className="h-5 w-5 shrink-0" /> },
+  { href: "/admin/updates", label: "Updates", icon: <IconNews className="h-5 w-5 shrink-0" /> },
+  { href: "/admin/videos", label: "Videos", icon: <IconVideo className="h-5 w-5 shrink-0" /> },
+  { href: "/admin/info-pages", label: "Info Pages", icon: <IconFileText className="h-5 w-5 shrink-0" /> },
+  { href: "/admin/appointments", label: "Appointments", icon: <IconCalendarEvent className="h-5 w-5 shrink-0" /> },
+  { href: "/admin/calendar", label: "Outlook Calendar", icon: <IconCalendarTime className="h-5 w-5 shrink-0" /> },
+  { href: "/admin/enquiries", label: "Enquiries", icon: <IconMail className="h-5 w-5 shrink-0" /> },
+  { href: "/admin/reference-tree", label: "Reference Tree", icon: <IconSitemap className="h-5 w-5 shrink-0" /> },
+  { href: "/admin/settings", label: "Settings", icon: <IconSettings className="h-5 w-5 shrink-0" /> },
 ];
 
 export function AdminShell({
@@ -63,7 +63,7 @@ export function AdminShell({
                   <SidebarLink 
                     key={link.href} 
                     link={link} 
-                    className={active ? "bg-brand-800 rounded-md" : "hover:bg-brand-800/50 rounded-md"} 
+                    className={active ? "bg-white text-brand-900 rounded-md shadow-sm font-semibold" : "text-brand-200 hover:bg-brand-800/50 hover:text-white rounded-md"} 
                   />
                 );
               })}
