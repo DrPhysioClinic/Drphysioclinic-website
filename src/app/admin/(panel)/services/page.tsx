@@ -23,6 +23,7 @@ export default async function AdminServicesPage() {
         <table className="w-full text-sm">
           <thead className="border-b border-slate-200 text-left text-xs uppercase text-slate-500">
             <tr>
+              <th className="px-4 py-3 w-16 text-center">Order</th>
               <th className="px-4 py-3">Title</th>
               <th className="px-4 py-3">Category</th>
               <th className="px-4 py-3">Price</th>
@@ -32,6 +33,7 @@ export default async function AdminServicesPage() {
           <tbody className="divide-y divide-slate-100">
             {(services ?? []).map((s) => (
               <tr key={s.id}>
+                <td className="px-4 py-3 text-center text-slate-500 font-mono text-xs">{s.sort_order}</td>
                 <td className="px-4 py-3 font-medium text-slate-800">
                   {s.title}
                   {s.scheduled_at && new Date(s.scheduled_at) > new Date() && (
@@ -58,7 +60,7 @@ export default async function AdminServicesPage() {
             ))}
             {(!services || services.length === 0) && (
               <tr>
-                <td colSpan={4} className="px-4 py-8 text-center text-slate-400">
+                <td colSpan={5} className="px-4 py-8 text-center text-slate-400">
                   No services yet.
                 </td>
               </tr>

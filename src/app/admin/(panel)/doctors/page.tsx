@@ -8,7 +8,7 @@ export default async function AdminDoctorsPage() {
   const supabase = await createServerSupabase();
   const { data } = await supabase
     .from("doctors")
-    .select("id, name, title, is_published, is_featured")
+    .select("id, name, title, is_published, is_featured, sort_order")
     .order("sort_order", { ascending: true });
 
   return (
@@ -21,6 +21,7 @@ export default async function AdminDoctorsPage() {
         <table className="w-full text-sm">
           <thead className="border-b border-slate-200 text-left text-xs uppercase text-slate-500">
             <tr>
+              <th className="px-4 py-3 w-16 text-center">Order</th>
               <th className="px-4 py-3">Name</th>
               <th className="px-4 py-3">Title</th>
               <th className="px-4 py-3 text-right">Actions</th>
@@ -29,6 +30,7 @@ export default async function AdminDoctorsPage() {
           <tbody className="divide-y divide-slate-100">
             {(data ?? []).map((d) => (
               <tr key={d.id}>
+                <td className="px-4 py-3 text-center text-slate-500 font-mono text-xs">{d.sort_order}</td>
                 <td className="px-4 py-3 font-medium text-slate-800">{d.name}</td>
                 <td className="px-4 py-3 text-slate-500">{d.title}</td>
                 <td className="px-4 py-3">
@@ -46,7 +48,7 @@ export default async function AdminDoctorsPage() {
               </tr>
             ))}
             {(!data || data.length === 0) && (
-              <tr><td colSpan={3} className="px-4 py-8 text-center text-slate-400">No doctors yet.</td></tr>
+              <tr><td colSpan={4} className="px-4 py-8 text-center text-slate-400">No doctors yet.</td></tr>
             )}
           </tbody>
         </table>
