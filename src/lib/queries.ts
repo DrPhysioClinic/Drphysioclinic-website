@@ -172,14 +172,16 @@ export async function getTestimonials(featuredOnly = false): Promise<Testimonial
 }
 
 // ---------- Gallery ----------
-export async function getGallery(): Promise<GalleryItem[]> {
+export async function getGallery(featuredOnly = false): Promise<GalleryItem[]> {
   try {
     const supabase = createPublicClient();
-    const { data } = await supabase
+    let q = supabase
       .from("gallery")
       .select("*")
       .eq("is_published", true)
       .order("sort_order", { ascending: true });
+    if (featuredOnly) q = q.eq("is_featured", true);
+    const { data } = await q;
     return data ?? [];
   } catch {
     return [];

@@ -6,6 +6,18 @@ import { createServerSupabase } from "@/lib/supabase/server";
 import type { SaveState } from "@/app/admin/(panel)/form-state";
 import { sanitizeHtml } from "@/lib/sanitize";
 
+export async function updateSortOrder(table: string, id: string, newOrder: number) {
+  const allowedTables = ["gallery", "services", "doctors", "updates", "testimonials", "info_pages", "videos"];
+  if (!allowedTables.includes(table)) return { error: "Invalid table" };
+  
+  const supabase = await createServerSupabase();
+  const { error } = await supabase.from(table as any).update({ sort_order: newOrder }).eq("id", id);
+  if (error) return { error: error.message };
+  
+  revalidatePublic();
+  return { success: true };
+}
+
 // ---------- parse helpers ----------
 const str = (fd: FormData, k: string) => {
   const v = (fd.get(k) as string | null)?.trim();

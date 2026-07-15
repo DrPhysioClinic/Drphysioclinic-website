@@ -6,7 +6,7 @@ export const dynamic = "force-dynamic";
 
 export default async function AdminDoctorsPage() {
   const supabase = await createServerSupabase();
-  const { data } = await supabase
+  const { data: doctors } = await supabase
     .from("doctors")
     .select("id, name, title, is_published, is_featured, sort_order")
     .order("sort_order", { ascending: true });
@@ -28,7 +28,7 @@ export default async function AdminDoctorsPage() {
             </tr>
           </thead>
           <tbody className="divide-y divide-slate-100">
-            {(data ?? []).map((d) => (
+            {(doctors ?? []).map((d) => (
               <tr key={d.id}>
                 <td className="px-4 py-3 text-center text-slate-500 font-mono text-xs">{d.sort_order}</td>
                 <td className="px-4 py-3 font-medium text-slate-800">{d.name}</td>
@@ -47,7 +47,7 @@ export default async function AdminDoctorsPage() {
                 </td>
               </tr>
             ))}
-            {(!data || data.length === 0) && (
+            {(!doctors || doctors.length === 0) && (
               <tr><td colSpan={4} className="px-4 py-8 text-center text-slate-400">No doctors yet.</td></tr>
             )}
           </tbody>

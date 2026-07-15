@@ -45,7 +45,7 @@ export default async function HomePage() {
       getDoctors(true),
       getTestimonials(true),
       getUpdates(),
-      getGallery(),
+      getGallery(true),
     ]);
 
   const services = featured.length ? featured : allServices.slice(0, 6);
