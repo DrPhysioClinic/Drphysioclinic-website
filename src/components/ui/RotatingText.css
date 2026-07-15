@@ -19,6 +19,8 @@
 
 .text-rotate-word {
   display: inline-flex;
+  -webkit-transform: translateZ(0);
+  transform: translateZ(0);
 }
 
 .text-rotate-lines {
