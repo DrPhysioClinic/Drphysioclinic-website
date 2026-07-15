@@ -3,7 +3,7 @@
 import { useActionState } from "react";
 import { saveGalleryItem } from "@/app/admin/(panel)/actions";
 import { emptySave } from "@/app/admin/(panel)/form-state";
-import { Text, Checkbox, SaveBar } from "@/components/admin/fields";
+import { Text, TextArea, Checkbox, SaveBar } from "@/components/admin/fields";
 import { ImageUploader } from "@/components/admin/image-uploader";
 import type { GalleryItem } from "@/types/database";
 
@@ -19,6 +19,7 @@ export function GalleryForm({ item }: { item?: GalleryItem }) {
         <Text name="alt_text" label="Alt Text" defaultValue={item?.alt_text} />
         <Text name="sort_order" label="Sort Order" type="number" defaultValue={item?.sort_order ?? 0} />
       </div>
+      <TextArea name="description" label="Description" defaultValue={item?.description} />
       <div className="flex gap-6">
         <Checkbox name="is_published" label="Published" defaultChecked={item?.is_published ?? true} />
         <Checkbox name="is_featured" label="Featured" defaultChecked={item?.is_featured ?? false} />

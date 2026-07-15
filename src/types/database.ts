@@ -411,6 +411,7 @@ export type Database = {
           alt_text: string | null
           category: string | null
           created_at: string | null
+          description: string | null
           id: string
           image_url: string
           is_featured: boolean | null
@@ -423,6 +424,7 @@ export type Database = {
           alt_text?: string | null
           category?: string | null
           created_at?: string | null
+          description?: string | null
           id?: string
           image_url: string
           is_featured?: boolean | null
@@ -435,6 +437,7 @@ export type Database = {
           alt_text?: string | null
           category?: string | null
           created_at?: string | null
+          description?: string | null
           id?: string
           image_url?: string
           is_featured?: boolean | null

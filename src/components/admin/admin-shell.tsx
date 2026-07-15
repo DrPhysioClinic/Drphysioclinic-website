@@ -100,9 +100,21 @@ export function AdminShell({
             <h1 className="font-semibold text-slate-800">Admin Portal</h1>
           </div>
           <div className="flex items-center gap-3 text-sm">
-            <Link href="/" target="_blank" className="text-brand-600 hover:text-brand-700 font-medium">
+            <a 
+              href="/" 
+              onClick={(e) => {
+                // If we are on the admin subdomain, make sure we go to the main domain
+                if (typeof window !== "undefined" && window.location.hostname.startsWith("admin.")) {
+                  e.preventDefault();
+                  const target = window.location.origin.replace("admin.", "") + "/";
+                  window.open(target, "_blank");
+                }
+              }}
+              target="_blank" 
+              className="text-brand-600 hover:text-brand-700 font-medium"
+            >
               View live site ↗
-            </Link>
+            </a>
             <div className="h-4 w-px bg-slate-300 mx-1"></div>
             <NotificationCenter />
             <span className="hidden text-slate-500 sm:inline ml-2">{userEmail}</span>

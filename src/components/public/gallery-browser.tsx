@@ -123,20 +123,30 @@ export function GalleryBrowser({ items }: { items: GalleryItem[] }) {
           </button>
 
           <div 
-            className="relative w-full max-w-5xl max-h-[85vh] aspect-video sm:aspect-auto sm:h-full rounded-xl overflow-hidden shadow-2xl"
+            className="relative flex flex-col md:flex-row w-full max-w-6xl max-h-[90vh] rounded-2xl overflow-hidden bg-transparent"
             onClick={(e) => e.stopPropagation()}
           >
-            <Image
-              src={filtered[selectedIndex].image_url}
-              alt={filtered[selectedIndex].alt_text || filtered[selectedIndex].title || "Gallery image expanded"}
-              fill
-              className="object-contain"
-              sizes="100vw"
-              priority
-            />
-            {filtered[selectedIndex].title && (
-              <div className="absolute bottom-0 inset-x-0 bg-gradient-to-t from-black/80 to-transparent p-6 text-center">
-                <p className="text-white text-lg font-medium">{filtered[selectedIndex].title}</p>
+            {/* Photo Section */}
+            <div className="relative flex-1 min-h-[50vh] md:min-h-[70vh]">
+              <Image
+                src={filtered[selectedIndex].image_url}
+                alt={filtered[selectedIndex].alt_text || filtered[selectedIndex].title || "Gallery image expanded"}
+                fill
+                className="object-contain"
+                sizes="(max-width: 768px) 100vw, 66vw"
+                priority
+              />
+            </div>
+            
+            {/* Description Panel */}
+            {(filtered[selectedIndex].title || filtered[selectedIndex].description) && (
+              <div className="w-full md:w-[380px] shrink-0 p-6 md:p-8 flex flex-col justify-center overflow-y-auto">
+                {filtered[selectedIndex].title && (
+                  <h3 className="text-white text-2xl font-semibold tracking-tight mb-4">{filtered[selectedIndex].title}</h3>
+                )}
+                {filtered[selectedIndex].description && (
+                  <p className="text-white/90 text-sm md:text-base leading-relaxed whitespace-pre-wrap">{filtered[selectedIndex].description}</p>
+                )}
               </div>
             )}
           </div>

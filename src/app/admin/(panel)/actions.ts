@@ -325,6 +325,7 @@ export async function saveGalleryItem(_prev: SaveState, fd: FormData): Promise<S
     image_url,
     category: str(fd, "category"),
     alt_text: str(fd, "alt_text"),
+    description: str(fd, "description"),
     sort_order: int(fd, "sort_order"),
     is_featured: bool(fd, "is_featured"),
     is_published: bool(fd, "is_published"),
