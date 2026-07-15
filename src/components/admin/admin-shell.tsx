@@ -60,12 +60,17 @@ export function AdminShell({
             <Logo open={open} logoUrl={logoUrl} />
             <div className="mt-8 flex flex-col gap-1">
               {links.map((link) => {
-                const active = link.href === "/admin" ? pathname === "/admin" : pathname.startsWith(link.href);
+                const normalizedPathname = pathname.startsWith("/admin") ? pathname : `/admin${pathname === "/" ? "" : pathname}`;
+                const isActive = 
+                  link.href === "/admin" 
+                    ? normalizedPathname === "/admin" || normalizedPathname === "/admin/"
+                    : normalizedPathname === link.href || normalizedPathname.startsWith(`${link.href}/`);
+                
                 return (
                   <SidebarLink 
                     key={link.href} 
                     link={link} 
-                    className={active ? "bg-white text-brand-900 rounded-md shadow-sm font-semibold" : "text-brand-200 hover:bg-brand-800/50 hover:text-white rounded-md"} 
+                    className={isActive ? "bg-white text-brand-900 rounded-md shadow-sm font-semibold" : "text-brand-200 hover:bg-brand-800/50 hover:text-white rounded-md"} 
                   />
                 );
               })}
