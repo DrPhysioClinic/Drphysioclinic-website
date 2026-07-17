@@ -1,14 +1,16 @@
 import { createServerSupabase } from "@/lib/supabase/server";
 import { SettingsForm } from "@/components/admin/forms/settings-form";
 import { saveSocialLink, deleteSocialLink } from "@/app/admin/(panel)/actions";
+import { AdminUsersList } from "@/components/admin/settings/admin-users-list";
 
 export const dynamic = "force-dynamic";
 
 export default async function AdminSettingsPage() {
   const supabase = await createServerSupabase();
-  const [{ data: settings }, { data: socialLinks }] = await Promise.all([
+  const [{ data: settings }, { data: socialLinks }, { data: admins }] = await Promise.all([
     supabase.from("settings").select("*").limit(1).maybeSingle(),
     supabase.from("social_links").select("*").order("sort_order", { ascending: true }),
+    supabase.from("admins").select("*").order("created_at", { ascending: true }),
   ]);
 
   return (
@@ -16,6 +18,10 @@ export default async function AdminSettingsPage() {
       <section>
         <h1 className="mb-4 text-xl font-bold text-slate-900">Clinic Settings</h1>
         <SettingsForm settings={settings ?? undefined} />
+      </section>
+
+      <section>
+        <AdminUsersList admins={admins ?? []} />
       </section>
 
       <section>

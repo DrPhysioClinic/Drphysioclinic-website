@@ -32,3 +32,21 @@ export async function createServerSupabase() {
     },
   });
 }
+
+/**
+ * Service Role client for bypassing RLS and accessing Supabase Admin API.
+ * ONLY use this in isolated server actions for creating/modifying Auth users or bypassing RLS.
+ */
+export async function createAdminSupabase() {
+  const url = process.env.NEXT_PUBLIC_SUPABASE_URL!;
+  const serviceRoleKey = process.env.SUPABASE_SERVICE_ROLE_KEY!;
+
+  return createServerClient<Database>(url, serviceRoleKey, {
+    cookies: {
+      getAll() {
+        return [];
+      },
+      setAll() {},
+    },
+  });
+}

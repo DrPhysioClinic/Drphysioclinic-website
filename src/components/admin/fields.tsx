@@ -116,7 +116,7 @@ export function Checkbox({
 export function SaveBar({ state, label = "Save" }: { state: SaveState; label?: string }) {
   const { pending } = useFormStatus();
   return (
-    <div className="sticky bottom-0 mt-6 flex items-center gap-3 border-t border-slate-200 bg-white py-3">
+    <div className="sticky bottom-4 mt-6 flex items-center justify-start gap-3 card p-4">
       <button type="submit" disabled={pending} className="btn-primary">
         {pending ? "Saving…" : label}
       </button>
