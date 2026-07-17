@@ -1,5 +1,5 @@
 import { createServerSupabase } from "@/lib/supabase/server";
-import { TreeCanvasWrapper as TreeCanvas } from "@/components/admin/reference-tree/tree-canvas-wrapper";
+import { ReferenceTable } from "@/components/admin/reference-tree/reference-table";
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
@@ -22,13 +22,8 @@ export default async function ReferenceTreePage() {
     console.error("Error fetching reference tree:", error);
   }
 
-  // Parse JSON data, or use defaults
+  // Parse JSON data
   const dbNodes = tree?.nodes ? (Array.isArray(tree.nodes) ? tree.nodes : []) : [];
-  const dbEdges = tree?.edges ? (Array.isArray(tree.edges) ? tree.edges : []) : [];
-
-  // Ensure any existing nodes use the new 'editable' type
-  const initialNodes = dbNodes.map((n: any) => ({ ...n, type: "editable" }));
-  const initialEdges = dbEdges;
 
   return (
     <div className="flex h-[calc(100vh-theme(spacing.14)-theme(spacing.16))] w-full flex-col space-y-4">
@@ -36,11 +31,10 @@ export default async function ReferenceTreePage() {
         <h1 className="text-2xl font-semibold text-slate-800">Reference Tree - Dr Physio</h1>
       </div>
 
-      <div className="relative flex-1 rounded-xl border border-slate-200 bg-white shadow-sm overflow-hidden">
-        <TreeCanvas
+      <div className="relative flex-1 rounded-xl border border-slate-200 bg-white shadow-sm overflow-hidden flex flex-col">
+        <ReferenceTable
           treeId="00000000-0000-0000-0000-000000000001"
-          initialNodes={initialNodes as any}
-          initialEdges={initialEdges as any}
+          initialData={dbNodes}
         />
       </div>
     </div>

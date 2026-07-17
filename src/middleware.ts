@@ -13,7 +13,7 @@ export async function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
 
   // 1. Force subdomain enforcement for /admin accessed on the main domain
-  if (!isAdminSubdomain && pathname.startsWith("/admin")) {
+  if (process.env.NODE_ENV !== "development" && !isAdminSubdomain && pathname.startsWith("/admin")) {
     const newHost = host.includes("localhost") 
       ? `admin.${host}` 
       : `admin.${host.replace(/^www\./, "")}`;
