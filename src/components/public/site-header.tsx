@@ -108,9 +108,9 @@ export function SiteHeader({
             
             let textColorClass = "";
             if (isSolid) {
-              textColorClass = active ? "text-brand-700" : "text-slate-600 hover:text-brand-700";
+              textColorClass = active ? "text-brand-700" : "text-slate-600 hover:text-red-600";
             } else {
-              textColorClass = active ? "text-white font-bold" : "text-white/80 hover:text-white";
+              textColorClass = active ? "text-white font-bold" : "text-white/80 hover:text-red-500";
             }
 
             if (link.sublinks) {
@@ -134,7 +134,7 @@ export function SiteHeader({
                         <Link
                           key={sub.href}
                           href={sub.href}
-                          className={`px-4 py-2 text-base transition-colors hover:bg-brand-50 hover:text-brand-700 ${
+                          className={`px-4 py-2 text-base transition-colors hover:bg-red-50 hover:text-red-600 ${
                             pathname === sub.href ? "bg-brand-50 text-brand-700 font-medium" : "text-slate-600"
                           }`}
                         >
@@ -164,7 +164,7 @@ export function SiteHeader({
             eventType="call_click"
             sourcePage="header"
             className={`group hidden sm:inline-flex items-center justify-center gap-0 transition-all duration-300 ${
-              isSolid ? "btn-outline px-3" : "btn border border-white/40 text-white hover:bg-white/10 px-3"
+              isSolid ? "btn-outline px-3 hover:bg-red-600 hover:text-white hover:border-red-600" : "btn border border-white/40 text-white hover:bg-red-600 hover:border-red-600 hover:text-white px-3"
             }`}
           >
             <svg className="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -267,7 +267,7 @@ export function SiteHeader({
                       <Link
                         href={link.href}
                         onClick={() => { setOpen(false); document.body.style.overflow = ""; }}
-                        className="rounded-md px-3 py-3 text-lg font-medium text-slate-800 hover:bg-brand-50"
+                        className="rounded-md px-3 py-3 text-lg font-medium text-slate-800 hover:bg-red-50 hover:text-red-600"
                       >
                         {link.label}
                       </Link>
@@ -280,7 +280,7 @@ export function SiteHeader({
                             href={sub.href}
                             onClick={() => { setOpen(false); document.body.style.overflow = ""; }}
                             className={`rounded-md px-3 py-2 text-base transition-colors ${
-                              pathname === sub.href ? "text-brand-700 font-medium bg-brand-50" : "text-slate-600 hover:bg-brand-50 hover:text-brand-700"
+                              pathname === sub.href ? "text-brand-700 font-medium bg-brand-50" : "text-slate-600 hover:bg-red-50 hover:text-red-600"
                             }`}
                           >
                             {sub.label}

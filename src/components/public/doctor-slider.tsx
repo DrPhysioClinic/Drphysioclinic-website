@@ -109,13 +109,13 @@ export function DoctorSlider({ doctors }: { doctors: Doctor[] }) {
           {/* Right Column - Dark Navy */}
           <div className="flex flex-col justify-center bg-brand-600 p-8 lg:w-[55%] lg:min-h-[700px] lg:p-16 text-white shrink-0 pl-16">
             <div className="mb-4 flex items-center gap-3">
-              <div className="h-px w-8 bg-brand-400"></div>
+              <div className="h-px w-8 bg-red-500"></div>
               {currentDoctor.slug?.includes("jeetendra") ? (
-                <h2 className="text-sm font-bold tracking-widest text-brand-400 uppercase">
+                <h2 className="text-sm font-bold tracking-widest text-red-500 uppercase">
                   Founder & Best Physiotherapist in Ahmedabad
                 </h2>
               ) : (
-                <span className="text-sm font-bold tracking-widest text-brand-400 uppercase">
+                <span className="text-sm font-bold tracking-widest text-red-500 uppercase">
                   {currentDoctor.homepage_label || (currentDoctor.is_featured ? "Meet Founder" : "Meet Our Doctor")}
                 </span>
               )}

@@ -6,6 +6,7 @@ import { emptySave } from "@/app/admin/(panel)/form-state";
 import { Text, TextArea, Select, Checkbox, SaveBar } from "@/components/admin/fields";
 import { VisibilityControl } from "@/components/admin/visibility-control";
 import { ImageUploader } from "@/components/admin/image-uploader";
+import { RichTextEditor } from "@/components/admin/rich-text-editor";
 import { ServiceCard } from "@/components/public/cards";
 import type { Service, Doctor } from "@/types/database";
 
@@ -65,7 +66,7 @@ export function ServiceForm({
         </div>
 
         <TextArea name="short_description" label="Short Description" rows={2} defaultValue={service?.short_description} />
-        <TextArea name="full_description" label="Full Description" rows={6} defaultValue={service?.full_description} />
+        <RichTextEditor name="full_description" label="Full Description" defaultValue={service?.full_description || ""} />
 
         <ImageUploader 
           name="hero_image_url" 
