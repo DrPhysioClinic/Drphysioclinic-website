@@ -116,7 +116,7 @@ export default async function HomePage() {
           {[
             { value: leadDoctor?.experience_years ?? 13, suffix: "+", label: "Years Experience" },
             { value: allServices.length || 8, suffix: "+", label: "Treatments" },
-            { value: 50000, suffix: "+", label: "Happy Patients" },
+            { value: 250000, suffix: "+", label: "Happy Patients" },
             { value: 4.9, suffix: "★", decimals: 1, label: "Patient Rating" },
           ].map((stat) => (
             <div key={stat.label}>
