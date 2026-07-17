@@ -24,6 +24,7 @@ import RotatingText from "@/components/ui/RotatingText";
 import Threads from "@/components/ui/Threads";
 import { HeroVisibilityTracker } from "@/components/public/hero-visibility-tracker";
 import { HeroBookAppointmentButton } from "@/components/public/hero-book-appointment-button";
+import { HeroVideo } from "@/components/public/hero-video";
 import { getCanonicalUrl } from "@/lib/utils";
 
 
@@ -57,7 +58,7 @@ export default async function HomePage() {
       <section className="relative flex min-h-[100dvh] items-center bg-[#17153f] pt-16 text-white pb-12 overflow-hidden">
         
         {/* Threads Background Spanning Entire Section */}
-        <div className="absolute inset-0 z-0 opacity-50">
+        <div className="absolute inset-0 z-0 opacity-50 pointer-events-none">
           <Threads
             amplitude={2}
             distance={0.3}
@@ -97,13 +98,14 @@ export default async function HomePage() {
                 />
               </div>
             </div>
-            <div className="mt-8 flex flex-wrap gap-3 pointer-events-auto h-[44px] relative">
+            <div className="mt-24 sm:mt-32 flex flex-wrap gap-3 pointer-events-auto h-[44px] relative">
               <HeroVisibilityTracker />
               <HeroBookAppointmentButton />
             </div>
           </div>
-          {/* Empty column to keep text on the left while allowing clicks to pass through to the 3D model on the right */}
-          <div className="hidden lg:block pointer-events-none">
+          {/* Video Container Column */}
+          <div className="hidden lg:flex items-center justify-end pointer-events-auto">
+            <HeroVideo />
           </div>
         </div>
       </section>

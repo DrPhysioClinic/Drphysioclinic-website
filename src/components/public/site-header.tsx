@@ -174,30 +174,16 @@ export function SiteHeader({
               Call Now
             </span>
           </TrackLink>
-          <AnimatePresence>
-            {(!isHome || !isHeroInView) && (
-              <motion.div
-                layoutId="book-appointment-btn"
-                initial={{ opacity: 0, scale: 0.9 }}
-                animate={{ opacity: 1, scale: 1 }}
-                exit={{ opacity: 0, scale: 0.9 }}
-                transition={{ type: "spring", stiffness: 300, damping: 25 }}
-                className="hidden sm:flex"
-              >
-                <HoverBorderGradient
-                  as={Link}
-                  href="/contact#appointment"
-                  containerClassName="flex rounded-xl"
-                  className={`transition-colors font-semibold bg-transparent ${
-                    isSolid ? "text-brand-700 hover:bg-brand-50/50" : "text-white hover:bg-white/10"
-                  }`}
-                  duration={1.5}
-                >
-                  Book Appointment
-                </HoverBorderGradient>
-              </motion.div>
-            )}
-          </AnimatePresence>
+          <Link
+            href="/contact#appointment"
+            className={`hidden sm:inline-flex items-center justify-center rounded-xl px-4 py-2.5 text-sm font-semibold transition-all duration-300 shadow-sm border ${
+              isSolid 
+                ? "bg-brand-600 text-white hover:bg-red-600 hover:border-red-600 hover:shadow-md border-transparent" 
+                : "bg-white/10 text-white hover:bg-red-600 hover:border-red-600 border-white/30 backdrop-blur-md"
+            }`}
+          >
+            Book Appointment
+          </Link>
           <button
             type="button"
             aria-label="Toggle menu"
