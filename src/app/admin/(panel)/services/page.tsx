@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { createServerSupabase } from "@/lib/supabase/server";
 import { RowActions } from "@/components/admin/row-actions";
+import { SortOrderControls } from "@/components/admin/sort-order-controls";
 
 export const dynamic = "force-dynamic";
 
@@ -33,7 +34,9 @@ export default async function AdminServicesPage() {
           <tbody className="divide-y divide-slate-100">
             {(services ?? []).map((s) => (
               <tr key={s.id}>
-                <td className="px-4 py-3 text-center text-slate-500 font-mono text-xs">{s.sort_order}</td>
+                <td className="px-4 py-3">
+                  <SortOrderControls table="services" id={s.id} currentOrder={s.sort_order ?? 0} />
+                </td>
                 <td className="px-4 py-3 font-medium text-slate-800">
                   {s.title}
                   {s.scheduled_at && new Date(s.scheduled_at) > new Date() && (

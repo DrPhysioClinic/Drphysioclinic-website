@@ -45,7 +45,7 @@ export function HomeGallerySlider({ gallery }: { gallery: GalleryItem[] }) {
     }, 8000); // Rotate every 8 seconds
     
     return () => clearInterval(interval);
-  }, [totalPages]);
+  }, [totalPages, currentPage]);
 
   if (gallery.length === 0) return null;
 

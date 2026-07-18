@@ -411,17 +411,26 @@ export async function saveVideo(_prev: SaveState, fd: FormData): Promise<SaveSta
   if (!title) return { error: "Title is required." };
   if (!video_url) return { error: "Video URL is required." };
 
-  const ytRegex = /(?:youtube\.com\/(?:[^\/]+\/.+\/|(?:v|e(?:mbed)?)\/|.*[?&]v=)|youtu\.be\/)([^"&?\/\s]{11})/i;
-  const match = video_url.match(ytRegex);
-  if (match && match[1]) {
-    video_url = match[1];
+  const ytRegex = /(?:youtube\.com\/(?:[^\/]+\/.+\/|(?:v|e(?:mbed)?|shorts)\/|.*[?&]v=)|youtu\.be\/)([^"&?\/\s]{11})/i;
+  let videoId = "";
+
+  if (video_url.length === 11 && !video_url.includes(' ') && !video_url.includes('/') && !video_url.includes('.')) {
+    videoId = video_url;
   } else {
-    return { error: "Please enter a valid YouTube URL." };
+    const match = video_url.match(ytRegex);
+    if (match && match[1]) {
+      videoId = match[1];
+    } else {
+      return { error: "Please enter a valid YouTube URL or 11-character Video ID." };
+    }
   }
+
+  // Always save as standardized full URL to prevent confusion during later edits
+  video_url = `https://www.youtube.com/watch?v=${videoId}`;
 
   let thumbnail_url = str(fd, "thumbnail_url");
   if (!thumbnail_url) {
-    thumbnail_url = `https://img.youtube.com/vi/${video_url}/maxresdefault.jpg`;
+    thumbnail_url = `https://img.youtube.com/vi/${videoId}/maxresdefault.jpg`;
   }
 
   const payload = {

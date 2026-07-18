@@ -7,6 +7,7 @@ import {
   getTestimonials,
   getUpdates,
   getGallery,
+  getVideos,
 } from "@/lib/queries";
 import { ServiceCard, DoctorCard, UpdateCard } from "@/components/public/cards";
 import { NewsletterForm } from "@/components/public/forms";
@@ -15,6 +16,8 @@ import { JsonLd } from "@/components/json-ld";
 import { DoctorSlider } from "@/components/public/doctor-slider";
 import { LazyMap } from "@/components/public/lazy-map";
 import { HomeGallerySlider } from "@/components/public/home-gallery-slider";
+import { VideoSlideshow } from "@/components/public/video-slideshow";
+import { ShinyText } from "@/components/ui/shiny-text";
 
 import { telHref, whatsappHref } from "@/lib/constants";
 import Image from "next/image";
@@ -39,7 +42,7 @@ export const metadata = {
 export const revalidate = 3600;
 
 export default async function HomePage() {
-  const [settings, featured, allServices, doctors, testimonials, updates, gallery] =
+  const [settings, featured, allServices, doctors, testimonials, updates, gallery, videos] =
     await Promise.all([
       getResolvedSettings(),
       getFeaturedServices(6),
@@ -48,10 +51,12 @@ export default async function HomePage() {
       getTestimonials(true),
       getUpdates(),
       getGallery(true),
+      getVideos(),
     ]);
 
   const services = featured.length ? featured : allServices.slice(0, 6);
   const leadDoctor = doctors[0];
+  const testimonialVideos = videos.filter(v => v.category?.toLowerCase().trim().includes("testimonial"));
 
   return (
     <>
@@ -71,9 +76,16 @@ export default async function HomePage() {
           <div className="flex flex-col justify-center">
             <h1 className="flex flex-col gap-2">
               <span className="text-sm font-semibold tracking-wider text-brand-300 uppercase">Top-Rated Physiotherapy Clinic in Ahmedabad</span>
-              <AnimatedTitle 
+              <ShinyText 
                 text="Dr Physio" 
-                as="span" 
+                speed={3}
+                delay={0}
+                color="#ef4444"
+                shineColor="#970000"
+                spread={70}
+                direction="left"
+                yoyo={false}
+                pauseOnHover={false}
                 className="text-3xl font-bold leading-tight sm:text-4xl lg:text-5xl" 
               />
             </h1>
@@ -186,6 +198,21 @@ export default async function HomePage() {
 
       {/* Testimonials Component */}
       <TestimonialsSection testimonials={testimonials} />
+
+      {/* Testimonial Videos */}
+      {testimonialVideos.length > 0 && (
+        <section className="bg-slate-50 py-12">
+          <div className="container-page">
+            <div className="mb-8 flex flex-col items-center text-center">
+              <h2 className="section-title mb-4">Patient Stories in Video</h2>
+              <p className="max-w-2xl text-slate-600">
+                Hear directly from our patients about their experiences and successful recoveries.
+              </p>
+            </div>
+            <VideoSlideshow videos={testimonialVideos} />
+          </div>
+        </section>
+      )}
 
       {/* Contact / location + newsletter */}
       <section className="bg-slate-50">
