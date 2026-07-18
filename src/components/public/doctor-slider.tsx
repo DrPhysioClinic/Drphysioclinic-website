@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { motion, AnimatePresence } from "motion/react";
@@ -10,6 +10,14 @@ import type { Doctor } from "@/types/database";
 export function DoctorSlider({ doctors }: { doctors: Doctor[] }) {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [direction, setDirection] = useState(0);
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    const checkMobile = () => setIsMobile(window.innerWidth < 768);
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+    return () => window.removeEventListener('resize', checkMobile);
+  }, []);
 
   if (!doctors || doctors.length === 0) return null;
 
@@ -27,6 +35,14 @@ export function DoctorSlider({ doctors }: { doctors: Doctor[] }) {
     if (currentIndex > 0) {
       setDirection(-1);
       setCurrentIndex((prev) => prev - 1);
+    }
+  };
+
+  const handleDragEnd = (e: any, { offset, velocity }: any) => {
+    if (offset.x < -50 || velocity.x < -500) {
+      handleNext();
+    } else if (offset.x > 50 || velocity.x > 500) {
+      handlePrev();
     }
   };
 
@@ -91,7 +107,11 @@ export function DoctorSlider({ doctors }: { doctors: Doctor[] }) {
               x: { type: "spring", stiffness: 300, damping: 30 },
               opacity: { duration: 0.2 },
             }}
-            className="col-start-1 row-start-1 flex flex-col lg:flex-row w-full"
+            drag={isMobile ? "x" : false}
+            dragConstraints={{ left: 0, right: 0 }}
+            dragElastic={0.2}
+            onDragEnd={handleDragEnd}
+            className={`col-start-1 row-start-1 flex flex-col lg:flex-row w-full ${isMobile ? 'cursor-grab active:cursor-grabbing' : ''}`}
           >
           {/* Left Column - Bright Blue */}
           <div className="relative flex min-h-[400px] lg:min-h-[700px] items-end justify-center bg-brand-500 pt-12 lg:w-[45%] shrink-0 px-8">

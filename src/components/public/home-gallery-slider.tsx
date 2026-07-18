@@ -25,8 +25,16 @@ const variants = {
 export function HomeGallerySlider({ gallery }: { gallery: GalleryItem[] }) {
   const [currentPage, setCurrentPage] = useState(0);
   const [direction, setDirection] = useState(1);
+  const [isMobile, setIsMobile] = useState(false);
   const itemsPerPage = 8;
   const totalPages = Math.ceil(gallery.length / itemsPerPage);
+
+  useEffect(() => {
+    const checkMobile = () => setIsMobile(window.innerWidth < 768);
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+    return () => window.removeEventListener('resize', checkMobile);
+  }, []);
 
   useEffect(() => {
     if (totalPages <= 1) return;
@@ -52,6 +60,14 @@ export function HomeGallerySlider({ gallery }: { gallery: GalleryItem[] }) {
     setCurrentPage(i);
   };
 
+  const handleDragEnd = (e: any, { offset, velocity }: any) => {
+    if (offset.x < -50 || velocity.x < -500) {
+      handlePageClick((currentPage + 1) % totalPages);
+    } else if (offset.x > 50 || velocity.x > 500) {
+      handlePageClick(currentPage === 0 ? totalPages - 1 : currentPage - 1);
+    }
+  };
+
   return (
     <div className="relative w-full overflow-hidden pb-4">
       <AnimatePresence mode="popLayout" initial={false} custom={direction}>
@@ -63,7 +79,11 @@ export function HomeGallerySlider({ gallery }: { gallery: GalleryItem[] }) {
           animate="center"
           exit="exit"
           transition={{ duration: 0.6, ease: [0.32, 0.72, 0, 1] }}
-          className="grid grid-cols-2 gap-4 md:grid-cols-4 w-full"
+          drag={isMobile ? "x" : false}
+          dragConstraints={{ left: 0, right: 0 }}
+          dragElastic={0.2}
+          onDragEnd={handleDragEnd}
+          className={`grid grid-cols-2 gap-4 md:grid-cols-4 w-full ${isMobile ? 'cursor-grab active:cursor-grabbing touch-pan-y' : ''}`}
         >
           {currentItems.map((g) => (
             <div key={g.id} className="relative aspect-square overflow-hidden rounded-xl bg-slate-100">
