@@ -197,6 +197,7 @@ export async function getUpdates(): Promise<Update[]> {
       .select("*")
       .eq("is_published", true)
       .or(`scheduled_at.is.null,scheduled_at.lte.${new Date().toISOString()}`)
+      .order("is_featured", { ascending: false })
       .order("published_at", { ascending: false, nullsFirst: false });
     return data ?? [];
   } catch {

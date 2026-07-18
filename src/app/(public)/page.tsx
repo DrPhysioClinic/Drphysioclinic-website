@@ -178,21 +178,21 @@ export default async function HomePage() {
 
 
 
+      {/* Gallery preview */}
+      {gallery.length > 0 && (
+        <Section title="What does our clinic look like?" href="/gallery" linkLabel="View gallery" muted>
+          <HomeGallerySlider gallery={gallery} />
+        </Section>
+      )}
+
       {/* Updates preview */}
       {updates.length > 0 && (
-        <Section title="Latest Updates" href="/updates" linkLabel="All updates" muted>
+        <Section title="Latest Updates" href="/updates" linkLabel="All updates">
           <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
             {updates.slice(0, 3).map((u) => (
               <UpdateCard key={u.id} update={u} redirectToList={true} />
             ))}
           </div>
-        </Section>
-      )}
-
-      {/* Gallery preview */}
-      {gallery.length > 0 && (
-        <Section title="What does our clinic look like?" href="/gallery" linkLabel="View gallery">
-          <HomeGallerySlider gallery={gallery} />
         </Section>
       )}
 
