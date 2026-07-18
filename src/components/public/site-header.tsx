@@ -4,7 +4,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { useState, useEffect } from "react";
 import { usePathname } from "next/navigation";
-import { NAV_LINKS, telHref } from "@/lib/constants";
+import { telHref, type NavLink } from "@/lib/constants";
 import { TrackLink } from "@/components/public/track-link";
 import { HoverBorderGradient } from "@/components/ui/hover-border-gradient";
 import { motion, AnimatePresence } from "motion/react";
@@ -13,9 +13,11 @@ import { useHeroInView } from "@/lib/hero-state";
 export function SiteHeader({
   clinicName,
   phone,
+  navLinks,
 }: {
   clinicName: string;
   phone?: string | null;
+  navLinks: NavLink[];
 }) {
   const [open, setOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
@@ -103,7 +105,7 @@ export function SiteHeader({
         </Link>
 
         <nav className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 hidden items-center gap-1 lg:flex">
-          {NAV_LINKS.map((link) => {
+          {navLinks.map((link) => {
             const active = pathname === link.href || link.sublinks?.some((s) => s.href === pathname);
             
             let textColorClass = "";
@@ -243,7 +245,7 @@ export function SiteHeader({
                 </button>
               </div>
               <div className="flex flex-col py-4 px-2 gap-1">
-                {NAV_LINKS.map((link) => (
+                {navLinks.map((link) => (
                   <div key={link.href} className="flex flex-col">
                     {link.href === "#" ? (
                       <span className="rounded-md px-3 py-3 text-lg font-medium text-slate-800 cursor-default">

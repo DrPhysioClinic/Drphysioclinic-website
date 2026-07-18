@@ -4,6 +4,8 @@ import { useActionState } from "react";
 import { saveInfoPage } from "@/app/admin/(panel)/actions";
 import { emptySave } from "@/app/admin/(panel)/form-state";
 import { Text, TextArea, Checkbox, SaveBar } from "@/components/admin/fields";
+import { ImageUploader } from "@/components/admin/image-uploader";
+import { MultiImageUploader } from "@/components/admin/multi-image-uploader";
 import type { InfoPage } from "@/types/database";
 
 export function InfoPageForm({ page }: { page?: InfoPage }) {
@@ -21,6 +23,13 @@ export function InfoPageForm({ page }: { page?: InfoPage }) {
         <Text name="seo_title" label="SEO Title" defaultValue={page?.seo_title} />
         <Text name="seo_description" label="SEO Description" defaultValue={page?.seo_description} />
       </div>
+      <ImageUploader name="image_url" label="Banner Image" folder="info-pages" defaultValue={page?.image_url} />
+      <MultiImageUploader
+        name="image_urls"
+        label="Additional Images"
+        folder="info-pages/gallery"
+        defaultValue={page?.image_urls || []}
+      />
       <Checkbox name="is_published" label="Published" defaultChecked={page?.is_published ?? true} />
       <SaveBar state={state} label={page ? "Update Page" : "Create Page"} />
     </form>

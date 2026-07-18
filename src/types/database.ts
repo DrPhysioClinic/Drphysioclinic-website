@@ -453,6 +453,8 @@ export type Database = {
           content: string | null
           created_at: string | null
           id: string
+          image_url: string | null
+          image_urls: string[] | null
           is_published: boolean | null
           seo_description: string | null
           seo_title: string | null
@@ -465,6 +467,8 @@ export type Database = {
           content?: string | null
           created_at?: string | null
           id?: string
+          image_url?: string | null
+          image_urls?: string[] | null
           is_published?: boolean | null
           seo_description?: string | null
           seo_title?: string | null
@@ -477,6 +481,8 @@ export type Database = {
           content?: string | null
           created_at?: string | null
           id?: string
+          image_url?: string | null
+          image_urls?: string[] | null
           is_published?: boolean | null
           seo_description?: string | null
           seo_title?: string | null
@@ -711,6 +717,30 @@ export type Database = {
         }
         Relationships: []
       }
+      slug_redirects: {
+        Row: {
+          created_at: string
+          entity_type: string
+          id: string
+          new_slug: string
+          old_slug: string
+        }
+        Insert: {
+          created_at?: string
+          entity_type: string
+          id?: string
+          new_slug: string
+          old_slug: string
+        }
+        Update: {
+          created_at?: string
+          entity_type?: string
+          id?: string
+          new_slug?: string
+          old_slug?: string
+        }
+        Relationships: []
+      }
       social_links: {
         Row: {
           created_at: string | null
@@ -804,31 +834,6 @@ export type Database = {
         }
         Relationships: []
       }
-      slug_redirects: {
-        Row: {
-          id: string
-          entity_type: string
-          old_slug: string
-          new_slug: string
-          created_at: string
-        }
-        Insert: {
-          id?: string
-          entity_type: string
-          old_slug: string
-          new_slug: string
-          created_at?: string
-        }
-        Update: {
-          id?: string
-          entity_type?: string
-          old_slug?: string
-          new_slug?: string
-          created_at?: string
-        }
-        Relationships: []
-      }
-
       updates: {
         Row: {
           author_id: string | null
@@ -1124,3 +1129,4 @@ export type SocialLink = Tables<"social_links">;
 export type Condition = Tables<"conditions">;
 export type Area = Tables<"areas">;
 export type Appointment = Tables<"appointments">;
+

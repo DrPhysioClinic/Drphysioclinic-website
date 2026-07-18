@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { NAV_LINKS, telHref } from "@/lib/constants";
+import { telHref, type NavLink } from "@/lib/constants";
 import type { SocialLink } from "@/types/database";
 import Image from "next/image";
 import { 
@@ -35,9 +35,11 @@ type FooterSettings = {
 export function SiteFooter({
   settings,
   socialLinks,
+  navLinks,
 }: {
   settings: FooterSettings;
   socialLinks: SocialLink[];
+  navLinks: NavLink[];
 }) {
   return (
     <footer className="mt-16 border-t border-slate-200 bg-[#17153f] text-slate-300 relative w-full min-h-[40vh] flex flex-col z-50">
@@ -76,7 +78,7 @@ export function SiteFooter({
           <div className="min-w-max">
             <h4 className="text-lg font-semibold text-white whitespace-nowrap">Quick Links</h4>
             <ul className="mt-3 space-y-2 text-base">
-              {NAV_LINKS.map((l) => (
+              {navLinks.map((l) => (
                 <li key={l.href} className="group relative">
                   {l.href === "#" ? (
                     <span className="hover:text-red-500 inline-block py-1 cursor-default text-white">

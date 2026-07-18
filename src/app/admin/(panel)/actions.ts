@@ -465,6 +465,15 @@ export async function saveInfoPage(_prev: SaveState, fd: FormData): Promise<Save
     title,
     slug: str(fd, "slug") || slugify(title),
     content: str(fd, "content"),
+    image_url: str(fd, "image_url"),
+    image_urls: (() => {
+      try {
+        const val = str(fd, "image_urls");
+        return val ? JSON.parse(val) : null;
+      } catch {
+        return null;
+      }
+    })(),
     seo_title: str(fd, "seo_title"),
     seo_description: str(fd, "seo_description"),
     sort_order: int(fd, "sort_order"),

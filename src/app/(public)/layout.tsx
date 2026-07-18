@@ -1,7 +1,8 @@
 import { SiteHeader } from "@/components/public/site-header";
 import { SiteFooter } from "@/components/public/site-footer";
 import { WhatsAppButton } from "@/components/public/whatsapp-button";
-import { getResolvedSettings, getSocialLinks } from "@/lib/queries";
+import { getResolvedSettings, getSocialLinks, getInfoPages } from "@/lib/queries";
+import { NAV_LINKS, type NavLink } from "@/lib/constants";
 import { PageTracker } from "@/components/public/page-tracker";
 import { ClickSpark } from "@/components/ui/click-spark";
 import { ClinicSchema } from "@/components/public/clinic-schema";
@@ -10,12 +11,29 @@ import { ClinicSchema } from "@/components/public/clinic-schema";
 export const revalidate = 3600;
 
 export default async function PublicLayout({ children }: { children: React.ReactNode }) {
-  const [settings, socialLinks] = await Promise.all([getResolvedSettings(), getSocialLinks()]);
+  const [settings, socialLinks, infoPages] = await Promise.all([
+    getResolvedSettings(), 
+    getSocialLinks(),
+    getInfoPages()
+  ]);
+
+  const navLinks: NavLink[] = NAV_LINKS.map(link => {
+    if (link.label === "More Info") {
+      return {
+        ...link,
+        sublinks: [
+          ...(link.sublinks || []),
+          ...infoPages.map(page => ({ href: `/info/${page.slug}`, label: page.title || "" }))
+        ]
+      };
+    }
+    return link;
+  });
 
   return (
     <ClickSpark sparkColor="#ffffff" sparkSize={10} sparkRadius={20} sparkCount={8} duration={400} extraScale={0.8}>
       <div className="flex min-h-screen flex-col">
-        <SiteHeader clinicName="Dr Physio" phone={settings.phone_primary} />
+        <SiteHeader clinicName="Dr Physio" phone={settings.phone_primary} navLinks={navLinks} />
         <main className="flex-1">{children}</main>
         <SiteFooter
           settings={{
@@ -27,6 +45,7 @@ export default async function PublicLayout({ children }: { children: React.React
             address: settings.address,
           }}
           socialLinks={socialLinks}
+          navLinks={navLinks}
         />
 
         <WhatsAppButton whatsappNumber={settings.whatsapp_number} />
