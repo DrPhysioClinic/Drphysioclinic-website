@@ -71,9 +71,9 @@ export function ImageUploader({
       const file = new File([blob], originalFile?.name || "cropped.png", { type: blob.type || targetType });
       const compressed = await Promise.race([
         imageCompression(file, {
-          maxWidthOrHeight: isCutout ? 2000 : 1200,
-          maxSizeMB: isCutout ? 2 : 0.25, // 2MB max for cutouts, 250KB for regular
-          initialQuality: isCutout ? 1 : 0.8, // 100% quality for cutouts
+          maxWidthOrHeight: isCutout ? 2000 : 1920,
+          maxSizeMB: isCutout ? 2 : 1, // 2MB max for cutouts, 1MB for regular
+          initialQuality: isCutout ? 1 : 0.9, // 100% quality for cutouts, 90% for regular
           fileType: targetType as string,
           useWebWorker: true,
         }),
