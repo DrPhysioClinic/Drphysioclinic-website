@@ -100,6 +100,8 @@ export function DoctorSlider({ doctors }: { doctors: Doctor[] }) {
               alt={currentDoctor.name || "Doctor"}
               width={500}
               height={600}
+              quality={100}
+              unoptimized
               className="relative z-10 w-full h-full max-h-[700px] max-w-[340px] object-contain object-bottom drop-shadow-[0_20px_20px_rgba(0,0,0,0.4)]"
               style={{ marginBottom: "-1px" }}
               priority
