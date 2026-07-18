@@ -14,6 +14,7 @@ import { TrackLink } from "@/components/public/track-link";
 import { JsonLd } from "@/components/json-ld";
 import { DoctorSlider } from "@/components/public/doctor-slider";
 import { LazyMap } from "@/components/public/lazy-map";
+import { HomeGallerySlider } from "@/components/public/home-gallery-slider";
 
 import { telHref, whatsappHref } from "@/lib/constants";
 import Image from "next/image";
@@ -179,22 +180,7 @@ export default async function HomePage() {
       {/* Gallery preview */}
       {gallery.length > 0 && (
         <Section title="What does our clinic look like?" href="/gallery" linkLabel="View gallery">
-          <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4">
-            {gallery.slice(0, 8).map((g) => (
-              <div
-                key={g.id}
-                className="relative aspect-square overflow-hidden rounded-lg bg-brand-50"
-              >
-                <Image
-                  src={g.image_url}
-                  alt={g.alt_text || g.title || "Gallery image"}
-                  fill
-                  sizes="(max-width: 768px) 50vw, 25vw"
-                  className="object-cover"
-                />
-              </div>
-            ))}
-          </div>
+          <HomeGallerySlider gallery={gallery} />
         </Section>
       )}
 
