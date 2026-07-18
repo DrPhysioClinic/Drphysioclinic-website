@@ -79,11 +79,11 @@ export function SiteFooter({
               {NAV_LINKS.map((l) => (
                 <li key={l.href} className="group relative">
                   {l.href === "#" ? (
-                    <span className="hover:text-brand-300 inline-block py-1 cursor-default text-white">
+                    <span className="hover:text-red-500 inline-block py-1 cursor-default text-white">
                       {l.label}
                     </span>
                   ) : (
-                    <Link href={l.href} className="hover:text-brand-300 inline-block py-1">
+                    <Link href={l.href} className="hover:text-red-500 inline-block py-1">
                       {l.label}
                     </Link>
                   )}
@@ -93,7 +93,7 @@ export function SiteFooter({
                         <ul className="mt-1 ml-4 space-y-2 pb-1 pr-4">
                           {l.sublinks.filter(s => s.href !== l.href).map((sub) => (
                             <li key={sub.href}>
-                              <Link href={sub.href} className="hover:text-brand-300 text-slate-400 hover:text-slate-200 transition-colors whitespace-nowrap inline-block pr-2">
+                              <Link href={sub.href} className="text-slate-400 hover:text-red-500 transition-colors whitespace-nowrap inline-block pr-2">
                                 {sub.label}
                               </Link>
                             </li>
@@ -111,19 +111,19 @@ export function SiteFooter({
             <h4 className="text-lg font-semibold text-white whitespace-nowrap">Contact</h4>
             <ul className="mt-3 space-y-2 text-base">
               <li>
-                <a href={telHref(settings.phone_primary)} className="hover:text-brand-300">
+                <a href={telHref(settings.phone_primary)} className="hover:text-red-500">
                   {settings.phone_primary}
                 </a>
               </li>
               {settings.phone_secondary && (
                 <li>
-                  <a href={telHref(settings.phone_secondary)} className="hover:text-brand-300">
+                  <a href={telHref(settings.phone_secondary)} className="hover:text-red-500">
                     {settings.phone_secondary}
                   </a>
                 </li>
               )}
               <li>
-                <a href={`mailto:${settings.email}`} className="hover:text-brand-300">
+                <a href={`mailto:${settings.email}`} className="hover:text-red-500">
                   {settings.email}
                 </a>
               </li>
@@ -132,7 +132,7 @@ export function SiteFooter({
                   href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(settings.address)}`}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="text-slate-400 hover:text-brand-300 transition-colors"
+                  className="text-slate-400 hover:text-red-500 transition-colors"
                 >
                   {settings.address}
                 </a>
@@ -159,7 +159,7 @@ export function SiteFooter({
                     href={s.url ?? "#"}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="group relative flex w-max items-center hover:text-brand-300 text-slate-400 transition-colors"
+                    className="group relative flex w-max items-center hover:text-red-500 text-slate-400 transition-colors"
                   >
                     <div className="shrink-0 relative z-10 bg-[#17153f] rounded-md">
                       {getSocialIcon(s.platform)}
@@ -182,7 +182,7 @@ export function SiteFooter({
               © {new Date().getFullYear()} Dr Physio. All rights reserved.
             </p>
             <p>
-              Designed by <a href="https://raahildesai.vercel.app/#" target="_blank" rel="noopener noreferrer" className="text-slate-400 hover:text-brand-300 transition-colors font-medium">Raahil Desai</a>
+              Designed by <a href="https://raahildesai.vercel.app/#" target="_blank" rel="noopener noreferrer" className="text-slate-400 hover:text-red-500 transition-colors font-medium">Raahil Desai</a>
             </p>
           </div>
         </div>
