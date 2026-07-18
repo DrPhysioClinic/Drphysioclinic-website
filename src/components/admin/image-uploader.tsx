@@ -66,13 +66,15 @@ export function ImageUploader({
     setCropImageSrc(""); // Close cropper modal
     
     try {
-      const file = new File([blob], originalFile?.name || "cropped.png", { type: blob.type || "image/png" });
+      const isCutout = folder.includes("cutout");
+      const targetType = isCutout && (blob.type === "image/png" || originalFile?.type === "image/png") ? "image/png" : "image/webp";
+      const file = new File([blob], originalFile?.name || "cropped.png", { type: blob.type || targetType });
       const compressed = await Promise.race([
         imageCompression(file, {
-          maxWidthOrHeight: 1200,
-          maxSizeMB: 0.25, // 250KB max
-          initialQuality: 0.8, // 80% quality (great for WebP)
-          fileType: "image/webp",
+          maxWidthOrHeight: isCutout ? 2000 : 1200,
+          maxSizeMB: isCutout ? 2 : 0.25, // 2MB max for cutouts, 250KB for regular
+          initialQuality: isCutout ? 1 : 0.8, // 100% quality for cutouts
+          fileType: targetType as string,
           useWebWorker: true,
         }),
         new Promise<never>((_, reject) =>
@@ -85,10 +87,11 @@ export function ImageUploader({
         ? crypto.randomUUID() 
         : Date.now().toString(36) + Math.random().toString(36).substring(2);
       
-      const path = `${folder}/${uuid}.webp`;
+      const ext = targetType === "image/png" ? "png" : "webp";
+      const path = `${folder}/${uuid}.${ext}`;
       const { error: upErr } = await supabase.storage
         .from(STORAGE_BUCKET)
-        .upload(path, compressed, { contentType: "image/webp", upsert: false });
+        .upload(path, compressed, { contentType: targetType, upsert: false });
       if (upErr) throw upErr;
 
       const { data } = supabase.storage.from(STORAGE_BUCKET).getPublicUrl(path);
