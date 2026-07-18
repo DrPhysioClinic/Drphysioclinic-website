@@ -1,5 +1,6 @@
 import { createServerSupabase } from "@/lib/supabase/server";
 import { StatusSelect } from "@/components/admin/status-select";
+import { RowActions } from "@/components/admin/row-actions";
 
 export const dynamic = "force-dynamic";
 
@@ -23,6 +24,7 @@ export default async function AdminEnquiriesPage() {
               <th className="px-4 py-3">Source</th>
               <th className="px-4 py-3">Received</th>
               <th className="px-4 py-3">Status</th>
+              <th className="px-4 py-3 text-right">Actions</th>
             </tr>
           </thead>
           <tbody className="divide-y divide-slate-100">
@@ -38,10 +40,21 @@ export default async function AdminEnquiriesPage() {
                 <td className="px-4 py-3">
                   <StatusSelect table="enquiries" id={e.id} value={e.status ?? ""} />
                 </td>
+                <td className="px-4 py-3 text-right">
+                  <div className="flex justify-end">
+                    <RowActions 
+                      table="enquiries" 
+                      id={e.id} 
+                      listPath="/admin/enquiries" 
+                      showPublish={false} 
+                      showFeatured={false} 
+                    />
+                  </div>
+                </td>
               </tr>
             ))}
             {(!data || data.length === 0) && (
-              <tr><td colSpan={6} className="px-4 py-8 text-center text-slate-400">No enquiries yet.</td></tr>
+              <tr><td colSpan={7} className="px-4 py-8 text-center text-slate-400">No enquiries yet.</td></tr>
             )}
           </tbody>
         </table>

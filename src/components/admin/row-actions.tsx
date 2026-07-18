@@ -13,7 +13,8 @@ type Table =
   | "updates"
   | "videos"
   | "info_pages"
-  | "appointments";
+  | "appointments"
+  | "enquiries";
 
 export function RowActions({
   table,
