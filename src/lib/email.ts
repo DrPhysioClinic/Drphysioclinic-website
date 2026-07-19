@@ -1,7 +1,7 @@
 import { Resend } from 'resend';
 
 const resend = new Resend(process.env.RESEND_API_KEY);
-const FROM_EMAIL = 'Dr. Physio Clinic <noreply@send.drphysioclinic.com>';
+const FROM_EMAIL = 'Dr. Physio Clinic <info@send.drphysioclinic.com>';
 const REPLY_TO_EMAIL = 'appointments@drphysioclinic.com';
 
 const LOGO_URL = 'https://sfznvsrwaquadutvlviq.supabase.co/storage/v1/object/public/media/Dr-physio-logo-combined.png';
