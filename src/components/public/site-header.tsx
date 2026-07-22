@@ -21,20 +21,8 @@ export function SiteHeader({
   navLinks: NavLink[];
 }) {
   const [open, setOpen] = useState(false);
-  const [scrolled, setScrolled] = useState(false);
   const pathname = usePathname();
   const isHeroInView = useHeroInView();
-
-  useEffect(() => {
-    const handleScroll = () => {
-      setScrolled(window.scrollY > 80);
-    };
-    
-    handleScroll();
-
-    window.addEventListener("scroll", handleScroll, { passive: true });
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
 
   useEffect(() => {
     return () => {
@@ -42,9 +30,9 @@ export function SiteHeader({
     };
   }, []);
 
-  // Only use the transparent header on the home page where there is a dark hero section.
+  // Use transparent header only on home page when the dark hero section is in view.
   const isHome = pathname === "/";
-  const isSolid = scrolled || !isHome || open;
+  const isSolid = !isHome || open || !isHeroInView;
 
   return (
     <header 
