@@ -26,6 +26,7 @@ export function HeroVisibilityTracker() {
     return () => observer.disconnect();
   }, []);
 
-  // Position it right at the top of the button container so it triggers when the button scrolls out
-  return <div ref={ref} className="absolute -top-1 left-0 w-full h-[1px] pointer-events-none" aria-hidden="true" />;
+  // A 35dvh tracker anchored to the top of the hero section. 
+  // It completely leaves the viewport exactly when the user scrolls 35% down the screen.
+  return <div ref={ref} className="absolute top-0 left-0 w-full h-[35dvh] pointer-events-none" aria-hidden="true" />;
 }

@@ -66,6 +66,7 @@ export default async function HomePage() {
     <>
       {/* Hero */}
       <section className="relative flex min-h-[100dvh] items-center bg-[#17153f] pt-16 text-white pb-12 overflow-hidden">
+        <HeroVisibilityTracker />
         
         {/* Spotlight Overlay */}
         <SpotlightCanvas config={{ glowColor: '176, 165, 210', spotlightIntensity: 0.5, spotlightSize: 300 }} />
@@ -132,7 +133,6 @@ export default async function HomePage() {
               </div>
             </div>
             <div className="mt-12 sm:mt-16 flex flex-wrap items-center gap-6 pointer-events-auto relative">
-              <HeroVisibilityTracker />
               <HeroBookAppointmentButton />
               
               {/* Watch Patient Stories Button */}
