@@ -16,6 +16,11 @@ const playfair = Playfair_Display({
   subsets: ["latin"],
 });
 
+const outfit = Outfit({
+  variable: "--font-outfit",
+  subsets: ["latin"],
+});
+
 const instrumentSerif = Instrument_Serif({
   weight: "400",
   variable: "--font-instrument",
@@ -54,7 +59,7 @@ import { LogoLoader } from "@/components/ui/logo-loader";
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   return (
     <html lang="en" className={cn("font-sans", bitter.variable)}>
-      <body className={`${bitter.variable} ${playfair.variable} ${instrumentSerif.variable} antialiased`}>
+      <body className={`${bitter.variable} ${playfair.variable} ${instrumentSerif.variable} ${outfit.variable} antialiased`} suppressHydrationWarning>
         {children}
         <LogoLoader />
       </body>

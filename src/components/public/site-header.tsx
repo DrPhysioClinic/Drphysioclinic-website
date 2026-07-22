@@ -9,6 +9,7 @@ import { TrackLink } from "@/components/public/track-link";
 import { HoverBorderGradient } from "@/components/ui/hover-border-gradient";
 import { motion, AnimatePresence } from "motion/react";
 import { useHeroInView } from "@/lib/hero-state";
+import { ArrowRight } from "lucide-react";
 
 export function SiteHeader({
   clinicName,
@@ -178,13 +179,18 @@ export function SiteHeader({
           </TrackLink>
           <Link
             href="/contact#appointment"
-            className={`hidden sm:inline-flex items-center justify-center rounded-xl px-4 py-2.5 text-sm font-semibold transition-all duration-300 shadow-sm border ${
+            className={`hidden sm:flex items-center gap-3 rounded-full pl-5 pr-1.5 py-1.5 text-[15px] font-semibold transition-all duration-300 shadow-sm border group ${
               isSolid 
-                ? "bg-brand-600 text-white hover:bg-red-600 hover:border-red-600 hover:shadow-md border-transparent" 
-                : "bg-white/10 text-white hover:bg-red-600 hover:border-red-600 border-white/30 backdrop-blur-md"
+                ? "bg-[#F2F0E9] text-[#17153f] border-[#17153f] hover:bg-white hover:shadow-md" 
+                : "bg-white/10 text-white hover:bg-white/20 border-white/30 backdrop-blur-md"
             }`}
           >
-            Book Appointment
+            <span>Book Appointment</span>
+            <div className={`w-8 h-8 rounded-full flex items-center justify-center transition-transform duration-300 ${
+              isSolid ? "bg-slate-950 text-white" : "bg-white text-slate-950"
+            }`}>
+              <ArrowRight strokeWidth={2.5} className="w-[18px] h-[18px] transition-transform duration-300 group-hover:-rotate-45" />
+            </div>
           </Link>
           <button
             type="button"

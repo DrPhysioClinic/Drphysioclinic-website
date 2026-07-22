@@ -18,6 +18,8 @@ import { LazyMap } from "@/components/public/lazy-map";
 import { HomeGallerySlider } from "@/components/public/home-gallery-slider";
 import { VideoSlideshow } from "@/components/public/video-slideshow";
 import { ShinyText } from "@/components/ui/shiny-text";
+import { ManifestoSection } from "@/components/public/manifesto-section";
+import { WhyUsBento } from "@/components/public/why-us-bento";
 
 import { telHref, whatsappHref } from "@/lib/constants";
 import Image from "next/image";
@@ -25,11 +27,13 @@ import { AnimatedCounter } from "@/components/ui/animated-counter";
 import { TestimonialsSection } from "@/components/public/testimonials-demo";
 import { AnimatedTitle } from "@/components/ui/animated-title";
 import RotatingText from "@/components/ui/RotatingText";
-import Threads from "@/components/ui/Threads";
+import ShapeGrid from "@/components/ui/ShapeGrid";
 import { HeroVisibilityTracker } from "@/components/public/hero-visibility-tracker";
 import { HeroBookAppointmentButton } from "@/components/public/hero-book-appointment-button";
+import { HeroPatientStoriesButton } from "@/components/public/hero-patient-stories-button";
 import { HeroVideo } from "@/components/public/hero-video";
 import { getCanonicalUrl } from "@/lib/utils";
+import SpotlightCanvas from "@/components/ui/spotlight-canvas";
 
 
 
@@ -63,19 +67,35 @@ export default async function HomePage() {
       {/* Hero */}
       <section className="relative flex min-h-[100dvh] items-center bg-[#17153f] pt-16 text-white pb-12 overflow-hidden">
         
+        {/* Spotlight Overlay */}
+        <SpotlightCanvas config={{ glowColor: '176, 165, 210', spotlightIntensity: 0.5, spotlightSize: 300 }} />
         {/* Threads Background Spanning Entire Section */}
-        <div className="absolute inset-0 z-0 opacity-50 pointer-events-none">
-          <Threads
-            amplitude={2}
-            distance={0.3}
-            enableMouseInteraction={false}
+        <div 
+          className="absolute inset-0 z-0 opacity-10 pointer-events-none"
+          style={{
+            maskImage: 'linear-gradient(to right, transparent 0%, black 35%)',
+            WebkitMaskImage: 'linear-gradient(to right, transparent 0%, black 35%)'
+          }}
+        >
+          <ShapeGrid
+            speed={0}
+            squareSize={80}
+            hoverFillColor="transparent"
+            hoverTrailAmount={0}
+            borderColor="#e2e8f0"
+            lineWidth={0.4}
           />
         </div>
 
-        <div className="container-page grid w-full gap-8 lg:grid-cols-2 relative z-10 pointer-events-none">
-          <div className="flex flex-col justify-center">
+        <div className="w-full px-6 lg:px-12 grid gap-8 lg:grid-cols-2 relative z-10 pointer-events-none">
+          <div className="flex flex-col justify-start xl:pl-8 pt-12 md:pt-16 lg:pt-20">
             <h1 className="flex flex-col gap-2">
-              <span className="text-sm font-semibold tracking-wider text-brand-300 uppercase">Top-Rated Physiotherapy Clinic in Ahmedabad</span>
+              <div className="font-outfit text-6xl sm:text-7xl lg:text-[85px] xl:text-[95px] leading-[0.9] font-medium tracking-tight text-white mb-2">
+                Top-rated <br />
+                <span className="font-playfair italic font-normal">physiotherapy</span> <br />
+                in <br />
+                Ahmedabad.
+              </div>
               <ShinyText 
                 text="Dr Physio" 
                 speed={3}
@@ -86,7 +106,7 @@ export default async function HomePage() {
                 direction="left"
                 yoyo={false}
                 pauseOnHover={false}
-                className="text-3xl font-bold leading-tight sm:text-4xl lg:text-5xl" 
+                className="text-4xl font-bold leading-tight sm:text-5xl lg:text-6xl"
               />
             </h1>
             <div className="mt-6 sm:mt-8 w-full max-w-2xl">
@@ -111,57 +131,103 @@ export default async function HomePage() {
                 />
               </div>
             </div>
-            <div className="mt-24 sm:mt-32 flex flex-wrap gap-3 pointer-events-auto h-[44px] relative">
+            <div className="mt-12 sm:mt-16 flex flex-wrap items-center gap-6 pointer-events-auto relative">
               <HeroVisibilityTracker />
               <HeroBookAppointmentButton />
+              
+              {/* Watch Patient Stories Button */}
+              <HeroPatientStoriesButton />
             </div>
           </div>
           {/* Video Container Column */}
-          <div className="hidden lg:flex items-center justify-end pointer-events-auto">
+          <div className="hidden lg:flex flex-col justify-center items-end pointer-events-auto pt-16 xl:pt-24">
             <HeroVideo />
+            
+            {/* Quote placed naturally below the video */}
+            <div className="w-full max-w-[480px] mt-10 pr-4">
+              <p className="font-playfair italic text-2xl lg:text-[28px] text-white/95 leading-snug">
+                “We do not fix people, <br className="hidden xl:block"/> we give the body its listening back.”
+              </p>
+              <p className="text-[10px] md:text-xs tracking-[0.2em] uppercase text-white/60 mt-5 font-semibold font-outfit text-right">
+                — Dr. Jeetendra Brahmbhatt · Lead
+              </p>
+            </div>
           </div>
         </div>
       </section>
 
-      {/* Trust stats */}
-      <section className="border-b border-slate-200 bg-white">
-        <div className="container-page grid grid-cols-2 gap-6 py-10 text-center sm:grid-cols-4">
-          {[
-            { value: leadDoctor?.experience_years ?? 13, suffix: "+", label: "Years Experience" },
-            { value: allServices.length || 8, suffix: "+", label: "Treatments" },
-            { value: 250000, suffix: "+", label: "Happy Patients" },
-            { value: 4.9, suffix: "★", decimals: 1, label: "Patient Rating" },
-          ].map((stat) => (
-            <div key={stat.label}>
-              <div className="text-2xl font-bold text-brand-700 sm:text-3xl">
-                <AnimatedCounter value={stat.value} suffix={stat.suffix} decimals={stat.decimals} />
+      {/* Evidence Stats */}
+      <section className="bg-white py-16 lg:py-24 border-y border-slate-200">
+        <div className="container-page max-w-7xl mx-auto px-6 lg:px-8">
+          <div className="flex items-center gap-4 text-[10px] font-semibold tracking-[0.2em] text-slate-500 uppercase mb-12">
+            <span>01 — EVIDENCE</span>
+            <div className="flex-grow h-px bg-[#0b081c]"></div>
+          </div>
+          
+          <div className="grid grid-cols-1 gap-y-12 md:grid-cols-4 md:gap-y-0">
+            {/* Stat 1 */}
+            <div className="border-l border-[#0b081c] pl-5 md:pl-6 lg:pl-8 flex flex-col justify-center text-left">
+              <div className="text-3xl md:text-4xl lg:text-5xl font-light mb-3 text-[#0b081c] whitespace-nowrap">
+                <AnimatedCounter value={13} suffix="+" />
               </div>
-              <div className="mt-1 text-sm text-slate-500">{stat.label}</div>
+              <div className="text-[10px] font-semibold tracking-[0.15em] text-slate-500 uppercase mb-1.5">
+                Years of Practice
+              </div>
+              <div className="text-sm text-slate-500 font-light">
+                Since 2011
+              </div>
             </div>
-          ))}
-        </div>
-      </section>
 
-      {/* AEO Why Choose Us */}
-      <section className="bg-slate-50 py-12">
-        <div className="container-page">
-          <h2 className="section-title text-center mb-8">Why Choose Dr Physio in Bopal?</h2>
-          <div className="grid gap-6 md:grid-cols-3">
-            <div className="bg-white p-6 rounded-xl shadow-sm border border-slate-100 text-center">
-              <h3 className="font-bold text-lg text-brand-700 mb-2">Expert Care</h3>
-              <p className="text-slate-600">Led by Dr. Jeetendra Brahmbhatt with 13+ years of experience in advanced physiotherapy.</p>
+            {/* Stat 2 */}
+            <div className="border-l border-[#0b081c] pl-5 md:pl-6 lg:pl-8 flex flex-col justify-center overflow-hidden text-left">
+              <div className="text-3xl md:text-4xl lg:text-5xl font-light mb-3 text-[#0b081c] whitespace-nowrap">
+                <AnimatedCounter value={250000} suffix="+" />
+              </div>
+              <div className="text-[10px] font-semibold tracking-[0.15em] text-slate-500 uppercase mb-1.5 truncate">
+                Patients Treated
+              </div>
+              <div className="text-sm text-slate-500 font-light truncate">
+                Bopal &middot; Ahmedabad
+              </div>
             </div>
-            <div className="bg-white p-6 rounded-xl shadow-sm border border-slate-100 text-center">
-              <h3 className="font-bold text-lg text-brand-700 mb-2">Advanced Facilities</h3>
-              <p className="text-slate-600">State-of-the-art rehab center equipped for sports injuries, neuro, and ortho conditions.</p>
+
+            {/* Stat 3 */}
+            <div className="border-l border-[#0b081c] pl-5 md:pl-6 lg:pl-8 flex flex-col justify-center overflow-hidden text-left">
+              <div className="text-3xl md:text-4xl lg:text-5xl font-light mb-3 text-[#0b081c] flex items-center whitespace-nowrap">
+                <AnimatedCounter value={4.9} decimals={1} />
+                <svg className="w-6 h-6 lg:w-8 lg:h-8 ml-2 text-[#0b081c] flex-shrink-0" viewBox="0 0 24 24" fill="currentColor">
+                  <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
+                </svg>
+              </div>
+              <div className="text-[10px] font-semibold tracking-[0.15em] text-slate-500 uppercase mb-1.5 truncate">
+                Patient Rating
+              </div>
+              <div className="text-sm text-slate-500 font-light truncate">
+                Across 590+ Google reviews
+              </div>
             </div>
-            <div className="bg-white p-6 rounded-xl shadow-sm border border-slate-100 text-center">
-              <h3 className="font-bold text-lg text-brand-700 mb-2">Highest Rated</h3>
-              <p className="text-slate-600">Trusted by thousands with 590+ 5-star Google reviews from happy patients.</p>
+
+            {/* Stat 4 */}
+            <div className="border-l border-[#0b081c] pl-5 md:pl-6 lg:pl-8 flex flex-col justify-center overflow-hidden text-left">
+              <div className="text-3xl md:text-4xl lg:text-5xl font-light mb-3 text-[#0b081c] whitespace-nowrap">
+                <AnimatedCounter value={24} suffix="h" />
+              </div>
+              <div className="text-[10px] font-semibold tracking-[0.15em] text-slate-500 uppercase mb-1.5 truncate">
+                Same-Day Slots
+              </div>
+              <div className="text-sm text-slate-500 font-light truncate">
+                Priority urgent care
+              </div>
             </div>
           </div>
         </div>
       </section>
+
+      {/* Manifesto */}
+      <ManifestoSection />
+
+      {/* Why Us Bento */}
+      <WhyUsBento />
 
       {/* Services preview */}
       <Section title="What conditions do we treat?" href="/treatments" linkLabel="View all">
@@ -201,7 +267,7 @@ export default async function HomePage() {
 
       {/* Testimonial Videos */}
       {testimonialVideos.length > 0 && (
-        <section className="bg-slate-50 py-12">
+        <section id="testimonials" className="bg-slate-50 py-12 scroll-mt-20">
           <div className="container-page">
             <div className="mb-8 flex flex-col items-center text-center">
               <h2 className="section-title mb-4">Patient Stories in Video</h2>
@@ -270,7 +336,7 @@ function Section({
       <div className="container-page py-14">
         <div className="mb-6 flex items-end justify-between gap-4">
           <AnimatedTitle text={title} className="section-title" />
-          <Link href={href} className="shrink-0 mb-1 text-sm font-semibold text-brand-600 hover:text-brand-400 transition-colors">
+          <Link href={href} className="shrink-0 mb-1 text-sm font-semibold text-brand-600 hover:text-red-600 transition-colors">
             {linkLabel} →
           </Link>
         </div>

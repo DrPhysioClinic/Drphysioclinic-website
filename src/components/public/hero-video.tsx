@@ -31,30 +31,40 @@ export function HeroVideo() {
 
   return (
     <div 
-      className="relative w-full max-w-[340px] aspect-[9/16] rounded-3xl overflow-hidden shadow-2xl shadow-brand-900/50 border-4 border-white/10"
+      className="relative group w-full max-w-[340px]"
       onMouseEnter={() => setShowControls(true)}
       onMouseLeave={() => setShowControls(false)}
     >
-      <video
-        ref={videoRef}
-        loop
-        playsInline
-        preload="metadata"
-        poster="/hero-poster.jpg"
-        className="w-full h-full object-cover pointer-events-none"
-      >
-        <source src="/hero-video-with-audio.mp4" type="video/mp4" />
-      </video>
-      
+      {/* Masked Video and Border Container */}
       <div 
-        className={`absolute bottom-4 right-4 transition-opacity duration-300 ${showControls ? 'opacity-100' : 'opacity-0'}`}
+        className="w-full aspect-[9/16] rounded-full overflow-hidden shadow-2xl shadow-brand-900/50 border-4 border-white/10"
+        style={{
+          maskImage: 'linear-gradient(to top, transparent 0%, black 25%)',
+          WebkitMaskImage: 'linear-gradient(to top, transparent 0%, black 25%)'
+        }}
+      >
+        <video
+          ref={videoRef}
+          loop
+          playsInline
+          preload="metadata"
+          poster="/hero-poster.jpg"
+          className="w-full h-full object-cover pointer-events-none"
+        >
+          <source src="/hero-video-with-audio.mp4" type="video/mp4" />
+        </video>
+      </div>
+      
+      {/* Unmute Button - placed outside the mask so it remains visible */}
+      <div 
+        className={`absolute bottom-[25%] right-2 transition-opacity duration-300 z-20 ${showControls ? 'opacity-100' : 'opacity-0'}`}
       >
         <button 
           onClick={toggleMute}
-          className="p-2 bg-black/50 hover:bg-black/70 text-white rounded-full backdrop-blur-sm transition-colors cursor-pointer pointer-events-auto"
+          className="p-3 bg-black/60 hover:bg-black/80 text-white rounded-full backdrop-blur-md transition-all hover:scale-110 cursor-pointer pointer-events-auto shadow-lg"
           aria-label={isMuted ? "Unmute video" : "Mute video"}
         >
-          {isMuted ? <IconVolumeOff size={20} /> : <IconVolume size={20} />}
+          {isMuted ? <IconVolumeOff size={18} /> : <IconVolume size={18} />}
         </button>
       </div>
     </div>
