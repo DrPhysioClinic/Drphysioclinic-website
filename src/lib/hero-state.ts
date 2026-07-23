@@ -17,9 +17,11 @@ export const heroState = {
 };
 
 export function useHeroInView() {
-  const [inView, setInView] = useState(heroState.inView);
+  const [inView, setInView] = useState(true); // Always default to true for SSR
   
   useEffect(() => {
+    // Sync with global state upon mount
+    setInView(heroState.inView);
     const unsubscribe = heroState.subscribe((newInView) => {
       setInView(newInView);
     });
