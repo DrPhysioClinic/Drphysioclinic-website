@@ -107,7 +107,7 @@ export function WhyUsBento() {
               </h3>
               <div className="flex flex-wrap gap-2">
                 {['SHOCKWAVE', 'CLASS-IV LASER', 'IASTM', 'CUPPING', 'KINESIO', 'TENS'].map(tool => (
-                  <span key={tool} className="px-3 py-1 border border-slate-300/60 rounded-full text-[9px] md:text-[10px] font-bold tracking-[0.1em] text-[#0b081c] uppercase bg-white/50">
+                  <span key={tool} className="px-3 py-1 border border-slate-300/60 rounded-full text-[9px] md:text-[10px] font-bold tracking-[0.1em] text-[#0b081c] uppercase bg-white/50 hover:bg-[#17153f] hover:text-white hover:border-[#17153f] transition-colors duration-300 cursor-default">
                     {tool}
                   </span>
                 ))}

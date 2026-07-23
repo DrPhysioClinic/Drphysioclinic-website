@@ -26,7 +26,7 @@ export function ManifestoSection() {
       <div className="container-page max-w-7xl mx-auto px-6 lg:px-8">
         
         {/* Header */}
-        <div className="flex flex-col md:flex-row md:justify-between md:items-start mb-20 gap-8">
+        <div className="flex flex-col md:flex-row md:justify-between md:items-end mb-20 gap-8">
           <div>
             <div className="text-[10px] font-semibold tracking-[0.2em] text-slate-500 uppercase mb-6 flex items-center gap-4">
               <span>02 — MANIFESTO</span>
@@ -35,7 +35,7 @@ export function ManifestoSection() {
               A practice, not a <span className="italic font-serif font-medium text-slate-200">factory.</span>
             </h2>
           </div>
-          <div className="md:max-w-xs text-sm text-slate-400 font-light leading-relaxed pt-2">
+          <div className="md:max-w-xs text-sm text-slate-400 font-light leading-relaxed pb-1 md:pb-3">
             Three principles we return to every morning — before the first patient walks in.
           </div>
         </div>
