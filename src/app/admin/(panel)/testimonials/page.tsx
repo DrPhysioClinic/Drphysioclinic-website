@@ -2,15 +2,27 @@ import Link from "next/link";
 import { createServerSupabase } from "@/lib/supabase/server";
 import { RowActions } from "@/components/admin/row-actions";
 import { SyncButton } from "@/components/admin/sync-button";
+import { TestimonialFilter } from "./filter";
 
 export const dynamic = "force-dynamic";
 
-export default async function AdminTestimonialsPage() {
+export default async function AdminTestimonialsPage({
+  searchParams,
+}: {
+  searchParams: Promise<{ filter?: string }>;
+}) {
+  const resolvedSearchParams = await searchParams;
   const supabase = await createServerSupabase();
-  const { data } = await supabase
+  let q = supabase
     .from("testimonials")
     .select("id, patient_name, treatment_category, rating, is_published, is_featured, source")
     .order("sort_order", { ascending: true });
+
+  if (resolvedSearchParams.filter === "featured") {
+    q = q.eq("is_featured", true);
+  }
+
+  const { data } = await q;
 
   return (
     <div>
@@ -29,7 +41,12 @@ export default async function AdminTestimonialsPage() {
               <th className="px-4 py-3">Category</th>
               <th className="px-4 py-3">Source</th>
               <th className="px-4 py-3">Rating</th>
-              <th className="px-4 py-3 text-right">Actions</th>
+              <th className="px-4 py-3 text-right">
+                <div className="flex items-center justify-end gap-3">
+                  <TestimonialFilter />
+                  <span>Actions</span>
+                </div>
+              </th>
             </tr>
           </thead>
           <tbody className="divide-y divide-slate-100">
