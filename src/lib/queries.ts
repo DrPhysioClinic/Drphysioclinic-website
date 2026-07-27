@@ -162,7 +162,9 @@ export async function getTestimonials(featuredOnly = false): Promise<Testimonial
       .from("testimonials")
       .select("*")
       .eq("is_published", true)
-      .order("sort_order", { ascending: true });
+      .order("sort_order", { ascending: true })
+      .order("review_created_at", { ascending: false, nullsFirst: false })
+      .order("created_at", { ascending: false });
     if (featuredOnly) q = q.eq("is_featured", true);
     const { data } = await q;
     return data ?? [];
