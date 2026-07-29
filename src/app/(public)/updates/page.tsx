@@ -25,6 +25,15 @@ export default async function UpdatesPage() {
     <div className="container-page pt-28 pb-12">
       <h1 className="section-title">Updates &amp; Health Tips</h1>
       <UpdatesBrowser updates={updates} doctors={doctors} categories={CATEGORIES} />
+
+      {/* SEO Links for crawler discoverability (since pagination is client-side) */}
+      <div className="sr-only">
+        {updates.map((update) => (
+          <a key={update.id} href={`/updates/${update.slug}`}>
+            {update.title}
+          </a>
+        ))}
+      </div>
     </div>
   );
 }

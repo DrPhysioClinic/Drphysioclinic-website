@@ -24,6 +24,15 @@ export default async function TreatmentsPage() {
       <h2 className="text-xl font-bold text-slate-900 mb-4">Comprehensive Physiotherapy Services in Ahmedabad</h2>
       
       <TreatmentsBrowser services={services} categories={categories} />
+
+      {/* SEO Links for crawler discoverability (since pagination is client-side) */}
+      <div className="sr-only">
+        {services.map((service) => (
+          <a key={service.id} href={`/treatments/${service.slug}`}>
+            {service.title}
+          </a>
+        ))}
+      </div>
     </div>
   );
 }
