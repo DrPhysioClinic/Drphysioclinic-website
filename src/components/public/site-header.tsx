@@ -6,9 +6,7 @@ import { useState, useEffect } from "react";
 import { usePathname } from "next/navigation";
 import { telHref, type NavLink } from "@/lib/constants";
 import { TrackLink } from "@/components/public/track-link";
-import { HoverBorderGradient } from "@/components/ui/hover-border-gradient";
 import { motion, AnimatePresence } from "motion/react";
-import { useHeroInView } from "@/lib/hero-state";
 import { ArrowRight } from "lucide-react";
 
 export function SiteHeader({
@@ -21,18 +19,28 @@ export function SiteHeader({
   navLinks: NavLink[];
 }) {
   const [open, setOpen] = useState(false);
+  const [isScrolled, setIsScrolled] = useState(false);
   const pathname = usePathname();
-  const isHeroInView = useHeroInView();
 
   useEffect(() => {
+    const handleScroll = () => {
+      // Header becomes solid after scrolling past 35% of the viewport
+      setIsScrolled(window.scrollY > window.innerHeight * 0.35);
+    };
+
+    // Check immediately on mount
+    handleScroll();
+
+    window.addEventListener("scroll", handleScroll, { passive: true });
     return () => {
+      window.removeEventListener("scroll", handleScroll);
       document.body.style.overflow = "";
     };
   }, []);
 
-  // Use transparent header only on home page when the dark hero section is in view.
+  // Use transparent header only on home page when we haven't scrolled past the hero section.
   const isHome = pathname === "/";
-  const isSolid = !isHome || open || !isHeroInView;
+  const isSolid = !isHome || open || isScrolled;
 
   return (
     <header 

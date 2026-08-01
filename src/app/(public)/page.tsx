@@ -28,7 +28,6 @@ import { TestimonialsSection } from "@/components/public/testimonials-demo";
 import { AnimatedTitle } from "@/components/ui/animated-title";
 import RotatingText from "@/components/ui/RotatingText";
 import ShapeGrid from "@/components/ui/ShapeGrid";
-import { HeroVisibilityTracker } from "@/components/public/hero-visibility-tracker";
 import { HeroBookAppointmentButton } from "@/components/public/hero-book-appointment-button";
 import { HeroPatientStoriesButton } from "@/components/public/hero-patient-stories-button";
 import { HeroVideo } from "@/components/public/hero-video";
@@ -66,7 +65,6 @@ export default async function HomePage() {
     <>
       {/* Hero */}
       <section className="relative flex min-h-[100dvh] items-center bg-[#17153f] pt-16 text-white pb-12 overflow-hidden">
-        <HeroVisibilityTracker />
         
         {/* Spotlight Overlay */}
         <SpotlightCanvas config={{ glowColor: '176, 165, 210', spotlightIntensity: 0.5, spotlightSize: 300 }} />
