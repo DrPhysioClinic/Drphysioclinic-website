@@ -3,7 +3,6 @@ import { getCanonicalUrl } from "@/lib/utils";
 import { getUpdates } from "@/lib/queries";
 import { UpdatesBrowser } from "@/components/public/updates-browser";
 
-
 export const revalidate = 3600;
 
 export async function generateMetadata(): Promise<Metadata> {

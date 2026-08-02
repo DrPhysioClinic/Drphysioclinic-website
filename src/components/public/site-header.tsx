@@ -24,8 +24,8 @@ export function SiteHeader({
 
   useEffect(() => {
     const handleScroll = () => {
-      // Header becomes solid after scrolling past 35% of the viewport
-      setIsScrolled(window.scrollY > window.innerHeight * 0.35);
+      // Header becomes solid after a small scroll to ensure it's accurate on mobile browsers
+      setIsScrolled(window.scrollY > 50);
     };
 
     // Check immediately on mount
@@ -39,7 +39,8 @@ export function SiteHeader({
   }, []);
 
   // Use transparent header only on home page when we haven't scrolled past the hero section.
-  const isHome = pathname === "/";
+  // We check for undefined/null as a fallback during certain SSR edge cases on Vercel
+  const isHome = !pathname || pathname === "/" || pathname === "/index";
   const isSolid = !isHome || open || isScrolled;
 
   return (
