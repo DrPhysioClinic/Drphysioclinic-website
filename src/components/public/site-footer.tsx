@@ -43,15 +43,6 @@ export function SiteFooter({
 }) {
   return (
     <footer className="mt-16 border-t border-slate-200 bg-[#17153f] text-slate-300 relative w-full min-h-[40vh] flex flex-col z-50">
-      {/* Watermark Background */}
-      <div className="absolute inset-0 z-0 flex sm:items-center sm:justify-center pointer-events-none select-none overflow-hidden">
-        <span 
-          style={{ fontFamily: "var(--font-playfair), serif" }}
-          className="font-bold tracking-[-0.1em] sm:tracking-normal whitespace-nowrap text-white/5 [writing-mode:vertical-rl] [text-orientation:upright] sm:[writing-mode:horizontal-tb] sm:[text-orientation:mixed] text-[23.5vw] sm:text-[18.5vw] absolute right-0 top-[320px] sm:relative sm:top-auto sm:right-auto"
-        >
-          DR PHYSIO
-        </span>
-      </div>
 
       <div className="relative z-10 flex flex-1 flex-col justify-between">
         <div className="container-page flex flex-col sm:grid sm:grid-cols-2 lg:flex lg:flex-row lg:flex-nowrap lg:justify-between gap-12 lg:gap-8 xl:gap-20 py-12">
