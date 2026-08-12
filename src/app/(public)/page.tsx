@@ -67,7 +67,7 @@ export default async function HomePage() {
       <section className="relative flex min-h-[100dvh] items-center bg-[#17153f] pt-16 text-white pb-12 overflow-hidden">
         
         {/* Spotlight Overlay */}
-        <SpotlightCanvas config={{ glowColor: '176, 165, 210', spotlightIntensity: 0.5, spotlightSize: 300 }} />
+        <SpotlightCanvas config={{ glowColor: '176, 165, 210', spotlightIntensity: 0.5, spotlightSize: 300, fadeSpeed: 0.8 }} />
         {/* Threads Background Spanning Entire Section */}
         <div 
           className="absolute inset-0 z-0 opacity-10 pointer-events-none"
