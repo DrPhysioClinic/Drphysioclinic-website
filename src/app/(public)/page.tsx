@@ -221,11 +221,18 @@ export default async function HomePage() {
         </div>
       </section>
 
-      {/* Manifesto */}
-      <ManifestoSection />
+      {/* Doctors preview */}
+      <DoctorSlider doctors={doctors} />
 
       {/* Why Us Bento */}
       <WhyUsBento />
+
+      {/* Gallery preview */}
+      {gallery.length > 0 && (
+        <Section title="What does our clinic look like?" href="/gallery" linkLabel="View gallery" muted>
+          <HomeGallerySlider gallery={gallery} />
+        </Section>
+      )}
 
       {/* Services preview */}
       <Section title="What conditions do we treat?" href="/treatments" linkLabel="View all">
@@ -237,17 +244,8 @@ export default async function HomePage() {
         </div>
       </Section>
 
-      {/* Doctors preview */}
-      <DoctorSlider doctors={doctors} />
-
-
-
-      {/* Gallery preview */}
-      {gallery.length > 0 && (
-        <Section title="What does our clinic look like?" href="/gallery" linkLabel="View gallery" muted>
-          <HomeGallerySlider gallery={gallery} />
-        </Section>
-      )}
+      {/* Manifesto */}
+      <ManifestoSection />
 
       {/* Updates preview */}
       {updates.length > 0 && (
