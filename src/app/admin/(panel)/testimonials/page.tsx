@@ -15,7 +15,7 @@ export default async function AdminTestimonialsPage({
   const supabase = await createServerSupabase();
   let q = supabase
     .from("testimonials")
-    .select("id, patient_name, treatment_category, rating, is_published, is_featured, source")
+    .select("id, patient_name, treatment_category, rating, is_published, is_featured, source, testimonial")
     .order("sort_order", { ascending: true });
 
   if (resolvedSearchParams.filter === "featured") {
@@ -38,9 +38,9 @@ export default async function AdminTestimonialsPage({
           <thead className="border-b border-slate-200 text-left text-xs uppercase text-slate-500">
             <tr>
               <th className="px-4 py-3">Patient</th>
-              <th className="px-4 py-3">Category</th>
               <th className="px-4 py-3">Source</th>
               <th className="px-4 py-3">Rating</th>
+              <th className="px-4 py-3 max-w-xs">Message</th>
               <th className="px-4 py-3 text-right">
                 <div className="flex items-center justify-end gap-3">
                   <TestimonialFilter />
@@ -53,13 +53,15 @@ export default async function AdminTestimonialsPage({
             {(data ?? []).map((t) => (
               <tr key={t.id}>
                 <td className="px-4 py-3 font-medium text-slate-800">{t.patient_name}</td>
-                <td className="px-4 py-3 text-slate-500">{t.treatment_category}</td>
                 <td className="px-4 py-3">
                   <span className={`px-2 py-1 text-xs font-medium rounded-full ${t.source === 'google' ? 'bg-brand-100 text-brand-800' : t.source === 'google_removed' ? 'bg-slate-200 text-slate-500' : 'bg-slate-100 text-slate-700'}`}>
                     {t.source === 'google' ? 'Google' : t.source === 'google_removed' ? 'Google (Removed)' : 'Manual'}
                   </span>
                 </td>
                 <td className="px-4 py-3 text-accent-500">{"★".repeat(t.rating ?? 0)}</td>
+                <td className="px-4 py-3 text-slate-500 max-w-xs truncate" title={t.testimonial}>
+                  {t.testimonial}
+                </td>
                 <td className="px-4 py-3">
                   <div className="flex justify-end">
                     <RowActions
