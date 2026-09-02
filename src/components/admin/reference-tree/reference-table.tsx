@@ -4,12 +4,15 @@ import React, { useState, useMemo } from "react";
 import { createBrowserSupabase } from "@/lib/supabase/client";
 import { toast } from "sonner";
 import { GooeyInput } from "@/components/ui/gooey-input";
+import { useRouter } from "next/navigation";
 import { IconChevronDown, IconChevronRight, IconPlus, IconTrash, IconEdit, IconX } from "@tabler/icons-react";
 
 export type Patient = {
   id: string;
   name: string;
   phone: string;
+  email?: string;
+  code?: string;
 };
 
 export type DoctorNode = {
@@ -32,12 +35,13 @@ export function ReferenceTable({
     return initialData.filter(d => typeof d === "object" && d !== null && "doctorName" in d && "patients" in d) as DoctorNode[];
   }, [initialData]);
 
+  const router = useRouter();
   const [data, setData] = useState<DoctorNode[]>(cleanInitialData);
   const [searchQuery, setSearchQuery] = useState("");
   const [expandedDoctors, setExpandedDoctors] = useState<Set<string>>(new Set(cleanInitialData.map(d => d.id)));
   
   // Inline editing state
-  const [editingCell, setEditingCell] = useState<{ id: string; field: "doctorName" | "patientName" | "patientPhone"; value: string } | null>(null);
+  const [editingCell, setEditingCell] = useState<{ id: string; field: "doctorName" | "patientName" | "patientPhone" | "patientEmail"; value: string } | null>(null);
 
   const handleSave = async (newData: DoctorNode[]) => {
     setData(newData);
@@ -54,6 +58,7 @@ export function ReferenceTable({
       console.error(error);
     } else {
       toast.success("Saved successfully");
+      router.refresh();
     }
   };
 
@@ -75,11 +80,20 @@ export function ReferenceTable({
   };
 
   const addPatient = (doctorId: string) => {
+    const generateCode = () => {
+      const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+      let result = '';
+      for (let i = 0; i < 6; i++) {
+        result += chars.charAt(Math.floor(Math.random() * chars.length));
+      }
+      return result;
+    };
+
     const newData = data.map(doc => {
       if (doc.id === doctorId) {
         return {
           ...doc,
-          patients: [...doc.patients, { id: crypto.randomUUID(), name: "", phone: "" }],
+          patients: [...doc.patients, { id: crypto.randomUUID(), name: "", phone: "", email: "", code: generateCode() }],
         };
       }
       return doc;
@@ -150,7 +164,7 @@ export function ReferenceTable({
     }
   }, [searchQuery, filteredData]);
 
-  const commitEdit = (id: string, field: "doctorName" | "patientName" | "patientPhone", newValue: string) => {
+  const commitEdit = (id: string, field: "doctorName" | "patientName" | "patientPhone" | "patientEmail", newValue: string) => {
     const newData = data.map(doc => {
       if (field === "doctorName" && doc.id === id) {
         return { ...doc, doctorName: newValue };
@@ -160,7 +174,7 @@ export function ReferenceTable({
           ...doc,
           patients: doc.patients.map(p => {
             if (p.id === id) {
-              return { ...p, [field === "patientName" ? "name" : "phone"]: newValue };
+              return { ...p, [field === "patientName" ? "name" : field === "patientPhone" ? "phone" : "email"]: newValue };
             }
             return p;
           }),
@@ -172,7 +186,7 @@ export function ReferenceTable({
     setEditingCell(null);
   };
 
-  const renderEditableCell = (id: string, field: "doctorName" | "patientName" | "patientPhone", currentValue: string, placeholder = "") => {
+  const renderEditableCell = (id: string, field: "doctorName" | "patientName" | "patientPhone" | "patientEmail", currentValue: string, placeholder = "") => {
     const isEditing = editingCell?.id === id && editingCell?.field === field;
     
     if (isEditing) {
@@ -261,9 +275,11 @@ export function ReferenceTable({
                       <table className="w-full text-sm text-left">
                         <thead className="bg-slate-50/50 text-xs text-slate-500 uppercase border-b border-slate-100">
                           <tr>
-                            <th className="px-4 py-2 font-medium w-1/2">Patient Name</th>
-                            <th className="px-4 py-2 font-medium w-1/2 border-l border-slate-100">Phone Number</th>
-                            <th className="px-4 py-2 w-10 text-center border-l border-slate-100"></th>
+                            <th className="px-4 py-2 font-medium w-4/12">Patient Name</th>
+                            <th className="px-4 py-2 font-medium w-3/12 border-l border-slate-100">Phone Number</th>
+                            <th className="px-4 py-2 font-medium w-3/12 border-l border-slate-100">Email</th>
+                            <th className="px-4 py-2 font-medium w-1/12 border-l border-slate-100 text-center">Code</th>
+                            <th className="px-4 py-2 w-1/12 text-center border-l border-slate-100"></th>
                           </tr>
                         </thead>
                         <tbody className="divide-y divide-slate-100">
@@ -274,6 +290,14 @@ export function ReferenceTable({
                               </td>
                               <td className="px-2 py-1 align-top border-l border-slate-100">
                                 {renderEditableCell(patient.id, "patientPhone", patient.phone, "Enter phone")}
+                              </td>
+                              <td className="px-2 py-1 align-top border-l border-slate-100">
+                                {renderEditableCell(patient.id, "patientEmail", patient.email || "", "Enter email")}
+                              </td>
+                              <td className="px-2 py-2 align-middle border-l border-slate-100 text-center">
+                                <span className="font-mono text-xs bg-slate-100 text-slate-700 px-2 py-1 rounded">
+                                  {patient.code || 'N/A'}
+                                </span>
                               </td>
                               <td className="px-2 py-1 align-middle text-center border-l border-slate-100">
                                 <button
@@ -287,7 +311,7 @@ export function ReferenceTable({
                             </tr>
                           ))}
                           <tr>
-                            <td colSpan={3} className="px-4 py-2 bg-slate-50/30">
+                            <td colSpan={4} className="px-4 py-2 bg-slate-50/30">
                               <button 
                                 onClick={() => addPatient(doc.id)}
                                 className="text-xs font-medium text-brand-600 hover:text-brand-700 flex items-center gap-1"

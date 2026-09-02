@@ -229,3 +229,26 @@ export async function sendReviewRequestEmail(toEmail: string, patientName: strin
     console.error("Failed to send review request email:", error);
   }
 }
+
+export async function sendAttendanceEmail(toEmail: string, patientName: string, date: string, replyTo: string = REPLY_TO_EMAIL) {
+  try {
+    if (!process.env.RESEND_API_KEY) return;
+    const content = `
+      ${paragraph(`Hi ${patientName},`)}
+      ${paragraph(`Thank you for visiting Dr. Physio Clinic. Your attendance has been successfully marked.`, 28)}
+      ${detailCard([
+      { label: 'Date', value: date },
+    ], 24)}
+      ${paragraph(`We wish you a speedy recovery and good health.`, 0)}
+    `;
+    await resend.emails.send({
+      from: FROM_EMAIL,
+      to: toEmail,
+      replyTo: replyTo,
+      subject: 'Attendance Marked - Dr. Physio Clinic',
+      html: renderEmail('Your attendance is marked', content),
+    });
+  } catch (error) {
+    console.error("Failed to send attendance email:", error);
+  }
+}

@@ -20,6 +20,7 @@ import {
   IconSettings,
   IconLogout,
   IconSitemap,
+  IconClipboardCheck,
 } from "@tabler/icons-react";
 import { motion } from "motion/react";
 import Image from "next/image";
@@ -37,6 +38,7 @@ const links = [
   { href: "/admin/calendar", label: "Outlook Calendar", icon: <IconCalendarTime className="h-5 w-5 shrink-0" /> },
   { href: "/admin/enquiries", label: "Enquiries", icon: <IconMail className="h-5 w-5 shrink-0" /> },
   { href: "/admin/reference-tree", label: "Reference Tree", icon: <IconSitemap className="h-5 w-5 shrink-0" /> },
+  { href: "/admin/attendance", label: "Attendance", icon: <IconClipboardCheck className="h-5 w-5 shrink-0" /> },
   { href: "/admin/settings", label: "Settings", icon: <IconSettings className="h-5 w-5 shrink-0" /> },
 ];
 

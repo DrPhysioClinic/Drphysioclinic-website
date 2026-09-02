@@ -1,6 +1,7 @@
 import { createServerSupabase } from "@/lib/supabase/server";
 import { StatusSelect } from "@/components/admin/status-select";
 import { RowActions } from "@/components/admin/row-actions";
+import { EnquiryNotesModal } from "@/components/admin/enquiry-notes-modal";
 
 export const dynamic = "force-dynamic";
 
@@ -8,7 +9,7 @@ export default async function AdminEnquiriesPage() {
   const supabase = await createServerSupabase();
   const { data } = await supabase
     .from("enquiries")
-    .select("id, name, contact, message, source_page, status, created_at")
+    .select("id, name, contact, message, source_page, status, created_at, notes")
     .order("created_at", { ascending: false });
 
   return (
@@ -41,7 +42,8 @@ export default async function AdminEnquiriesPage() {
                   <StatusSelect table="enquiries" id={e.id} value={e.status ?? ""} />
                 </td>
                 <td className="px-4 py-3 text-right">
-                  <div className="flex justify-end">
+                  <div className="flex justify-end gap-2 items-center flex-nowrap">
+                    <EnquiryNotesModal id={e.id} initialNotes={e.notes} />
                     <RowActions 
                       table="enquiries" 
                       id={e.id} 

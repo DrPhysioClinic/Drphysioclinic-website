@@ -4,6 +4,7 @@ import { createPublicClient } from "@/lib/supabase/public";
 import { verifyTurnstile } from "@/lib/turnstile";
 import { logEvent } from "@/app/actions/analytics";
 import { parseTime } from "@/lib/utils";
+import { sendAttendanceEmail } from "@/lib/email";
 
 export type FormState = {
   ok: boolean;
@@ -119,6 +120,85 @@ export async function subscribeNewsletter(
     await logEvent("newsletter_submit", source_page ?? undefined);
     return { ok: true, message: "You're subscribed. Thank you!" };
   } catch {
+    return { ok: false, message: "Something went wrong. Please try again." };
+  }
+}
+
+export async function submitAttendance(_prev: FormState, formData: FormData): Promise<FormState> {
+  const blocked = await spamGuard(formData);
+  if (blocked) return blocked;
+
+  const code = (formData.get("code") as string)?.trim().toUpperCase() || null;
+  const name = (formData.get("name") as string)?.trim() || null;
+  const phone = (formData.get("phone") as string)?.trim() || null;
+  const attendanceDate = (formData.get("attendance_date") as string)?.trim() || null;
+
+  if (!attendanceDate) {
+    return { ok: false, message: "Date is required." };
+  }
+
+  const supabase = createPublicClient();
+  let finalName = name;
+  let finalPhone = phone;
+  let finalEmail: string | null = null;
+  let status = "external";
+
+  if (code) {
+    // Look up the code in the reference tree
+    const { data: tree } = await supabase
+      .from("reference_trees")
+      .select("nodes")
+      .eq("id", "00000000-0000-0000-0000-000000000001")
+      .single();
+      
+    if (tree && tree.nodes && Array.isArray(tree.nodes)) {
+      let found = false;
+      for (const doc of (tree.nodes as any[])) {
+        if (doc.patients && Array.isArray(doc.patients)) {
+          const patient = doc.patients.find((p: any) => p.code === code);
+          if (patient) {
+            finalName = patient.name;
+            finalPhone = patient.phone;
+            finalEmail = patient.email || null;
+            status = "patient";
+            found = true;
+            break;
+          }
+        }
+      }
+      if (!found) {
+        return { ok: false, message: "Invalid Unique Code. Please check or submit without it." };
+      }
+    } else {
+      return { ok: false, message: "Invalid Unique Code. Please check or submit without it." };
+    }
+  } else {
+    // External patient, must provide name and phone
+    if (!name || !phone) {
+      return { ok: false, message: "Name and Phone are required if no code is provided." };
+    }
+  }
+
+  const payload = {
+    patient_name: finalName,
+    phone: finalPhone,
+    unique_code: code,
+    attendance_date: attendanceDate,
+    status,
+  };
+
+  try {
+    const { error } = await supabase.from("attendances").insert(payload);
+    if (error) throw error;
+    await logEvent("attendance_submit", "attendance_page");
+
+    if (finalEmail && finalName && attendanceDate) {
+      await sendAttendanceEmail(finalEmail, finalName, attendanceDate);
+    }
+
+    return { ok: true, message: "Attendance registered successfully!" };
+  } catch (err) {
+    console.error(err);
     return { ok: false, message: "Something went wrong. Please try again." };
   }
 }

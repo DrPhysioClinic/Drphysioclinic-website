@@ -41,6 +41,7 @@ export const NAV_LINKS: NavLink[] = [
     label: "More Info",
     sublinks: [
       { href: "/videos", label: "Our YouTube" },
+      { href: "/attendance", label: "Attendance" },
     ],
   },
   { href: "/contact", label: "Contact" },

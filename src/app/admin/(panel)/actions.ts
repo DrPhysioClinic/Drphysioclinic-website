@@ -669,3 +669,29 @@ export async function saveDoctorNotes(id: string, notes: string) {
   revalidatePath("/admin/appointments");
   return { success: true };
 }
+
+export async function saveEnquiryNotes(id: string, notes: string) {
+  const supabase = await createServerSupabase();
+  const { error } = await supabase.from("enquiries").update({ notes } as never).eq("id", id);
+  if (error) return { error: error.message };
+  revalidatePath("/admin/enquiries");
+  return { success: true };
+}
+
+export async function clearAttendances(endDate: string): Promise<{ error?: string }> {
+  try {
+    const supabase = await createServerSupabase();
+    // Delete records from attendances up to the specified date
+    const { error } = await supabase
+      .from("attendances")
+      .delete()
+      .lte("attendance_date", endDate);
+    if (error) throw error;
+    revalidatePath("/admin/attendance");
+    return {};
+  } catch (err: any) {
+    console.error("Failed to clear attendances:", err);
+    return { error: err.message };
+  }
+}
+

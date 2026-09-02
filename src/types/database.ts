@@ -95,6 +95,36 @@ export type Database = {
         }
         Relationships: []
       }
+      attendances: {
+        Row: {
+          id: string
+          created_at: string
+          patient_name: string | null
+          phone: string | null
+          unique_code: string | null
+          status: string
+          attendance_date: string
+        }
+        Insert: {
+          id?: string
+          created_at?: string
+          patient_name?: string | null
+          phone?: string | null
+          unique_code?: string | null
+          status: string
+          attendance_date: string
+        }
+        Update: {
+          id?: string
+          created_at?: string
+          patient_name?: string | null
+          phone?: string | null
+          unique_code?: string | null
+          status?: string
+          attendance_date?: string
+        }
+        Relationships: []
+      }
       appointments: {
         Row: {
           cancellation_email_sent: boolean | null
@@ -379,6 +409,7 @@ export type Database = {
           created_at: string | null
           id: string
           message: string | null
+          notes: Json | null
           name: string
           source_page: string | null
           status: string | null
@@ -389,6 +420,7 @@ export type Database = {
           created_at?: string | null
           id?: string
           message?: string | null
+          notes?: Json | null
           name: string
           source_page?: string | null
           status?: string | null
@@ -399,6 +431,7 @@ export type Database = {
           created_at?: string | null
           id?: string
           message?: string | null
+          notes?: Json | null
           name?: string
           source_page?: string | null
           status?: string | null
@@ -1129,4 +1162,5 @@ export type SocialLink = Tables<"social_links">;
 export type Condition = Tables<"conditions">;
 export type Area = Tables<"areas">;
 export type Appointment = Tables<"appointments">;
+export type Attendance = Tables<"attendances">;
 
