@@ -137,6 +137,12 @@ export async function submitAttendance(_prev: FormState, formData: FormData): Pr
     return { ok: false, message: "Date is required." };
   }
 
+  // Double-check on the server to prevent future dates, as some mobile browsers ignore the HTML max attribute.
+  const todayStr = new Date().toLocaleDateString('en-CA', { timeZone: 'Asia/Kolkata' }); // 'en-CA' gives YYYY-MM-DD format
+  if (attendanceDate > todayStr) {
+    return { ok: false, message: "You cannot select a future date." };
+  }
+
   const supabase = createPublicClient();
   let finalName = name;
   let finalPhone = phone;
