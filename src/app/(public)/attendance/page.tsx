@@ -15,7 +15,7 @@ export default function AttendancePage() {
             Register Attendance
           </h1>
           <p className="mt-4 text-lg text-slate-600">
-            Please enter your unique code to register your visit.
+            Enter your phone number to verify and register your visit.
           </p>
         </div>
 

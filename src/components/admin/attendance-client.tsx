@@ -2,7 +2,7 @@
 
 import { useState, useMemo } from "react";
 import { toast } from "sonner";
-import { IconDownload, IconPrinter, IconX } from "@tabler/icons-react";
+import { IconDownload, IconPrinter, IconX, IconBuildingHospital, IconHome } from "@tabler/icons-react";
 import { format, parseISO } from "date-fns";
 import * as XLSX from "xlsx";
 
@@ -14,10 +14,52 @@ type Attendance = {
   unique_code: string | null;
   status: string;
   attendance_date: string;
+  visit_type?: string | null;
 };
 
+function getVisitType(a: Attendance): "Clinic Visit" | "Home Visit" {
+  if (a.visit_type) {
+    return a.visit_type.toLowerCase() === "home" ? "Home Visit" : "Clinic Visit";
+  }
+  if (a.status && a.status.toLowerCase().includes("home")) {
+    return "Home Visit";
+  }
+  return "Clinic Visit";
+}
+
+function getPatientCategory(a: Attendance): "Internal" | "External" {
+  if (a.status && a.status.toLowerCase().startsWith("patient")) {
+    return "Internal";
+  }
+  return "External";
+}
+
+function renderCodeBadge(code?: string | null) {
+  if (!code) return <span className="text-slate-400">-</span>;
+  const clean = code.trim();
+  // 6 numeric digits = Email OTP
+  const isOtp = /^\d{6}$/.test(clean);
+
+  if (isOtp) {
+    return (
+      <span className="inline-flex items-center gap-1.5 font-mono text-xs bg-sky-50 text-sky-800 border border-sky-200 px-2 py-0.5 rounded print:border-slate-300 font-semibold" title="Verified via 6-digit Email OTP">
+        <span className="text-[10px] font-bold tracking-wider text-sky-600 bg-sky-100/70 px-1 py-0.2 rounded">OTP</span>
+        {clean}
+      </span>
+    );
+  }
+
+  // Alphanumeric code = Unique ID
+  return (
+    <span className="inline-flex items-center gap-1.5 font-mono text-xs bg-purple-50 text-purple-800 border border-purple-200 px-2 py-0.5 rounded print:border-slate-300 font-semibold" title="Verified via Reference Tree Unique Code">
+      <span className="text-[10px] font-bold tracking-wider text-purple-600 bg-purple-100/70 px-1 py-0.2 rounded">UID</span>
+      {clean}
+    </span>
+  );
+}
+
 export function AttendanceClient({ initialData }: { initialData: Attendance[] }) {
-  const [filter, setFilter] = useState<"all" | "patient" | "external">("all");
+  const [filter, setFilter] = useState<"all" | "patient" | "external" | "clinic" | "home">("all");
 
   // Export Modal State
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -31,10 +73,14 @@ export function AttendanceClient({ initialData }: { initialData: Attendance[] })
     return initialData.reduce((min, p) => (p.attendance_date < min ? p.attendance_date : min), initialData[0].attendance_date);
   }, [initialData]);
 
-  // Data currently visible based on the status filter
+  // Data currently visible based on the status / visit-type filter
   const filteredData = initialData.filter((a) => {
     if (filter === "all") return true;
-    return a.status === filter;
+    if (filter === "patient") return a.status.toLowerCase().startsWith("patient");
+    if (filter === "external") return a.status.toLowerCase().startsWith("external");
+    if (filter === "clinic") return getVisitType(a) === "Clinic Visit";
+    if (filter === "home") return getVisitType(a) === "Home Visit";
+    return true;
   });
 
   // Data visible during PDF print (filtered by date range)
@@ -77,18 +123,28 @@ export function AttendanceClient({ initialData }: { initialData: Attendance[] })
     const titleRow = `Attendance Sheet from ${formattedStart} to ${formattedStop}`;
 
     if (exportType === "xlsx") {
-      // Create worksheet
+      // Create worksheet with full metadata
       const wsData = [
         [titleRow], // First row description
         [], // Empty row for spacing
-        ["Date", "Name", "Phone", "Unique ID", "Status"], // Headers
-        ...dataToExport.map((a) => [
-          a.attendance_date,
-          a.patient_name || "-",
-          a.phone || "-",
-          a.unique_code || "-",
-          a.status === "patient" ? "Internal" : "External",
-        ]),
+        ["Date", "Name", "Phone", "Visit Type", "Verification Code", "Auth Method", "Status"], // Headers
+        ...dataToExport.map((a) => {
+          const vType = getVisitType(a);
+          const rawCode = a.unique_code?.trim() || "";
+          let authMethod = "-";
+          if (rawCode) {
+            authMethod = /^\d{6}$/.test(rawCode) ? "Email OTP" : "Unique ID";
+          }
+          return [
+            a.attendance_date,
+            a.patient_name || "-",
+            a.phone || "-",
+            vType,
+            rawCode || "-",
+            authMethod,
+            getPatientCategory(a),
+          ];
+        }),
       ];
       
       const ws = XLSX.utils.aoa_to_sheet(wsData);
@@ -96,7 +152,9 @@ export function AttendanceClient({ initialData }: { initialData: Attendance[] })
         { wch: 14 }, // Date
         { wch: 22 }, // Name
         { wch: 16 }, // Phone
-        { wch: 16 }, // Unique ID
+        { wch: 16 }, // Visit Type
+        { wch: 20 }, // Verification Code
+        { wch: 16 }, // Auth Method
         { wch: 14 }, // Status
       ];
       const wb = XLSX.utils.book_new();
@@ -183,12 +241,14 @@ export function AttendanceClient({ initialData }: { initialData: Attendance[] })
         <div className="flex items-center gap-2">
           <select
             value={filter}
-            onChange={(e) => setFilter(e.target.value as "all" | "patient" | "external")}
+            onChange={(e) => setFilter(e.target.value as "all" | "patient" | "external" | "clinic" | "home")}
             className="rounded-md border border-slate-300 bg-white px-3 py-1.5 text-sm text-slate-700 shadow-sm focus:border-brand-500 focus:outline-none focus:ring-1 focus:ring-brand-500"
           >
             <option value="all">All Attendances</option>
-            <option value="patient">Internal Patients</option>
-            <option value="external">External Visitors</option>
+            <option value="patient">Internal Patients Only</option>
+            <option value="external">External Visitors Only</option>
+            <option value="clinic">Clinic Visits Only</option>
+            <option value="home">Home Visits Only</option>
           </select>
         </div>
 
@@ -223,45 +283,58 @@ export function AttendanceClient({ initialData }: { initialData: Attendance[] })
               <th className="px-6 py-3 font-medium">Date</th>
               <th className="px-6 py-3 font-medium">Name</th>
               <th className="px-6 py-3 font-medium">Phone</th>
-              <th className="px-6 py-3 font-medium">Unique ID</th>
+              <th className="px-6 py-3 font-medium">Visit Type</th>
+              <th className="px-6 py-3 font-medium">Verification / UID</th>
               <th className="px-6 py-3 font-medium text-center">Status</th>
             </tr>
           </thead>
           <tbody className="divide-y divide-slate-100">
             {(isModalOpen && exportType === 'pdf' ? printFilteredData : filteredData).length === 0 ? (
               <tr>
-                <td colSpan={5} className="px-6 py-12 text-center text-slate-500">
+                <td colSpan={6} className="px-6 py-12 text-center text-slate-500">
                   No attendance records found.
                 </td>
               </tr>
             ) : (
-              (isModalOpen && exportType === 'pdf' ? printFilteredData : filteredData).map((a) => (
-                <tr key={a.id} className="hover:bg-slate-50/50 transition-colors">
-                  <td className="px-6 py-4 whitespace-nowrap text-slate-600">
-                    {a.attendance_date}
-                  </td>
-                  <td className="px-6 py-4 font-medium text-slate-900">
-                    {a.patient_name || "-"}
-                  </td>
-                  <td className="px-6 py-4 text-slate-600">
-                    {a.phone || "-"}
-                  </td>
-                  <td className="px-6 py-4">
-                    {a.unique_code ? (
-                      <span className="font-mono text-xs bg-slate-100 text-slate-700 px-2 py-1 rounded print:bg-transparent print:border print:border-slate-200">
-                        {a.unique_code}
+              (isModalOpen && exportType === 'pdf' ? printFilteredData : filteredData).map((a) => {
+                const visitType = getVisitType(a);
+                const isHome = visitType === "Home Visit";
+                const isInternal = getPatientCategory(a) === "Internal";
+
+                return (
+                  <tr key={a.id} className="hover:bg-slate-50/50 transition-colors">
+                    <td className="px-6 py-4 whitespace-nowrap text-slate-600">
+                      {a.attendance_date}
+                    </td>
+                    <td className="px-6 py-4 font-medium text-slate-900">
+                      {a.patient_name || "-"}
+                    </td>
+                    <td className="px-6 py-4 text-slate-600">
+                      {a.phone || "-"}
+                    </td>
+                    <td className="px-6 py-4">
+                      <span className={`inline-flex items-center gap-1.5 rounded-full px-2.5 py-0.5 text-xs font-semibold ${
+                        isHome
+                          ? "bg-amber-50 text-amber-800 border border-amber-200"
+                          : "bg-teal-50 text-teal-800 border border-teal-200"
+                      }`}>
+                        {isHome ? <IconHome className="h-3.5 w-3.5 text-amber-600" /> : <IconBuildingHospital className="h-3.5 w-3.5 text-teal-600" />}
+                        {visitType}
                       </span>
-                    ) : "-"}
-                  </td>
-                  <td className="px-6 py-4 text-center">
-                    <span className={`inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-semibold
-                      ${a.status === 'patient' ? 'bg-green-100 text-green-800 print:border print:border-green-300' : 'bg-orange-100 text-orange-800 print:border print:border-orange-300'}
-                    `}>
-                      {a.status === 'patient' ? 'Internal' : 'External'}
-                    </span>
-                  </td>
-                </tr>
-              ))
+                    </td>
+                    <td className="px-6 py-4">
+                      {renderCodeBadge(a.unique_code)}
+                    </td>
+                    <td className="px-6 py-4 text-center">
+                      <span className={`inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-semibold
+                        ${isInternal ? 'bg-green-100 text-green-800 print:border print:border-green-300' : 'bg-orange-100 text-orange-800 print:border print:border-orange-300'}
+                      `}>
+                        {isInternal ? 'Internal' : 'External'}
+                      </span>
+                    </td>
+                  </tr>
+                );
+              })
             )}
           </tbody>
         </table>

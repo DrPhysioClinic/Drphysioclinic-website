@@ -6,6 +6,7 @@ import { toast } from "sonner";
 import { GooeyInput } from "@/components/ui/gooey-input";
 import { useRouter } from "next/navigation";
 import { IconChevronDown, IconChevronRight, IconPlus, IconTrash, IconEdit, IconX } from "@tabler/icons-react";
+import type { Json } from "@/types/database";
 
 export type Patient = {
   id: string;
@@ -21,18 +22,40 @@ export type DoctorNode = {
   patients: Patient[];
 };
 
+function generateCode(): string {
+  const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+  let result = '';
+  for (let i = 0; i < 6; i++) {
+    result += chars.charAt(Math.floor(Math.random() * chars.length));
+  }
+  return result;
+}
+
 export function ReferenceTable({
   treeId,
   initialData,
 }: {
   treeId: string;
-  initialData: any[];
+  initialData: unknown[];
 }) {
   const supabase = createBrowserSupabase();
   
   // Clean initial data to ensure it matches our new structure, ignoring old canvas nodes
+  // and ensuring code is only assigned when email is empty.
   const cleanInitialData = useMemo(() => {
-    return initialData.filter(d => typeof d === "object" && d !== null && "doctorName" in d && "patients" in d) as DoctorNode[];
+    const raw = initialData.filter(d => typeof d === "object" && d !== null && "doctorName" in d && "patients" in d) as DoctorNode[];
+    return raw.map(doc => ({
+      ...doc,
+      patients: doc.patients.map(p => {
+        const hasEmail = Boolean(p.email && p.email.trim().length > 0);
+        if (hasEmail) {
+          return { ...p, code: "" };
+        } else if (!p.code) {
+          return { ...p, code: generateCode() };
+        }
+        return p;
+      }),
+    }));
   }, [initialData]);
 
   const router = useRouter();
@@ -48,7 +71,7 @@ export function ReferenceTable({
     const { error } = await supabase
       .from("reference_trees")
       .update({
-        nodes: newData as any,
+        nodes: newData as unknown as Json,
         updated_at: new Date().toISOString(),
       })
       .eq("id", treeId);
@@ -174,7 +197,16 @@ export function ReferenceTable({
           ...doc,
           patients: doc.patients.map(p => {
             if (p.id === id) {
-              return { ...p, [field === "patientName" ? "name" : field === "patientPhone" ? "phone" : "email"]: newValue };
+              const updated = { ...p, [field === "patientName" ? "name" : field === "patientPhone" ? "phone" : "email"]: newValue };
+              if (field === "patientEmail") {
+                const hasEmail = Boolean(newValue && newValue.trim().length > 0);
+                if (hasEmail) {
+                  updated.code = "";
+                } else if (!updated.code) {
+                  updated.code = generateCode();
+                }
+              }
+              return updated;
             }
             return p;
           }),
@@ -278,7 +310,7 @@ export function ReferenceTable({
                             <th className="px-4 py-2 font-medium w-4/12">Patient Name</th>
                             <th className="px-4 py-2 font-medium w-3/12 border-l border-slate-100">Phone Number</th>
                             <th className="px-4 py-2 font-medium w-3/12 border-l border-slate-100">Email</th>
-                            <th className="px-4 py-2 font-medium w-1/12 border-l border-slate-100 text-center">Code</th>
+                            <th className="px-4 py-2 font-medium w-1/12 border-l border-slate-100 text-center">Auth / Code</th>
                             <th className="px-4 py-2 w-1/12 text-center border-l border-slate-100"></th>
                           </tr>
                         </thead>
@@ -295,9 +327,15 @@ export function ReferenceTable({
                                 {renderEditableCell(patient.id, "patientEmail", patient.email || "", "Enter email")}
                               </td>
                               <td className="px-2 py-2 align-middle border-l border-slate-100 text-center">
-                                <span className="font-mono text-xs bg-slate-100 text-slate-700 px-2 py-1 rounded">
-                                  {patient.code || 'N/A'}
-                                </span>
+                                {patient.email && patient.email.trim() ? (
+                                  <span className="inline-flex items-center text-xs text-slate-500 bg-slate-100 px-2 py-0.5 rounded font-medium" title="Patient will verify attendance using an OTP sent to their email">
+                                    Email OTP
+                                  </span>
+                                ) : (
+                                  <span className="font-mono text-xs bg-brand-50 text-brand-700 font-semibold px-2 py-1 rounded border border-brand-200" title="No email: patient verifies using this Unique Code">
+                                    {patient.code || "N/A"}
+                                  </span>
+                                )}
                               </td>
                               <td className="px-2 py-1 align-middle text-center border-l border-slate-100">
                                 <button

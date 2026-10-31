@@ -230,14 +230,23 @@ export async function sendReviewRequestEmail(toEmail: string, patientName: strin
   }
 }
 
-export async function sendAttendanceEmail(toEmail: string, patientName: string, date: string, replyTo: string = REPLY_TO_EMAIL) {
+export async function sendAttendanceEmail(
+  toEmail: string,
+  patientName: string,
+  date: string,
+  visitType: string = "clinic",
+  replyTo: string = REPLY_TO_EMAIL
+) {
   try {
     if (!process.env.RESEND_API_KEY) return;
+    const isHome = visitType.toLowerCase().includes("home");
+    const visitLabel = isHome ? "Home Visit" : "Clinic Visit";
     const content = `
       ${paragraph(`Hi ${patientName},`)}
-      ${paragraph(`Thank you for visiting Dr. Physio Clinic. Your attendance has been successfully marked.`, 28)}
+      ${paragraph(`Thank you for choosing Dr. Physio Clinic. Your attendance has been successfully marked.`, 28)}
       ${detailCard([
       { label: 'Date', value: date },
+      { label: 'Visit Type', value: visitLabel },
     ], 24)}
       ${paragraph(`We wish you a speedy recovery and good health.`, 0)}
     `;
@@ -245,10 +254,42 @@ export async function sendAttendanceEmail(toEmail: string, patientName: string, 
       from: FROM_EMAIL,
       to: toEmail,
       replyTo: replyTo,
-      subject: 'Attendance Marked - Dr. Physio Clinic',
+      subject: `Attendance Marked (${visitLabel}) - Dr. Physio Clinic`,
       html: renderEmail('Your attendance is marked', content),
     });
   } catch (error) {
     console.error("Failed to send attendance email:", error);
+  }
+}
+
+export async function sendAttendanceOtpEmail(toEmail: string, patientName: string, otp: string, replyTo: string = REPLY_TO_EMAIL) {
+  try {
+    if (!process.env.RESEND_API_KEY) return;
+    const content = `
+      ${paragraph(`Hi ${patientName},`)}
+      ${paragraph(`Here is your one-time verification code (OTP) to register your clinic attendance today:`)}
+      <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="margin:24px 0;">
+        <tr>
+          <td align="center" style="background-color:${BRAND.softBg};border:1px solid ${BRAND.border};border-radius:12px;padding:24px;">
+            <div style="font-family:${FONT_BODY};font-size:36px;font-weight:700;letter-spacing:10px;color:${BRAND.primary};">
+              ${otp}
+            </div>
+            <div style="font-family:${FONT_BODY};font-size:13px;color:${BRAND.muted};margin-top:8px;">
+              Valid for 1 hour
+            </div>
+          </td>
+        </tr>
+      </table>
+      ${paragraph(`If you did not request this verification code, please ignore this email.`, 0)}
+    `;
+    await resend.emails.send({
+      from: FROM_EMAIL,
+      to: toEmail,
+      replyTo: replyTo,
+      subject: `Your Verification Code: ${otp} - Dr. Physio Clinic`,
+      html: renderEmail('Clinic Attendance Verification', content),
+    });
+  } catch (error) {
+    console.error("Failed to send attendance OTP email:", error);
   }
 }
