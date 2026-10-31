@@ -251,7 +251,7 @@ export async function initiateAttendance(formData: FormData): Promise<InitiateAt
     if (!patient) {
       return {
         ok: false,
-        message: "Phone number not found in our patient records. If you are an external visitor, please check 'I don't have a phone number'.",
+        message: "Phone number not found in our patient records. If you are an external visitor, please check 'I don't have a registered number'.",
       };
     }
 

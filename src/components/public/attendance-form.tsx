@@ -206,15 +206,15 @@ export function AttendanceForm() {
           <p className="mt-1 text-sm text-slate-600">
             Welcome, <strong className="text-slate-800">{verifyMeta.patientName}</strong>!
           </p>
-          <div className="mt-2 inline-flex items-center gap-1.5 rounded-full px-2.5 py-1 text-xs font-semibold bg-slate-100 text-slate-700">
+          <div className="mt-2 inline-flex items-center gap-1.5 rounded-full px-2.5 py-1 text-xs font-medium bg-slate-100 text-slate-700">
             {(verifyMeta.visitType || visitType) === "home" ? (
               <>
-                <IconHome className="h-3.5 w-3.5 text-brand-600" />
+                <IconHome className="h-3.5 w-3.5 text-slate-500" />
                 <span>Home Visit</span>
               </>
             ) : (
               <>
-                <IconBuildingHospital className="h-3.5 w-3.5 text-brand-600" />
+                <IconBuildingHospital className="h-3.5 w-3.5 text-slate-500" />
                 <span>Clinic Visit</span>
               </>
             )}
@@ -337,7 +337,7 @@ export function AttendanceForm() {
         </div>
       </div>
 
-      {/* Checkbox: "I don't have a number" */}
+      {/* Checkbox: "I don't have a registered number" */}
       <div className="flex items-center gap-2 pt-1 pb-1">
         <input
           type="checkbox"
@@ -350,7 +350,7 @@ export function AttendanceForm() {
           className="h-4 w-4 rounded border-slate-300 text-brand-600 focus:ring-brand-600 cursor-pointer"
         />
         <label htmlFor="hasNoNumber" className="text-sm font-medium text-slate-700 cursor-pointer">
-          I don&apos;t have a phone number
+          I don&apos;t have a registered number
         </label>
       </div>
 

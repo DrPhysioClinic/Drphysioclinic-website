@@ -42,8 +42,8 @@ function renderCodeBadge(code?: string | null) {
 
   if (isOtp) {
     return (
-      <span className="inline-flex items-center gap-1.5 font-mono text-xs bg-sky-50 text-sky-800 border border-sky-200 px-2 py-0.5 rounded print:border-slate-300 font-semibold" title="Verified via 6-digit Email OTP">
-        <span className="text-[10px] font-bold tracking-wider text-sky-600 bg-sky-100/70 px-1 py-0.2 rounded">OTP</span>
+      <span className="inline-flex items-center gap-1.5 font-mono text-xs bg-brand-50 text-brand-700 border border-brand-200 px-2 py-0.5 rounded print:border-slate-300 font-semibold" title="Verified via 6-digit Email OTP">
+        <span className="text-[10px] font-bold tracking-wider text-brand-600 bg-brand-100 px-1 py-0.2 rounded">OTP</span>
         {clean}
       </span>
     );
@@ -51,8 +51,8 @@ function renderCodeBadge(code?: string | null) {
 
   // Alphanumeric code = Unique ID
   return (
-    <span className="inline-flex items-center gap-1.5 font-mono text-xs bg-purple-50 text-purple-800 border border-purple-200 px-2 py-0.5 rounded print:border-slate-300 font-semibold" title="Verified via Reference Tree Unique Code">
-      <span className="text-[10px] font-bold tracking-wider text-purple-600 bg-purple-100/70 px-1 py-0.2 rounded">UID</span>
+    <span className="inline-flex items-center gap-1.5 font-mono text-xs bg-brand-100 text-brand-900 border border-brand-300 px-2 py-0.5 rounded print:border-slate-300 font-semibold" title="Verified via Reference Tree Unique Code">
+      <span className="text-[10px] font-bold tracking-wider text-white bg-brand-600 px-1.5 py-0.2 rounded">UID</span>
       {clean}
     </span>
   );
@@ -313,12 +313,8 @@ export function AttendanceClient({ initialData }: { initialData: Attendance[] })
                       {a.phone || "-"}
                     </td>
                     <td className="px-6 py-4">
-                      <span className={`inline-flex items-center gap-1.5 rounded-full px-2.5 py-0.5 text-xs font-semibold ${
-                        isHome
-                          ? "bg-amber-50 text-amber-800 border border-amber-200"
-                          : "bg-teal-50 text-teal-800 border border-teal-200"
-                      }`}>
-                        {isHome ? <IconHome className="h-3.5 w-3.5 text-amber-600" /> : <IconBuildingHospital className="h-3.5 w-3.5 text-teal-600" />}
+                      <span className="inline-flex items-center gap-1.5 rounded-full px-2.5 py-0.5 text-xs font-medium bg-slate-100 text-slate-700 border border-slate-200 print:border-slate-300">
+                        {isHome ? <IconHome className="h-3.5 w-3.5 text-slate-500" /> : <IconBuildingHospital className="h-3.5 w-3.5 text-slate-500" />}
                         {visitType}
                       </span>
                     </td>
