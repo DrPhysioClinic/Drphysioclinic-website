@@ -1,7 +1,6 @@
 "use client";
 
-import { useState, useTransition, useMemo } from "react";
-import { clearAttendances } from "@/app/admin/(panel)/actions";
+import { useState, useMemo } from "react";
 import { toast } from "sonner";
 import { IconDownload, IconPrinter, IconX } from "@tabler/icons-react";
 import { format, parseISO } from "date-fns";
@@ -19,12 +18,12 @@ type Attendance = {
 
 export function AttendanceClient({ initialData }: { initialData: Attendance[] }) {
   const [filter, setFilter] = useState<"all" | "patient" | "external">("all");
-  const [pending, startTransition] = useTransition();
 
   // Export Modal State
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [exportType, setExportType] = useState<"xlsx" | "pdf">("xlsx");
-  const [stopDate, setStopDate] = useState<string>(new Date().toISOString().split("T")[0]);
+  const [startDate, setStartDate] = useState<string>("");
+  const [stopDate, setStopDate] = useState<string>("");
 
   // Determine the oldest date from the data
   const oldestDate = useMemo(() => {
@@ -38,9 +37,12 @@ export function AttendanceClient({ initialData }: { initialData: Attendance[] })
     return a.status === filter;
   });
 
-  // Data visible during PDF print (filtered by stopDate as well)
-  // We use this so the print window only shows the exported date range.
-  const printFilteredData = filteredData.filter((a) => a.attendance_date <= stopDate);
+  // Data visible during PDF print (filtered by date range)
+  const printFilteredData = filteredData.filter((a) => {
+    const matchStart = !startDate || a.attendance_date >= startDate;
+    const matchStop = !stopDate || a.attendance_date <= stopDate;
+    return matchStart && matchStop;
+  });
 
   const openExportModal = (type: "xlsx" | "pdf") => {
     if (filteredData.length === 0) {
@@ -48,20 +50,31 @@ export function AttendanceClient({ initialData }: { initialData: Attendance[] })
       return;
     }
     setExportType(type);
+    setStartDate(oldestDate);
+    setStopDate(new Date().toISOString().split("T")[0]);
     setIsModalOpen(true);
   };
 
   const handleExport = () => {
-    const dataToExport = filteredData.filter((a) => a.attendance_date <= stopDate);
+    if (startDate && stopDate && startDate > stopDate) {
+      toast.error("Start date cannot be after stop date.");
+      return;
+    }
+
+    const dataToExport = filteredData.filter((a) => {
+      const matchStart = !startDate || a.attendance_date >= startDate;
+      const matchStop = !stopDate || a.attendance_date <= stopDate;
+      return matchStart && matchStop;
+    });
 
     if (dataToExport.length === 0) {
       toast.error("No records found in the selected date range.");
       return;
     }
 
-    const formattedOldest = format(parseISO(oldestDate), "dd/MM/yyyy");
-    const formattedStop = format(parseISO(stopDate), "dd/MM/yyyy");
-    const titleRow = `Attendance Sheet from ${formattedOldest} to ${formattedStop}`;
+    const formattedStart = startDate ? format(parseISO(startDate), "dd/MM/yyyy") : "-";
+    const formattedStop = stopDate ? format(parseISO(stopDate), "dd/MM/yyyy") : "-";
+    const titleRow = `Attendance Sheet from ${formattedStart} to ${formattedStop}`;
 
     if (exportType === "xlsx") {
       // Create worksheet
@@ -74,32 +87,29 @@ export function AttendanceClient({ initialData }: { initialData: Attendance[] })
           a.patient_name || "-",
           a.phone || "-",
           a.unique_code || "-",
-          a.status,
+          a.status === "patient" ? "Internal" : "External",
         ]),
       ];
       
       const ws = XLSX.utils.aoa_to_sheet(wsData);
+      ws["!cols"] = [
+        { wch: 14 }, // Date
+        { wch: 22 }, // Name
+        { wch: 16 }, // Phone
+        { wch: 16 }, // Unique ID
+        { wch: 14 }, // Status
+      ];
       const wb = XLSX.utils.book_new();
       XLSX.utils.book_append_sheet(wb, ws, "Attendances");
       
       // Download XLSX
-      XLSX.writeFile(wb, `Attendance_Sheet_${stopDate}.xlsx`);
+      XLSX.writeFile(wb, `Attendance_Sheet_${stopDate || "all"}.xlsx`);
+      toast.success(`Exported ${dataToExport.length} attendance record${dataToExport.length === 1 ? "" : "s"} successfully!`);
+      setIsModalOpen(false);
     } else if (exportType === "pdf") {
-      // Print dialog (PDF export relies on the browser's print to PDF)
-      // We will temporarily hide the modal (it's hidden via print:hidden in CSS)
       window.print();
+      setIsModalOpen(false);
     }
-
-    // Automatically clear records up to stopDate
-    startTransition(async () => {
-      const res = await clearAttendances(stopDate);
-      if (res?.error) {
-        toast.error("Exported successfully, but failed to clear records: " + res.error);
-      } else {
-        toast.success(`Exported and cleared records up to ${formattedStop}.`);
-        setIsModalOpen(false);
-      }
-    });
   };
 
   return (
@@ -110,38 +120,38 @@ export function AttendanceClient({ initialData }: { initialData: Attendance[] })
           <div className="bg-white rounded-xl shadow-2xl max-w-md w-full p-6 border border-slate-200">
             <div className="flex items-center justify-between mb-4">
               <h2 className="text-lg font-semibold text-slate-800">
-                Export & Clear Attendances
+                Export Attendances
               </h2>
               <button 
-                onClick={() => !pending && setIsModalOpen(false)}
+                onClick={() => setIsModalOpen(false)}
                 className="text-slate-400 hover:text-slate-600 transition-colors"
-                disabled={pending}
               >
                 <IconX size={20} />
               </button>
             </div>
             
             <p className="text-sm text-slate-600 mb-6">
-              Exporting will download the records and <strong>automatically delete</strong> them from the database up to the selected Stop Date.
+              Select a date range to export attendance records. All records will remain preserved in the database.
             </p>
 
             <div className="space-y-4">
               <div>
-                <label className="block text-sm font-medium text-slate-700 mb-1">Start Date (Oldest Record)</label>
+                <label className="block text-sm font-medium text-slate-700 mb-1">Start Date</label>
                 <input 
                   type="date" 
-                  value={oldestDate} 
-                  disabled 
-                  className="w-full rounded-md border border-slate-200 bg-slate-100 text-slate-500 px-3 py-2 text-sm cursor-not-allowed"
+                  value={startDate} 
+                  max={stopDate || new Date().toISOString().split("T")[0]}
+                  onChange={(e) => setStartDate(e.target.value)}
+                  className="w-full rounded-md border border-slate-300 bg-white px-3 py-2 text-sm text-slate-900 focus:border-brand-500 focus:outline-none focus:ring-1 focus:ring-brand-500"
                 />
               </div>
               
               <div>
-                <label className="block text-sm font-medium text-slate-700 mb-1">Stop Date (Export & Clear up to)</label>
+                <label className="block text-sm font-medium text-slate-700 mb-1">Stop Date</label>
                 <input 
                   type="date" 
                   value={stopDate} 
-                  min={oldestDate}
+                  min={startDate}
                   max={new Date().toISOString().split("T")[0]} // Prevent future dates
                   onChange={(e) => setStopDate(e.target.value)}
                   className="w-full rounded-md border border-slate-300 bg-white px-3 py-2 text-sm text-slate-900 focus:border-brand-500 focus:outline-none focus:ring-1 focus:ring-brand-500"
@@ -152,24 +162,16 @@ export function AttendanceClient({ initialData }: { initialData: Attendance[] })
             <div className="mt-8 flex justify-end gap-3">
               <button
                 onClick={() => setIsModalOpen(false)}
-                disabled={pending}
                 className="px-4 py-2 text-sm font-medium text-slate-600 hover:bg-slate-100 rounded-md transition-colors"
               >
                 Cancel
               </button>
               <button
                 onClick={handleExport}
-                disabled={pending}
                 className="px-4 py-2 text-sm font-medium text-white bg-brand-600 hover:bg-brand-700 rounded-md shadow-sm transition-colors flex items-center gap-2"
               >
-                {pending ? (
-                  "Processing..."
-                ) : (
-                  <>
-                    {exportType === "xlsx" ? <IconDownload size={16} /> : <IconPrinter size={16} />}
-                    Export {exportType.toUpperCase()} & Clear
-                  </>
-                )}
+                {exportType === "xlsx" ? <IconDownload size={16} /> : <IconPrinter size={16} />}
+                Export {exportType.toUpperCase()}
               </button>
             </div>
           </div>
@@ -211,7 +213,7 @@ export function AttendanceClient({ initialData }: { initialData: Attendance[] })
         {/* Title specifically for print layout */}
         <div className="hidden print:block p-6 border-b border-slate-200">
           <h1 className="text-xl font-bold text-slate-900">
-            Attendance Sheet from {format(parseISO(oldestDate), "dd/MM/yyyy")} to {format(parseISO(stopDate), "dd/MM/yyyy")}
+            Attendance Sheet from {startDate ? format(parseISO(startDate), "dd/MM/yyyy") : "-"} to {stopDate ? format(parseISO(stopDate), "dd/MM/yyyy") : "-"}
           </h1>
         </div>
 
