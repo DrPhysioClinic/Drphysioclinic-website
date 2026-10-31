@@ -2,6 +2,7 @@ import { createServerSupabase } from "@/lib/supabase/server";
 import { StatusSelect } from "@/components/admin/status-select";
 import { RowActions } from "@/components/admin/row-actions";
 import { EnquiryNotesModal } from "@/components/admin/enquiry-notes-modal";
+import { ExportEnquiriesButton } from "@/components/admin/export-xlsx-button";
 
 export const dynamic = "force-dynamic";
 
@@ -14,7 +15,13 @@ export default async function AdminEnquiriesPage() {
 
   return (
     <div>
-      <h1 className="mb-4 text-xl font-bold text-slate-900">Enquiries</h1>
+      <div className="mb-4 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+        <div>
+          <h1 className="text-xl font-bold text-slate-900">Enquiries</h1>
+          <p className="mt-1 text-sm text-slate-500">Manage patient messages and contact form submissions.</p>
+        </div>
+        <ExportEnquiriesButton data={data ?? []} />
+      </div>
       <div className="card overflow-x-auto">
         <table className="w-full text-sm">
           <thead className="border-b border-slate-200 text-left text-xs uppercase text-slate-500">

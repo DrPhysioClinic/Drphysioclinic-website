@@ -2,6 +2,7 @@ import { createServerSupabase } from "@/lib/supabase/server";
 import { StatusSelect } from "@/components/admin/status-select";
 import { RowActions } from "@/components/admin/row-actions";
 import { AppointmentNotesModal } from "@/components/admin/appointment-notes-modal";
+import { ExportAppointmentsButton } from "@/components/admin/export-xlsx-button";
 
 export const dynamic = "force-dynamic";
 
@@ -10,13 +11,19 @@ export default async function AdminAppointmentsPage() {
   const { data } = await supabase
     .from("appointments")
     .select(
-      "id, patient_name, phone, email, preferred_date, preferred_time, status, notes, doctor_notes, consultation_type, zoom_start_url, created_at, services(title)"
+      "id, patient_name, phone, email, preferred_date, preferred_time, status, notes, doctor_notes, consultation_type, zoom_start_url, zoom_join_url, source_page, created_at, services(title)"
     )
     .order("created_at", { ascending: false });
 
   return (
     <div>
-      <h1 className="mb-4 text-xl font-bold text-slate-900">Appointments</h1>
+      <div className="mb-4 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+        <div>
+          <h1 className="text-xl font-bold text-slate-900">Appointments</h1>
+          <p className="mt-1 text-sm text-slate-500">Manage patient booking requests and consultations.</p>
+        </div>
+        <ExportAppointmentsButton data={data ?? []} />
+      </div>
       <div className="card overflow-x-auto">
         <table className="w-full text-sm">
           <thead className="border-b border-slate-200 text-left text-xs uppercase text-slate-500">
