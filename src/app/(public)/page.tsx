@@ -64,7 +64,7 @@ export default async function HomePage() {
   return (
     <>
       {/* Hero */}
-      <section className="relative flex min-h-[100dvh] items-center bg-[#17153f] pt-16 text-white pb-12 overflow-hidden">
+      <section className="relative flex flex-col lg:flex-row min-h-[100dvh] lg:items-center bg-[#17153f] pt-16 text-white pb-12 overflow-hidden">
         
         {/* Spotlight Overlay */}
         <SpotlightCanvas config={{ glowColor: '176, 165, 210', spotlightIntensity: 0.5, spotlightSize: 300, fadeSpeed: 0.8 }} />
@@ -87,7 +87,7 @@ export default async function HomePage() {
         </div>
 
         <div className="w-full px-6 lg:px-12 grid gap-8 lg:grid-cols-2 relative z-10 pointer-events-none">
-          <div className="flex flex-col justify-start xl:pl-8 pt-12 md:pt-16 lg:pt-20">
+          <div className="flex flex-col justify-center min-h-[calc(100dvh-5rem)] lg:min-h-0 xl:pl-8 pt-8 sm:pt-12 md:pt-16 lg:pt-20 pb-8 lg:pb-0">
             <h1 className="flex flex-col gap-2">
               <div className="font-outfit text-6xl sm:text-7xl lg:text-[85px] xl:text-[95px] leading-[0.9] font-medium tracking-tight text-white mb-2">
                 Top-rated <br />
@@ -137,7 +137,23 @@ export default async function HomePage() {
               <HeroPatientStoriesButton />
             </div>
           </div>
-          {/* Video Container Column */}
+
+          {/* Mobile Video Container (Revealed on scroll down) */}
+          <div className="flex lg:hidden flex-col items-center justify-center pointer-events-auto pt-6 pb-12 px-2">
+            <HeroVideo className="mx-auto max-w-[280px] sm:max-w-[320px]" />
+            
+            {/* Quote placed naturally below the video */}
+            <div className="w-full max-w-[340px] mt-8 text-center px-2">
+              <p className="font-playfair italic text-xl sm:text-2xl text-white/95 leading-snug">
+                “We do not fix people, <br /> we give the body its listening back.”
+              </p>
+              <p className="text-[10px] sm:text-xs tracking-[0.2em] uppercase text-white/60 mt-4 font-semibold font-outfit">
+                — Dr. Jeetendra Brahmbhatt · Lead
+              </p>
+            </div>
+          </div>
+
+          {/* Video Container Column (Desktop / Laptop) */}
           <div className="hidden lg:flex flex-col justify-center items-end pointer-events-auto pt-16 xl:pt-24">
             <HeroVideo />
             

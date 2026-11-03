@@ -3,18 +3,37 @@
 import { useRef, useState, useEffect } from "react";
 import { IconVolume, IconVolumeOff } from "@tabler/icons-react";
 
-export function HeroVideo() {
+export function HeroVideo({ className = "" }: { className?: string }) {
   const videoRef = useRef<HTMLVideoElement>(null);
   const [isMuted, setIsMuted] = useState(true);
   const [showControls, setShowControls] = useState(false);
 
   useEffect(() => {
-    if (videoRef.current) {
-      videoRef.current.volume = 0.3;
-      videoRef.current.muted = true; // explicitly mute to ensure it plays
-      
-      // Since it is muted, the browser will reliably autoplay it.
-      videoRef.current.play().catch((err) => {
+    const video = videoRef.current;
+    if (!video) return;
+
+    video.volume = 0.3;
+    video.muted = true; // explicitly mute to ensure it plays
+
+    // Autoplay when in view; pause when offscreen or hidden
+    if ("IntersectionObserver" in window) {
+      const observer = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((entry) => {
+            if (entry.isIntersecting) {
+              video.play().catch(() => {});
+            } else {
+              video.pause();
+            }
+          });
+        },
+        { threshold: 0.15 }
+      );
+
+      observer.observe(video);
+      return () => observer.disconnect();
+    } else {
+      video.play().catch((err) => {
         console.warn("Autoplay blocked.", err);
       });
     }
@@ -31,7 +50,7 @@ export function HeroVideo() {
 
   return (
     <div 
-      className="relative group w-full max-w-[340px]"
+      className={`relative group w-full max-w-[340px] ${className}`}
       onMouseEnter={() => setShowControls(true)}
       onMouseLeave={() => setShowControls(false)}
     >
@@ -45,6 +64,8 @@ export function HeroVideo() {
       >
         <video
           ref={videoRef}
+          autoPlay
+          muted
           loop
           playsInline
           preload="metadata"
@@ -57,7 +78,9 @@ export function HeroVideo() {
       
       {/* Unmute Button - placed outside the mask so it remains visible */}
       <div 
-        className={`absolute bottom-[25%] right-2 transition-opacity duration-300 z-20 ${showControls ? 'opacity-100' : 'opacity-0'}`}
+        className={`absolute bottom-[25%] right-2 transition-opacity duration-300 z-20 ${
+          showControls ? 'opacity-100' : 'opacity-90 lg:opacity-0 lg:group-hover:opacity-100'
+        }`}
       >
         <button 
           onClick={toggleMute}
