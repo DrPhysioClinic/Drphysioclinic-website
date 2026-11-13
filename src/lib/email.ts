@@ -275,7 +275,7 @@ export async function sendAttendanceOtpEmail(toEmail: string, patientName: strin
               ${otp}
             </div>
             <div style="font-family:${FONT_BODY};font-size:13px;color:${BRAND.muted};margin-top:8px;">
-              Valid for 1 hour
+              Valid for 24 hours
             </div>
           </td>
         </tr>

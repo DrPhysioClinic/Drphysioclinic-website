@@ -260,7 +260,7 @@ export async function initiateAttendance(formData: FormData): Promise<InitiateAt
     if (hasEmail && patient.email) {
       const email = patient.email.trim();
       const otp = Math.floor(100000 + Math.random() * 900000).toString();
-      const expiresAt = Date.now() + 60 * 60 * 1000; // 1 hour (60 minutes)
+      const expiresAt = Date.now() + 24 * 60 * 60 * 1000; // 24 hours
       const signature = createHmacSignature(cleanPhone, otp, expiresAt);
       const token = `${cleanPhone}.${expiresAt}.${signature}`;
 
@@ -280,7 +280,7 @@ export async function initiateAttendance(formData: FormData): Promise<InitiateAt
     } else {
       // No email entered in reference tree -> requires Unique Code
       const code = (patient.code || "").trim().toUpperCase();
-      const expiresAt = Date.now() + 60 * 60 * 1000; // 1 hour (60 minutes)
+      const expiresAt = Date.now() + 24 * 60 * 60 * 1000; // 24 hours
       const signature = createHmacSignature(cleanPhone, code, expiresAt);
       const token = `${cleanPhone}.${expiresAt}.${signature}`;
 
