@@ -293,3 +293,40 @@ export async function sendAttendanceOtpEmail(toEmail: string, patientName: strin
     console.error("Failed to send attendance OTP email:", error);
   }
 }
+
+export async function sendJobApplicationEmail(app: {
+  name: string;
+  phone: string;
+  email: string;
+  qualification: string;
+  experience: string;
+  specialization?: string | null;
+  resumeLink?: string | null;
+  message?: string | null;
+}) {
+  try {
+    if (!process.env.RESEND_API_KEY) return;
+    const content = `
+      ${paragraph(`A new physiotherapist has submitted an application to join Dr. Physio Clinic:`, 20)}
+      ${detailCard([
+        { label: 'Applicant Name', value: app.name },
+        { label: 'Phone', value: app.phone },
+        { label: 'Email', value: app.email },
+        { label: 'Qualification', value: app.qualification },
+        { label: 'Clinical Experience', value: app.experience },
+        { label: 'Specialization / Interests', value: app.specialization || 'Not specified' },
+        { label: 'Resume / LinkedIn Link', value: app.resumeLink || 'None provided' },
+      ], 24)}
+      ${app.message ? paragraph(`<strong>Message from Applicant:</strong><br>${app.message.replace(/\n/g, '<br>')}`, 20) : ''}
+    `;
+    await resend.emails.send({
+      from: FROM_EMAIL,
+      to: 'dr.jeetendra@drphysioclinic.com',
+      replyTo: app.email || REPLY_TO_EMAIL,
+      subject: `New Physiotherapist Application: ${app.name} (${app.qualification})`,
+      html: renderEmail('New Career Application', content),
+    });
+  } catch (error) {
+    console.error("Failed to send job application email:", error);
+  }
+}

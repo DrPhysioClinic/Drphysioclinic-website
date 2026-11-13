@@ -4,7 +4,7 @@ import { createPublicClient } from "@/lib/supabase/public";
 import { verifyTurnstile } from "@/lib/turnstile";
 import { logEvent } from "@/app/actions/analytics";
 import { parseTime } from "@/lib/utils";
-import { sendAttendanceEmail, sendAttendanceOtpEmail } from "@/lib/email";
+import { sendAttendanceEmail, sendAttendanceOtpEmail, sendJobApplicationEmail } from "@/lib/email";
 import crypto from "crypto";
 
 export type FormState = {
@@ -135,6 +135,77 @@ export async function submitEnquiry(_prev: FormState, formData: FormData): Promi
     return { ok: true, message: "Thanks for reaching out! We'll get back to you soon." };
   } catch {
     return { ok: false, message: "Something went wrong. Please try again." };
+  }
+}
+
+export async function submitJobApplication(formData: FormData): Promise<FormState> {
+  const blocked = await spamGuard(formData);
+  if (blocked) return blocked;
+
+  const name = (formData.get("name") as string)?.trim();
+  const phone = (formData.get("phone") as string)?.trim();
+  const email = (formData.get("email") as string)?.trim();
+  const qualification = (formData.get("qualification") as string)?.trim() || "BPT";
+  const experience = (formData.get("experience") as string)?.trim() || "Fresher";
+  const specialization = (formData.get("specialization") as string)?.trim() || null;
+  const resumeLink = (formData.get("resume_link") as string)?.trim() || null;
+  const message = (formData.get("message") as string)?.trim() || null;
+
+  if (!name || !phone || !email) {
+    return { ok: false, message: "Full Name, Phone number, and Email are required." };
+  }
+
+  const cleanPhone = normalizePhone(phone);
+  if (!cleanPhone || cleanPhone.length < 10) {
+    return { ok: false, message: "Please enter a valid 10-digit phone number." };
+  }
+
+  const payload = {
+    name,
+    contact: `${cleanPhone} | ${email}`,
+    message: message || `Application for Physiotherapist position (${qualification}, ${experience})`,
+    source_page: "/join-our-team",
+    status: "new",
+    notes: {
+      type: "job_application",
+      role: "Physiotherapist",
+      applicant_name: name,
+      phone: cleanPhone,
+      email,
+      qualification,
+      experience,
+      specialization,
+      resume_link: resumeLink,
+      message,
+      submitted_at: new Date().toISOString(),
+    },
+  };
+
+  try {
+    const supabase = createPublicClient();
+    const { error } = await supabase.from("enquiries").insert(payload as never);
+    if (error) throw error;
+
+    await logEvent("job_application_submit", "/join-our-team");
+
+    await sendJobApplicationEmail({
+      name,
+      phone: cleanPhone,
+      email,
+      qualification,
+      experience,
+      specialization,
+      resumeLink,
+      message,
+    });
+
+    return {
+      ok: true,
+      message: "Application submitted successfully! Dr. Jeetendra and our clinical team will review your details and contact you soon.",
+    };
+  } catch (err) {
+    console.error("submitJobApplication error:", err);
+    return { ok: false, message: "Something went wrong while submitting. Please try again or reach out to us directly." };
   }
 }
 

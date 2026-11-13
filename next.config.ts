@@ -29,6 +29,7 @@ const nextConfig: NextConfig = {
   },
   async redirects() {
     return [
+      { source: '/become-a-partner', destination: '/join-our-team', permanent: true },
       // --- TIER 1: SPECIFIC HIGH-VALUE MAPPINGS ---
       // These map to specific new pages for maximum authority transfer.
       { source: '/updates/say-goodbye-to-hi', destination: '/updates/say-goodbye-to-hip-pain', permanent: true },
