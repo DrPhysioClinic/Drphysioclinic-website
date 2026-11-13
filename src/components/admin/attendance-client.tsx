@@ -14,8 +14,28 @@ type Attendance = {
   unique_code: string | null;
   status: string;
   attendance_date: string;
+  attendance_time?: string | null;
   visit_type?: string | null;
 };
+
+function formatAttendanceTime(a: Attendance): string {
+  if (a.attendance_time && a.attendance_time.trim()) {
+    return a.attendance_time.trim();
+  }
+  if (a.created_at) {
+    try {
+      return new Date(a.created_at).toLocaleTimeString("en-IN", {
+        timeZone: "Asia/Kolkata",
+        hour: "2-digit",
+        minute: "2-digit",
+        hour12: true,
+      });
+    } catch {
+      return "-";
+    }
+  }
+  return "-";
+}
 
 function getVisitType(a: Attendance): "Clinic Visit" | "Home Visit" {
   if (a.visit_type) {
@@ -127,7 +147,7 @@ export function AttendanceClient({ initialData }: { initialData: Attendance[] })
       const wsData = [
         [titleRow], // First row description
         [], // Empty row for spacing
-        ["Date", "Name", "Phone", "Visit Type", "Verification Code", "Auth Method", "Status"], // Headers
+        ["Date", "Time", "Name", "Phone", "Visit Type", "Verification Code", "Auth Method", "Status"], // Headers
         ...dataToExport.map((a) => {
           const vType = getVisitType(a);
           const rawCode = a.unique_code?.trim() || "";
@@ -135,8 +155,10 @@ export function AttendanceClient({ initialData }: { initialData: Attendance[] })
           if (rawCode) {
             authMethod = /^\d{6}$/.test(rawCode) ? "Email OTP" : "Unique ID";
           }
+          const timeStr = formatAttendanceTime(a);
           return [
             a.attendance_date,
+            timeStr,
             a.patient_name || "-",
             a.phone || "-",
             vType,
@@ -150,6 +172,7 @@ export function AttendanceClient({ initialData }: { initialData: Attendance[] })
       const ws = XLSX.utils.aoa_to_sheet(wsData);
       ws["!cols"] = [
         { wch: 14 }, // Date
+        { wch: 12 }, // Time
         { wch: 22 }, // Name
         { wch: 16 }, // Phone
         { wch: 16 }, // Visit Type
@@ -280,7 +303,7 @@ export function AttendanceClient({ initialData }: { initialData: Attendance[] })
         <table className="w-full text-sm text-left">
           <thead className="bg-slate-50 text-xs uppercase text-slate-500 border-b border-slate-200 sticky top-0 z-10 print:static print:bg-white">
             <tr>
-              <th className="px-6 py-3 font-medium">Date</th>
+              <th className="px-6 py-3 font-medium">Date & Time</th>
               <th className="px-6 py-3 font-medium">Name</th>
               <th className="px-6 py-3 font-medium">Phone</th>
               <th className="px-6 py-3 font-medium">Visit Type</th>
@@ -300,11 +323,13 @@ export function AttendanceClient({ initialData }: { initialData: Attendance[] })
                 const visitType = getVisitType(a);
                 const isHome = visitType === "Home Visit";
                 const isInternal = getPatientCategory(a) === "Internal";
+                const timeStr = formatAttendanceTime(a);
 
                 return (
                   <tr key={a.id} className="hover:bg-slate-50/50 transition-colors">
                     <td className="px-6 py-4 whitespace-nowrap text-slate-600">
-                      {a.attendance_date}
+                      <div className="font-medium text-slate-900">{a.attendance_date}</div>
+                      <div className="text-xs text-slate-400 mt-0.5">{timeStr}</div>
                     </td>
                     <td className="px-6 py-4 font-medium text-slate-900">
                       {a.patient_name || "-"}

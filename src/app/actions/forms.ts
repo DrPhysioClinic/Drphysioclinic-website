@@ -203,6 +203,7 @@ async function insertAttendanceRecord(
     phone: string | null;
     unique_code: string | null;
     attendance_date: string;
+    attendance_time?: string | null;
     status: string;
   },
   visitType: "clinic" | "home"
@@ -212,9 +213,16 @@ async function insertAttendanceRecord(
   const res = await supabase.from("attendances").insert(withVisitType as never);
 
   if (res.error) {
-    // If column visit_type does not exist yet in Postgres schema, fallback to inserting without it
-    if (res.error.code === "PGRST204" || res.error.message?.includes("visit_type")) {
-      const fallbackRes = await supabase.from("attendances").insert(payload);
+    // If column visit_type or attendance_time does not exist yet in Postgres schema, fallback to inserting without them
+    if (res.error.code === "PGRST204" || res.error.message?.includes("visit_type") || res.error.message?.includes("attendance_time")) {
+      const basePayload = {
+        patient_name: payload.patient_name,
+        phone: payload.phone,
+        unique_code: payload.unique_code,
+        attendance_date: payload.attendance_date,
+        status: payload.status,
+      };
+      const fallbackRes = await supabase.from("attendances").insert(basePayload as never);
       if (fallbackRes.error) throw fallbackRes.error;
       return;
     }
@@ -365,6 +373,12 @@ export async function verifyAttendance(formData: FormData): Promise<FormState> {
     // If verified via Unique Code -> store the unique code in unique_code
     const codeToStore = mode === "otp" ? verificationCode.trim() : (patient.code || verificationCode.trim());
     const statusVal = visitType === "home" ? "patient_home" : "patient_clinic";
+    const attendanceTime = new Date().toLocaleTimeString("en-IN", {
+      timeZone: "Asia/Kolkata",
+      hour: "2-digit",
+      minute: "2-digit",
+      hour12: true,
+    });
 
     const supabase = createPublicClient();
     const payload = {
@@ -372,6 +386,7 @@ export async function verifyAttendance(formData: FormData): Promise<FormState> {
       phone: patient.phone || cleanPhone,
       unique_code: codeToStore,
       attendance_date: attendanceDate,
+      attendance_time: attendanceTime,
       status: statusVal,
     };
 
@@ -419,11 +434,18 @@ export async function submitExternalAttendance(formData: FormData): Promise<Form
   try {
     const supabase = createPublicClient();
     const statusVal = visitType === "home" ? "external_home" : "external_clinic";
+    const attendanceTime = new Date().toLocaleTimeString("en-IN", {
+      timeZone: "Asia/Kolkata",
+      hour: "2-digit",
+      minute: "2-digit",
+      hour12: true,
+    });
     const payload = {
       patient_name: name,
       phone: phone || null,
       unique_code: null,
       attendance_date: attendanceDate,
+      attendance_time: attendanceTime,
       status: statusVal,
     };
 
